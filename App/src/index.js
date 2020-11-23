@@ -1,9 +1,11 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import App from './App';
+import App from './pages/frontEnd/layouts';
 import * as serviceWorker from './serviceWorker';
-import { Provider } from 'react-redux'  
+import { Provider } from 'react-redux'
 import configStore from './redux/configStore';
+
+import "./index.scss";
 
 const store = configStore();
 
