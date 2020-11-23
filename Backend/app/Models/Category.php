@@ -22,4 +22,15 @@ class Category extends Model
     public function suggestions(){
         return $this->hasMany(Suggestion::class);
     }
+
+
+    public function parent()
+    {
+        return $this->belongsTo('Category', 'parent_id');
+    }
+
+    public function children()
+    {
+        return $this->hasMany('Category', 'parent_id');
+    }
 }
