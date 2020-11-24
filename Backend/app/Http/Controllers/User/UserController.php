@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use App\Http\Controllers\BaseController as BaseController;
 use App\Models\User;
 use App\Models\Role;
+use App\Models\Profile;
 use Validator;
 use Illuminate\Support\Facades\Auth;
 
@@ -172,7 +173,7 @@ class UserController extends BaseController
 
     public function show($id){
 
-        $found = User::where('id',$id)->with('profile')->get();
+        $found = User::where('id',$id)->with('profile')->first();
 
         return $this->sendResponse(
             $data = $found
@@ -180,17 +181,107 @@ class UserController extends BaseController
     }
 
     public function update($id, Request $request){
-        return 'update ' . $id;
+
+            // Shop update user
+
+            $validator = Validator::make($request->all(), [
+
+                'username' => 'required',
+                'email' => 'required|email',
+                'name' => 'required',
+                'c_password' => 'same:password'
+            ]);
+    
+            if($validator->fails()){
+                return $this->sendError('Validation Error.', $validator->errors());       
+            }
+
+            $user = User::where('id',$id)->with('profile')->first();
+
+            if($user != null ){
+
+                $input = $request->all();
+                $user->username = $request->username;
+                $user->email = $request->email;
+
+                if($request->password != null && !empty($request->password) ){
+                    $user->password =  bcrypt($input['password']);
+                }
+
+                $user->profile->name = $request->name; 
+                $user->profile->avatar = $request->avatar; 
+                $user->profile->birthday = $request->birthday; 
+                $user->profile->gender = $request->gender; 
+                $user->profile->address = $request->address; 
+                $user->profile->phone = $request->phone; 
+                $user->profile->facebook = $request->facebook; 
+                $user->save();
+    
+            }
+            else 
+            {
+                return $this->sendError('Account Errors.',['error' => 'User not found !']);
+            }
+           
+            return $this->sendResponse($user, 'Update user successfully.');
     }
 
-    public function delete($id){
-        return 'delete ' . $id;
+    public function delete($id,Request $request){
+
+        $found = User::find($id);
+        $found->delete();
+
+        if($found == null){
+            
+            return $this->sendError('Category Errors.',['error' => 'Category not found !']);
+        }
+
+        return $this->sendResponse(
+            $found, 
+            'Delete user successfully'
+          );
     }
 
-    public function create(){
-        return 'create ';
+    public function create(Request $request){
+
+        // Shop create user
+
+        $validator = Validator::make($request->all(), [
+
+            'username' => 'required|unique:users',
+            'email' => 'required|email|unique:users',
+            'password' => 'required',
+            'name' => 'required',
+            'c_password' => 'required|same:password'
+        ]);
+   
+        if($validator->fails()){
+            return $this->sendError('Validation Error.', $validator->errors());       
+        }
+   
+        $input = $request->all();
+        $account['username'] = $request->username;
+        $account['email'] = $request->email;
+        $account['password'] = bcrypt($input['password']);
+
+        $user = User::create($account);
+        $user->roles()->attach(['role_id' => Role::where('name','user')->first()->id]);
+
+        $profile['name'] = $request->name; 
+        $profile['avatar'] = $request->avatar; 
+        $profile['birthday'] = $request->birthday; 
+        $profile['gender'] = $request->gender; 
+        $profile['address'] = $request->address; 
+        $profile['phone'] = $request->phone; 
+        $profile['facebook'] = $request->facebook; 
+        $profile['user_id'] = $user->id; 
+
+        $profile = Profile::create($profile);
+
+        $user['profile'] = $profile;
+
+        return $this->sendResponse($user, 'User create successfully.');
+
     }
-
-
 
 }

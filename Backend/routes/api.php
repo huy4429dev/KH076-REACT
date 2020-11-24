@@ -2,6 +2,12 @@
 
 use App\Http\Controllers\Admin\AdminController as AdminController;
 use App\Http\Controllers\User\UserController as UserController;
+use App\Http\Controllers\Upload\UploadController as UploadController;
+use App\Http\Controllers\Category\CategoryController as CategoryController;
+use App\Http\Controllers\Product\ProductController as ProductController;
+use App\Http\Controllers\Order\OrderController as OrderController;
+use App\Http\Controllers\OrderItem\OrderItemController as OrderItemController;
+use App\Http\Controllers\Rating\RatingController as RatingController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -33,11 +39,9 @@ Route::prefix('admins')->group(function(){
     });
 });
 
-
 //=================
 
-//================================== USER 
-
+//================================== User 
 
 Route::prefix('users')->group(function(){
 
@@ -51,73 +55,125 @@ Route::prefix('users')->group(function(){
     Route::middleware(['auth:api', 'role'])->group(function() {
          
         Route::middleware(['scope:admin,shop'])->get('/', [UserController::class,'index'] );
-    
         Route::get('/search', [UserController::class,'search'] );
         Route::get('/{id}', [UserController::class,'show'] );
-        
         Route::post('/', [UserController::class,'create'] );
         Route::put('/{id}', [UserController::class,'update'] );
         Route::delete('/{id}', [UserController::class,'delete'] );
 
     });
 
-    
+});
 
+//=================
 
+//================================== Upload file 
 
+Route::prefix('uploads')->group(function(){
+
+    Route::post('/{any}', [UploadController::class,'store'] )->where('any', '.*');
 
 });
 
 
+//=================
+
+//================================== Category 
+
+
+Route::prefix('categories')->group(function(){
+    
+    Route::middleware(['auth:api', 'role'])->group(function() {
+         
+        Route::middleware(['scope:admin,shop,user'])->get('/', [CategoryController::class,'index'] );
+    
+        Route::middleware(['scope:admin,shop,user'])->get('/search', [CategoryController::class,'search'] );
+        Route::middleware(['scope:admin,shop,user'])->get('/{id}', [CategoryController::class,'show'] );
+        
+        Route::middleware(['scope:admin,shop,user'])->post('/', [CategoryController::class,'create'] );
+        Route::middleware(['scope:admin,shop,user'])->put('/{id}', [CategoryController::class,'update'] );
+        Route::middleware(['scope:admin,shop,user'])->delete('/{id}', [CategoryController::class,'delete'] );
+    });
+
+});
 
 //=================
 
 
+//================================== Product 
 
-// Route::post('/register', [AuthController::class,'register'] );
+
+Route::prefix('products')->group(function(){
+    
+    Route::middleware(['auth:api', 'role'])->group(function() {
+         
+        Route::middleware(['scope:admin,shop,user'])->get('/', [ProductController::class,'index'] );
+        Route::middleware(['scope:admin,shop,user'])->get('/search', [ProductController::class,'search'] );
+        Route::middleware(['scope:admin,shop,user'])->get('/{id}', [ProductController::class,'show'] );
+        Route::middleware(['scope:admin,shop,user'])->post('/', [ProductController::class,'create'] );
+        Route::middleware(['scope:admin,shop,user'])->put('/{id}', [ProductController::class,'update'] );
+        Route::middleware(['scope:admin,shop,user'])->delete('/{id}', [ProductController::class,'delete'] );
+    });
+
+});
+
+//=================
 
 
-// Route::middleware(['auth:api', 'role'])->group(function() {
+//================================== Order 
 
-//     // List users
-//     Route::middleware(['scope:user'])->get('/users', function (Request $request) {
 
-//         return "OK VAO !";
-//     });
+Route::prefix('orders')->group(function(){
+    
+    Route::middleware(['auth:api', 'role'])->group(function() {
+         
+        Route::middleware(['scope:admin,shop,user'])->get('/', [OrderController::class,'index'] );
+        Route::middleware(['scope:admin,shop,user'])->get('/search', [OrderController::class,'search'] );
+        Route::middleware(['scope:admin,shop,user'])->get('/{id}', [OrderController::class,'show'] );
+        Route::middleware(['scope:admin,shop,user'])->post('/', [OrderController::class,'create'] );
+        Route::middleware(['scope:admin,shop,user'])->put('/{id}', [OrderController::class,'update'] );
+        Route::middleware(['scope:admin,shop,user'])->delete('/{id}', [OrderController::class,'delete'] );
+    });
 
-//     // Add/Edit User
-//     Route::middleware(['scope:admin,moderator'])->post('/user', function(Request $request) {
-//         return User::create($request->all());
-//     });
+});
 
-//     Route::middleware(['scope:admin,moderator'])->put('/user/{userId}', function(Request $request, $userId) {
+//=================
 
-//         try {
-//             $user = User::findOrFail($userId);
-//         } catch (ModelNotFoundException $e) {
-//             return response()->json([
-//                 'message' => 'User not found.'
-//             ], 403);
-//         }
+//================================== OrderItem 
 
-//         $user->update($request->all());
 
-//         return response()->json(['message'=>'User updated successfully.']);
-//     });
+Route::prefix('order-items')->group(function(){
+    
+    Route::middleware(['auth:api', 'role'])->group(function() {
+         
+        Route::middleware(['scope:admin,shop,user'])->get('/', [OrderItemController::class,'index'] );
+        Route::middleware(['scope:admin,shop,user'])->get('/search', [OrderItemController::class,'search'] );
+        Route::middleware(['scope:admin,shop,user'])->get('/{id}', [OrderItemController::class,'show'] );
+        Route::middleware(['scope:admin,shop,user'])->post('/', [OrderItemController::class,'create'] );
+        Route::middleware(['scope:admin,shop,user'])->put('/{id}', [OrderItemController::class,'update'] );
+        Route::middleware(['scope:admin,shop,user'])->delete('/{id}', [OrderItemController::class,'delete'] );
+    });
 
-//     // Delete User
-//     Route::middleware(['scope:admin'])->delete('/user/{userId}', function(Request $request, $userId) {
+});
 
-//         try {
-//             $user = User::findOfFail($userId);
-//         } catch (ModelNotFoundException $e) {
-//             return response()->json([
-//                 'message' => 'User not found.'
-//             ], 403);
-//         }
+//=================
 
-//         $user->delete();
 
-//         return response()->json(['message'=>'User deleted successfully.']);
-//     });
-// });
+//================================== Rating 
+
+
+Route::prefix('rates')->group(function(){
+    
+    Route::middleware(['auth:api', 'role'])->group(function() {
+         
+        Route::middleware(['scope:admin,shop,user'])->get('/', [RatingController::class,'index'] );
+        Route::middleware(['scope:admin,shop,user'])->get('/search', [RatingController::class,'search'] );
+        Route::middleware(['scope:admin,shop,user'])->get('/{id}', [RatingController::class,'show'] );
+        Route::middleware(['scope:admin,shop,user'])->post('/', [RatingController::class,'create'] );
+        Route::middleware(['scope:admin,shop,user'])->put('/{id}', [RatingController::class,'update'] );
+        Route::middleware(['scope:admin,shop,user'])->delete('/{id}', [RatingController::class,'delete'] );
+    });
+
+});
+
+//=================
