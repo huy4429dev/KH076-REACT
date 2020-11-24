@@ -1,12 +1,15 @@
 <?php
 
 use App\Http\Controllers\Admin\AdminController as AdminController;
+use App\Http\Controllers\Shop\ShopController as ShopController;
 use App\Http\Controllers\User\UserController as UserController;
 use App\Http\Controllers\Upload\UploadController as UploadController;
 use App\Http\Controllers\Category\CategoryController as CategoryController;
 use App\Http\Controllers\Product\ProductController as ProductController;
+use App\Http\Controllers\Product\ColorController as ColorController;
+use App\Http\Controllers\Product\SizeController as SizeController;
 use App\Http\Controllers\Order\OrderController as OrderController;
-use App\Http\Controllers\OrderItem\OrderItemController as OrderItemController;
+use App\Http\Controllers\Order\OrderItemController as OrderItemController;
 use App\Http\Controllers\Rating\RatingController as RatingController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
@@ -22,9 +25,6 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-// Route::middleware('auth:api')->get('/user', function (Request $request) {
-//     return $request->user();
-// });
 
 //================================== Admin
 
@@ -40,6 +40,26 @@ Route::prefix('admins')->group(function(){
 });
 
 //=================
+
+//================================== Shop 
+
+
+Route::prefix('shops')->group(function(){
+    
+    Route::middleware(['auth:api', 'role'])->group(function() {
+         
+        Route::middleware(['scope:admin,shop,user'])->get('/', [ShopController::class,'index'] );
+        Route::middleware(['scope:admin,shop,user'])->get('/search', [ShopController::class,'search'] );
+        Route::middleware(['scope:admin,shop,user'])->get('/{id}', [ShopController::class,'show'] );
+        Route::middleware(['scope:admin,shop,user'])->post('/', [ShopController::class,'create'] );
+        Route::middleware(['scope:admin,shop,user'])->put('/{id}', [ShopController::class,'update'] );
+        Route::middleware(['scope:admin,shop,user'])->delete('/{id}', [ShopController::class,'delete'] );
+    });
+
+});
+
+//=================
+
 
 //================================== User 
 
@@ -80,12 +100,11 @@ Route::prefix('uploads')->group(function(){
 
 Route::prefix('categories')->group(function(){
     
+    Route::get('/', [CategoryController::class,'index'] );
+    Route::get('/search', [CategoryController::class,'search'] );
+    Route::get('/{id}', [CategoryController::class,'show'] );
+
     Route::middleware(['auth:api', 'role'])->group(function() {
-         
-        Route::middleware(['scope:admin,shop,user'])->get('/', [CategoryController::class,'index'] );
-    
-        Route::middleware(['scope:admin,shop,user'])->get('/search', [CategoryController::class,'search'] );
-        Route::middleware(['scope:admin,shop,user'])->get('/{id}', [CategoryController::class,'show'] );
         
         Route::middleware(['scope:admin,shop,user'])->post('/', [CategoryController::class,'create'] );
         Route::middleware(['scope:admin,shop,user'])->put('/{id}', [CategoryController::class,'update'] );
@@ -97,16 +116,17 @@ Route::prefix('categories')->group(function(){
 //=================
 
 
-//================================== Product 
+//==================================Product 
 
 
 Route::prefix('products')->group(function(){
     
+    Route::get('/', [ProductController::class,'index'] );
+    Route::get('/search', [ProductController::class,'search'] );
+    Route::get('/{id}', [ProductController::class,'show'] );
+
     Route::middleware(['auth:api', 'role'])->group(function() {
-         
-        Route::middleware(['scope:admin,shop,user'])->get('/', [ProductController::class,'index'] );
-        Route::middleware(['scope:admin,shop,user'])->get('/search', [ProductController::class,'search'] );
-        Route::middleware(['scope:admin,shop,user'])->get('/{id}', [ProductController::class,'show'] );
+        
         Route::middleware(['scope:admin,shop,user'])->post('/', [ProductController::class,'create'] );
         Route::middleware(['scope:admin,shop,user'])->put('/{id}', [ProductController::class,'update'] );
         Route::middleware(['scope:admin,shop,user'])->delete('/{id}', [ProductController::class,'delete'] );
@@ -123,7 +143,7 @@ Route::prefix('products')->group(function(){
 Route::prefix('orders')->group(function(){
     
     Route::middleware(['auth:api', 'role'])->group(function() {
-         
+        
         Route::middleware(['scope:admin,shop,user'])->get('/', [OrderController::class,'index'] );
         Route::middleware(['scope:admin,shop,user'])->get('/search', [OrderController::class,'search'] );
         Route::middleware(['scope:admin,shop,user'])->get('/{id}', [OrderController::class,'show'] );
@@ -154,6 +174,48 @@ Route::prefix('order-items')->group(function(){
 });
 
 //=================
+
+
+//================================== Color 
+
+
+Route::prefix('colors')->group(function(){
+    
+    Route::get('/', [ColorController::class,'index'] );
+    Route::get('/search', [ColorController::class,'search'] );
+    Route::get('/{id}', [ColorController::class,'show'] );
+
+    Route::middleware(['auth:api', 'role'])->group(function() {
+        
+        Route::middleware(['scope:admin,shop'])->post('/', [ColorController::class,'create'] );
+        Route::middleware(['scope:admin,shop'])->put('/{id}', [ColorController::class,'update'] );
+        Route::middleware(['scope:admin,shop'])->delete('/{id}', [ColorController::class,'delete'] );
+    });
+
+});
+
+//=================
+
+//================================== Size 
+
+
+Route::prefix('sizes')->group(function(){
+    
+    Route::get('/', [SizeController::class,'index'] );
+    Route::get('/search', [SizeController::class,'search'] );
+    Route::get('/{id}', [SizeController::class,'show'] );
+
+    Route::middleware(['auth:api', 'role'])->group(function() {
+        
+        Route::middleware(['scope:admin,shop'])->post('/', [SizeController::class,'create'] );
+        Route::middleware(['scope:admin,shop'])->put('/{id}', [SizeController::class,'update'] );
+        Route::middleware(['scope:admin,shop'])->delete('/{id}', [SizeController::class,'delete'] );
+    });
+
+});
+
+//=================
+
 
 
 //================================== Rating 

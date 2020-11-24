@@ -13,7 +13,7 @@ class CreateProductColorsTable extends Migration
      */
     public function up()
     {
-        Schema::create('product_colors', function (Blueprint $table) {
+        Schema::create('products_colors', function (Blueprint $table) {
             $table->id();
             $table->unsignedBigInteger('color_id');
             $table->unsignedBigInteger('product_id');
@@ -22,6 +22,7 @@ class CreateProductColorsTable extends Migration
             $table->foreign('color_id')
                 ->references('id')
                 ->on('colors');
+
             $table->foreign('product_id')
                 ->references('id')
                 ->on('products');

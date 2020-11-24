@@ -12,11 +12,13 @@ class Color extends Model
         'name',
     ];
 
+    public $timestamps = false;
+
     public function products(){
-        return $this->belongsToMany(Color::class, 'products_colors', 'product_id', 'color_id');
+        return $this->belongsToMany(Product::class, 'products_colors', 'product_id', 'color_id');
     }
 
-    public function order_item(){
-        return $this->belongsTo(OrderItem::class);
+    public function user(){
+        return $this->belongsTo(User::class);
     }
 }

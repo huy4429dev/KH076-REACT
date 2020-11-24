@@ -108,9 +108,8 @@ class CategoryController extends BaseController
             return $this->sendError('Validation Error.', $validator->errors());       
         }
 
-        $category = Category::find($id);
+        $category = new Category();
         
-        if($category != null){
 
             $category->name = $request->name;
             $category->description = $request->description;
@@ -118,11 +117,9 @@ class CategoryController extends BaseController
 
             return $this->sendResponse(
                 $data = $category,
-                'Update category successfully.'
+                'Create category successfully.'
             );
-        }
 
-        return $this->sendError('Category Errors.',['error' => 'Category not found !']);
     }
     public function delete($id,Request $request){
 

@@ -21,7 +21,6 @@ class User extends Authenticatable
         'username',
         'email',
         'password'
-
     ];
 
     /**
@@ -47,6 +46,11 @@ class User extends Authenticatable
     public  function roles()
     {
         return $this->belongsToMany(Role::class, 'users_roles', 'user_id', 'role_id');
+    }
+
+    public function shops()
+    {
+        return $this->belongsToMany(Shop::class, 'shop_users', 'user_id', 'shop_id');
     }
 
     public function profile()
@@ -78,4 +82,15 @@ class User extends Authenticatable
     {
         return $this->hasMany(Chatbox::class);
     }
+
+    public function sizes()
+    {
+        return $this->hasMany(Size::class);
+    }
+
+    public function colos()
+    {
+        return $this->hasMany(Color::class);
+    }
+
 }

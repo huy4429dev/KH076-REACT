@@ -1,40 +1,40 @@
 <?php
 
-namespace App\Http\Controllers\Product;
+namespace App\Http\Controllers\Shop;
 
 use Illuminate\Http\Request;
 use App\Http\Controllers\BaseController as BaseController;
-use App\Models\Size;
+use App\Models\Shop;
 use App\Models\Role;
 use App\Models\Profile;
 use Validator;
 use Illuminate\Support\Facades\Auth;
 
-class SizeController extends BaseController
+class ShopController extends BaseController
 {
     public function index(Request $request){
 
         $page = $request->query('page') ?? 1;
-        $pageSize = $request->query('pageSize') ?? 25;
+        $pageShop = $request->query('pageShop') ?? 25;
 
-        $Sizes = Size::orderBy('id','desc')
-        ->skip( ($page - 1) * $pageSize )
-        ->take($pageSize)
+        $Shops = Shop::ShopBy('id','desc')
+        ->skip( ($page - 1) * $pageShop )
+        ->take($pageShop)
         ->get();
 
         return $this->sendResponse(
             $data = [
-                     'items' => $Sizes , 
-                     'total' => $Sizes->count()
+                     'items' => $Shops , 
+                     'total' => $Shops->count()
                     ]
           );
     }
     public function search(Request $request){
 
         $page = $request->query('page') ?? 1;
-        $pageSize = $request->query('pageSize') ?? 25;
+        $pageShop = $request->query('pageShop') ?? 25;
 
-        $query = Size::query();
+        $query = Shop::query();
 
         $searchKey = $request->query('q');
 
@@ -45,16 +45,16 @@ class SizeController extends BaseController
                            
         }
 
-        $Sizes = $query
-        ->orderBy('id','desc')
-        ->skip( ($page - 1) * $pageSize )
-        ->take($pageSize)
+        $Shops = $query
+        ->ShopBy('id','desc')
+        ->skip( ($page - 1) * $pageShop )
+        ->take($pageShop)
         ->get();
 
         return $this->sendResponse(
             $data = [
-                     'items' => $Sizes , 
-                     'total' => $Sizes->count()
+                     'items' => $Shops , 
+                     'total' => $Shops->count()
                     ]
           );
     }
@@ -62,11 +62,11 @@ class SizeController extends BaseController
     
     public function show($id){
 
-        $found = Size::find($id);
+        $found = Shop::find($id);
 
         if($found == null){
             
-            return $this->sendError('Size Errors.',['error' => 'Size not found !']);
+            return $this->sendError('Shop Errors.',['error' => 'Shop not found !']);
         }
 
         return $this->sendResponse(
@@ -86,62 +86,62 @@ class SizeController extends BaseController
             return $this->sendError('Validation Error.', $validator->errors());       
         }
 
-        $Size = Size::where('id',$id)->first();
+        $Shop = Shop::where('id',$id)->first();
         
-        if($Size != null){
+        if($Shop != null){
 
-            $Size->name = $request->name;
-            $Size->Size = $request->Size;
-            $Size->user_id = $request->user()->id;
-            $Size->save();
+            $Shop->name = $request->name;
+            $Shop->Shop = $request->Shop;
+            $Shop->user_id = $request->user()->id;
+            $Shop->save();
 
             return $this->sendResponse(
-                $data = $Size,
-                'Update Size successfully.'
+                $data = $Shop,
+                'Update Shop successfully.'
             );
         }
 
-        return $this->sendError('Size Errors.',['error' => 'Size not found !']);
+        return $this->sendError('Shop Errors.',['error' => 'Shop not found !']);
     }
 
     public function create(Request $request){
 
         $validator = Validator::make($request->all(), [
 
-            'name' => 'required|unique:sizes'
+            'name' => 'required|unique:Shops'
         ]);
 
         if($validator->fails()){
             return $this->sendError('Validation Error.', $validator->errors());       
         }
 
-        $Size = new Size();
+        $Shop = new Shop();
 
-        $Size->name = $request->name;
-        $Size->user_id = $request->user()->id;
-        $Size->save();
+        $Shop->name = $request->name;
+        $Shop->user_id = $request->user()->id;
+        $Shop->save();
 
         return $this->sendResponse(
-            $data = $Size,
-            'Create Size successfully.'
+            $data = $Shop,
+            'Create Shop successfully.'
         );
 
     }
 
     public function delete($id,Request $request){
 
-        $found = Size::find($id); 
+        $found = Shop::find($id); 
 
         if($found == null){
             
-            return $this->sendError('Size Errors.',['error' => 'Size not found !']);
+            return $this->sendError('Shop Errors.',['error' => 'Shop not found !']);
         }
 
         $found->delete();
 
         return $this->sendResponse(
             $found, 
-            'Delete Size successfully'
+            'Delete Shop successfully'
           );
     }
   

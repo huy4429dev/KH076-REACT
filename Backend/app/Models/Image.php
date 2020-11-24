@@ -12,7 +12,7 @@ class Image extends Model
     protected $fillable = [
       'url'
     ];
-
+    public $timestamps = false;
     public function product(){
         return $this->belongsTo(Product::class);
     }
