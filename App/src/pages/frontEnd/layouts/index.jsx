@@ -12,7 +12,7 @@ class App extends Component {
             <Router>
                 {/* <ToastContainer /> */}
                 <Header />
-                <Switch>
+                <Switch >
                     {this.showRouter(routes)}
                 </Switch>
                 <Footer />

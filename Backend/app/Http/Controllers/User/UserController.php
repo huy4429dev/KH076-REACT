@@ -66,14 +66,14 @@ class UserController extends BaseController
         }
         else {
 
-            return $this->sendError('Account Errors.',['error' => 'Username or password incorrect !']);    
+            return $this->sendError('Account Errors.',['error' => 'Email or password incorrect !']);    
         }
     }
 
     public function index(Request $request){
         
-        // get role 
-
+        // get role
+        
         $role = $request->user()->roles()->orderBy('role_id','desc')->first();
         
         // get value paginate 

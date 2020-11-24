@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import TopBar from './../../../components/frontEnd/topbar';
 import LogoImage from './../../../components/frontEnd/logo';
 import NavBar from './../../../components/frontEnd/navbar';
-import CartContainer from './../../../components/frontEnd/cart-header';
+import CartContainer from './../../../components/frontEnd/cart';
 import SideBar from './../../../components/frontEnd/sidebar';
 
 class Header extends Component {
