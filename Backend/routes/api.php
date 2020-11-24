@@ -65,6 +65,9 @@ Route::prefix('shops')->group(function(){
 
 Route::prefix('users')->group(function(){
 
+    Route::get('/test',function(){
+       return 'testtttttt'; 
+    });
     
     Route::post('/register', [UserController::class,'register'] );
     Route::post('/login', [UserController::class,'login'] );

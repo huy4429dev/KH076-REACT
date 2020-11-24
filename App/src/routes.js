@@ -2,10 +2,11 @@ import React from 'react';
 import Home from './pages/frontEnd/home';
 import Shop from './pages/frontEnd/shop';
 import Product from './pages/frontEnd/product';
-// import About from './pages/about';
-// import NotFound from './pages/errors/404';
-// import Contact from './pages/contact';
-// import Shop from './pages/shop';
+import Checkout from './pages/frontEnd/checkout';
+import Cart from './pages/frontEnd/cart';
+import Login from './pages/frontEnd/login';
+import Register from './pages/frontEnd/register';
+
 
 const routes = [
 
@@ -24,22 +25,26 @@ const routes = [
         exact: true,
         main: () => <Product />
     },
-    // {
-    //     path: '/',
-    //     exact: true,
-    //     main: () => <Home />
-    // },
-    // {
-    //     path: '/home',
-    //     exact: true,
-    //     main: () => <Home />
-    // },
-    // {
-    //     path: '',
-    //     exact: false,
-    //     main: () => <NotFound />
-    // },
-
+    {
+        path: '/checkout',
+        exact: true,
+        main: () => <Checkout />
+    },
+    {
+        path: '/cart',
+        exact: true,
+        main: () => <Cart />
+    },
+    {
+        path: '/login',
+        exact: true,
+        main: () => <Login />
+    },
+    {
+        path: '/register',
+        exact: true,
+        main: () => <Register />
+    },
 ];
 
 export default routes;

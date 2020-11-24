@@ -80,214 +80,24 @@ class NavBar extends Component {
                                 </div>
                             </li>
                             <li >
-                                <Link to="#" className="nav-link" onClick={(e) => this.handleSubmenu(e)}>
+                                <Link to="/" className="nav-link">
                                     {'home'}
-                                    <span className="sub-arrow"></span>
                                 </Link>
-                                <ul className="nav-submenu" >
-                                    <li><Link to={`${process.env.PUBLIC_URL}/fashion`} >{'fashion'}</Link></li>
-                                    <li><Link to={`${process.env.PUBLIC_URL}/beauty`} >{'beauty'}</Link></li>
-                                    <li><Link to={`${process.env.PUBLIC_URL}/electronic`} >{'electronic'}</Link></li>
-                                    <li><Link to={`${process.env.PUBLIC_URL}/furniture`} >{'furniture'}</Link></li>
-                                    <li><Link to={`${process.env.PUBLIC_URL}/kids`} >{'kids'}</Link></li>
-                                    <li><Link to={`${process.env.PUBLIC_URL}/pets`} >{'pets'}</Link></li>
-                                    <li><Link to={`${process.env.PUBLIC_URL}/vegetables`} >{'vegetables'}</Link></li>
-                                    <li><Link to={`${process.env.PUBLIC_URL}/watch`} >{'watch'}</Link></li>
-                                </ul>
                             </li>
                             <li >
-                                <Link to="#" className="nav-link" onClick={(e) => this.handleSubmenu(e)}>
+                                <Link to="/shop" className="nav-link" >
                                     {'shop'}
-                                    <span className="sub-arrow"></span>
                                 </Link>
-                                <ul className="nav-submenu">
-                                    <li><Link to={`${process.env.PUBLIC_URL}/left-sidebar/collection`} >{'category_left_sidebar'}</Link></li>
-                                    <li><Link to={`${process.env.PUBLIC_URL}/right-sidebar/collection`} >{'category_right_sidebar'}</Link></li>
-                                    <li><Link to={`${process.env.PUBLIC_URL}/no-sidebar/collection`} >{'category_no_sidebar'}</Link></li>
-                                    <li><Link to={`${process.env.PUBLIC_URL}/metro/collection`} >{'category_metro'}</Link></li>
-                                    <li><Link to={`${process.env.PUBLIC_URL}/full-width/collection`} >{'category_full_width'}</Link></li>
-                                </ul>
                             </li>
                             <li >
-                                <Link to="#" className="nav-link" onClick={(e) => this.handleSubmenu(e)}>
+                                <Link to="/product" className="nav-link">
                                     {'products'}
-                                    <span className="sub-arrow"></span>
                                 </Link>
-                                <ul className="nav-submenu">
-                                    <li><Link to={`${process.env.PUBLIC_URL}/left-sidebar/product/1`} >{'left_sidebar'}</Link></li>
-                                    <li><Link to={`${process.env.PUBLIC_URL}/right-sidebar/product/1`} >{'right_sidebar'}</Link></li>
-                                    {/* <li><Link to={`${process.env.PUBLIC_URL}/no-sidebar/product/1`} >{translate('no_sidebar'}</Link></li>
-                                    <li><Link to={`${process.env.PUBLIC_URL}/col-left/product/1`} >{translate('three_col_thumbnail_left'}</Link></li>
-                                    <li><Link to={`${process.env.PUBLIC_URL}/col-right/product/1`} >{translate('three_col_thumbnail_right'}</Link></li>
-                                    <li><Link to={`${process.env.PUBLIC_URL}/column/product/1`} >{translate('thumbnail_below')}</Link></li>
-                                    <li><Link to={`${process.env.PUBLIC_URL}/left-image/product/1`} >{translate('thumbnail_left')}</Link></li>
-                                    <li><Link to={`${process.env.PUBLIC_URL}/right-image/product/1`} >{translate('thumbnail_right')}</Link></li> */}
-                                </ul>
                             </li>
-                            <li className="mega-menu">
-                                <Link to="#" className="dropdown" onClick={(e) => this.handleSubmenu(e)}>
-                                    {('features')}
-                                    <span className="sub-arrow"></span>
-                                </Link>
-                                <div className="mega-menu-container" >
-                                    <div className="container">
-                                        <div className="row">
-                                            <div className="col mega-box">
-                                                <div className="link-section">
-                                                    <div className="menu-title" >
-                                                        <h5 onClick={(e) => this.handleMegaSubmenu(e)}>
-                                                            {'portfolio'}
-                                                            <span className="sub-arrow"></span>
-                                                        </h5>
-                                                    </div>
-                                                    <div className="menu-content">
-                                                        <ul>
-                                                            <li><Link to={`${process.env.PUBLIC_URL}/features/portfolio-grid/2`} >{'portfolio_grid_2'}</Link></li>
-                                                            {/* <li><Link to={`${process.env.PUBLIC_URL}/features/portfolio-grid/3`} >{translate('portfolio_grid_3')}</Link></li>
-                                                            <li><Link to={`${process.env.PUBLIC_URL}/features/portfolio-grid/4`} >{translate('portfolio_grid_4')}</Link></li>
-                                                            <li><Link to={`${process.env.PUBLIC_URL}/features/portfolio-masonary/2`} >{translate('portfolio_masonary_2')}</Link></li>
-                                                            <li><Link to={`${process.env.PUBLIC_URL}/features/portfolio-masonary/3`} >{translate('portfolio_masonary_3')}</Link></li>
-                                                            <li><Link to={`${process.env.PUBLIC_URL}/features/portfolio-masonary/4`} >{translate('portfolio_masonary_4')}</Link></li>
-                                                            <li><Link to={`${process.env.PUBLIC_URL}/features/portfolio-masonary/full`} >{translate('portfolio_masonary_full')}</Link></li> */}
-                                                        </ul>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                            <div className="col mega-box">
-                                                <div className="link-section">
-                                                    <div className="menu-title" >
-                                                        <h5 onClick={(e) => this.handleMegaSubmenu(e)}>
-                                                            {'theme_elements'}
-                                                            <span className="sub-arrow"></span>
-                                                        </h5>
-                                                    </div>
-                                                    <div className="menu-content">
-                                                        <ul>
-                                                            <li><Link to={`${process.env.PUBLIC_URL}/features/element-title`} >{'element_title'}</Link></li>
-                                                            {/* <li><Link to={`${process.env.PUBLIC_URL}/features/element-banner`} >{translate('collection_banner')}</Link></li>
-                                                            <li><Link to={`${process.env.PUBLIC_URL}/features/element-slider`} >{translate('home_slider')}</Link></li>
-                                                            <li><Link to={`${process.env.PUBLIC_URL}/features/element-category`} >{translate('category')}</Link></li>
-                                                            <li><Link to={`${process.env.PUBLIC_URL}/features/element-service`} >{translate('service')}</Link></li> */}
-                                                            {/*<li><Link to={`${process.env.PUBLIC_URL}/features/element-ratio`} >{translate('image_size_ratio')}</Link></li>*/}
-                                                        </ul>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                            <div className="col mega-box">
-                                                <div className="link-section">
-                                                    <div className="menu-title" >
-                                                        <h5 onClick={(e) => this.handleMegaSubmenu(e)}>
-                                                            {'product_elements'}
-                                                            <span className="sub-arrow"></span>
-                                                        </h5>
-                                                    </div>
-                                                    <div className="menu-content" >
-                                                        <ul>
-                                                            <li className="up-text"><Link to={`${process.env.PUBLIC_URL}/features/element-product-box`} >{'product_box'}<span>10+</span></Link></li>
-                                                            {/* <li><Link to={`${process.env.PUBLIC_URL}/features/element-product-slider`} >{translate('product_slider')}</Link></li>
-                                                            <li><Link to={`${process.env.PUBLIC_URL}/features/element-product-no-slider`} >{translate('no_slider')}</Link></li>
-                                                            <li><Link to={`${process.env.PUBLIC_URL}/features/element-product-multiple-slider`} >{translate('multi_slider')}</Link></li>
-                                                            <li><Link to={`${process.env.PUBLIC_URL}/features/element-product-tab`} >{translate('tab')}</Link></li> */}
-                                                        </ul>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                            <div className="col mega-box">
-                                                <div className="link-section">
-                                                    <div className="menu-title" >
-                                                        <h5 onClick={(e) => this.handleMegaSubmenu(e)}>
-                                                            {'email_template'}
-                                                            <span className="sub-arrow"></span>
-                                                        </h5>
-                                                    </div>
-                                                    <div className="menu-content" >
-                                                        <ul>
-                                                            <li><Link to={`${process.env.PUBLIC_URL}/email-template.html`} target="_blank">{('order_success')}</Link></li>
-                                                            {/* <li><Link to={`${process.env.PUBLIC_URL}/email-template-two.html`} target="_blank">{translate('order_success')}2</Link></li>
-                                                            <li><Link to={`${process.env.PUBLIC_URL}/email-order-success.html`} target="_blank">{translate('email_template')}</Link></li>
-                                                            <li><Link to={`${process.env.PUBLIC_URL}/email-order-success-two.html`} target="_blank">{translate('email_template')}2</Link></li> */}
-                                                        </ul>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                            <div className="col mega-box">
-                                                <div className="link-section">
-                                                    <div className="menu-title">
-                                                        <h5 onClick={(e) => this.handleMegaSubmenu(e)}>
-                                                            {('accessories')}
-                                                            <span className="sub-arrow"></span>
-                                                        </h5>
-                                                    </div>
-                                                    <div className="menu-content" >
-                                                        <ul>
-                                                            <li><a href="#">{('fashion_jewellery')}</a></li>
-                                                            {/* <li><a href="#">{translate('caps_and_hats')}</a></li>
-                                                            <li><a href="#">{translate('precious_jewellery')}</a></li>
-                                                            <li><a href="#">{translate('necklaces')}</a></li>
-                                                            <li><a href="#">{translate('earrings')}</a></li>
-                                                            <li><a href="#">{translate('rings_wrist_wear')}</a></li> */}
-                                                        </ul>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                            {/* <div className="col mega-box">
-                                                <div className="link-section">
-                                                    <div className="menu-title" >
-                                                        <h5 onClick={(e) => this.handleMegaSubmenu(e)}>
-                                                            {translate('men_accessories')}
-                                                            <span className="sub-arrow"></span>
-                                                        </h5>
-                                                    </div>
-                                                    <div className="menu-content" >
-                                                        <ul>
-                                                            <li><a href="#">{translate('ties')}</a></li>
-                                                            <li><a href="#">{translate('cufflinks')}</a></li>
-                                                            <li><a href="#">{translate('pockets_squares')}</a></li>
-                                                            <li><a href="#">{translate('helmets')}</a></li>
-                                                            <li><a href="#">{translate('scarves')}</a></li>
-                                                            <li><a href="#">{translate('phone_cases')}</a></li>
-                                                        </ul>
-                                                    </div>
-                                                </div>
-                                            </div> */}
-                                        </div>
-                                    </div>
-                                </div>
-                            </li>
-                            <li>
-                                <Link to="#" className="nav-link" onClick={(e) => this.handleSubmenu(e)}>
-                                    {('pages')}
-                                    <span className="sub-arrow"></span>
-                                </Link>
-                                <ul className="nav-submenu">
-                                    <li><Link to={`${process.env.PUBLIC_URL}/pages/about-us`} >{('about_us')}</Link></li>
-                                    {/* <li><Link to={`${process.env.PUBLIC_URL}/pages/404`} >404</Link></li>
-                                    <li><Link to={`${process.env.PUBLIC_URL}/pages/lookbook`} >{translate('lookbook')}</Link></li>
-                                    <li><Link to={`${process.env.PUBLIC_URL}/pages/login`} >{translate('login')}</Link></li>
-                                    <li><Link to={`${process.env.PUBLIC_URL}/pages/register`} >{translate('register')}</Link></li>
-                                    <li><Link to={`${process.env.PUBLIC_URL}/pages/search`} >{translate('search')}</Link></li>
-                                    <li><Link to={`${process.env.PUBLIC_URL}/pages/collection`} >{translate('collection')}</Link></li>
-                                    <li><Link to={`${process.env.PUBLIC_URL}/pages/forget-password`} >{translate('forget_password')}</Link></li>
-                                    <li><Link to={`${process.env.PUBLIC_URL}/pages/contact`} >{translate('contact')}</Link></li>
-                                    <li><Link to={`${process.env.PUBLIC_URL}/pages/dashboard`} >{translate('dashboard')}</Link></li>
-                                    <li><Link to={`${process.env.PUBLIC_URL}/pages/faq`} >{translate('FAQ')}</Link></li> */}
-                                </ul>
-                            </li>
-                            <li >
-                                <Link to="#" className="nav-link" onClick={(e) => this.handleSubmenu(e)}>
-                                    {('blog')}
-                                    <span className="sub-arrow"></span>
-                                </Link>
-                                <ul className="nav-submenu">
-                                    <li><Link to={`${process.env.PUBLIC_URL}/blog/blog-page`} >{('blog_left_sidebar')}</Link></li>
-                                    {/* <li><Link to={`${process.env.PUBLIC_URL}/blog/right-sidebar`} >{translate('blog_right_sidebar')}</Link></li>
-                                    <li><Link to={`${process.env.PUBLIC_URL}/blog/details`} >{translate('blog_detail')}</Link></li> */}
-                                </ul>
-                            </li>
-                        </ul>
-                    </div>
-                </div>
-            </div>
+                        </ul >
+                    </div >
+                </div >
+            </div >
         )
     }
 }
