@@ -8,6 +8,7 @@ import SimpleReactValidator from 'simple-react-validator';
 import Loading from './../../components/backEnd/loading';
 import connect from './../../lib/connect';
 import * as actions from './../../actions/backEnd/login';
+import $ from 'jquery';
 
 class LoginTabset extends Component {
     constructor(props) {
@@ -25,6 +26,7 @@ class LoginTabset extends Component {
         this.validator = new SimpleReactValidator({ autoForceUpdate: this });
     }
     componentDidMount() {
+        console.log(this.props.actions);
         // toast('🦄 Wow so easy!', {
         //     position: "top-right",
         //     autoClose: 5000,
@@ -68,25 +70,19 @@ class LoginTabset extends Component {
         }
         this.props.actions.register(data)
             .then(() => {
-                this.setState({ loading: false })
-            }).catch(() => this.setState({ loading: false }));
+                this.setState({ loading: false });
+                $.notify({ message: 'Đăng ký thành công' }, { type: 'success' });
+                $.notify('Đăng ký thành công da', 'success');
+            }).catch((err) => {
+                this.setState({ loading: false });
+                $.notify({ message: 'Đăng ký không thành công' }, { type: 'danger' });
+                $.notify('Đăng ký không thành công', 'danger');
+            });
     }
     render() {
         return (
             <div>
                 <React.Fragment>
-                    <ToastContainer
-                        position="top-right"
-                        autoClose={5000}
-                        hideProgressBar={false}
-                        newestOnTop={false}
-                        closeOnClick
-                        rtl={false}
-                        pauseOnFocusLoss
-                        draggable
-                        pauseOnHover
-                    />
-                    <ToastContainer />
                     <Loading show={this.state.loading} />
                     <Tabs>
                         <TabList className="nav nav-tabs tab-coupon" >

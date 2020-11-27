@@ -23,7 +23,7 @@ class App extends Component {
     }
     componentDidMount() {
         const { login } = this.props.login;
-        // this.props.history.push('/admin/login');
+        this.props.history.push('/admin/login');
     }
 
     ChangeRtl(divName) {
@@ -41,17 +41,6 @@ class App extends Component {
                 <div>
                     <div className="page-wrapper" >
                         <Header />
-                        <ToastContainer
-                            position="top-right"
-                            autoClose={5000}
-                            hideProgressBar={false}
-                            newestOnTop={false}
-                            closeOnClick
-                            rtl={false}
-                            pauseOnFocusLoss
-                            draggable
-                            pauseOnHover
-                        />
                         <ToastContainer />
                         <div className="page-body-wrapper">
                             <Sidebar />
