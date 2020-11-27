@@ -106,7 +106,7 @@ export class sidebar extends Component {
                     : ''}
                 {(menuItem.type === 'link') ?
                     <Link
-                        to={`${process.env.PUBLIC_URL}${menuItem.path}`}
+                        to={`${menuItem.path}`}
                         className={`sidebar-header ${menuItem.active ? 'active' : ''}`}
 
                         onClick={() => this.setNavActive(menuItem)}
@@ -130,7 +130,7 @@ export class sidebar extends Component {
 
                                 {(childrenItem.type === 'link') ?
                                     <Link
-                                        to={`${process.env.PUBLIC_URL}${childrenItem.path}`}
+                                        to={`${childrenItem.path}`}
                                         className={childrenItem.active ? 'active' : ''}
                                         onClick={() => this.setNavActive(childrenItem)}
                                     >
@@ -142,7 +142,7 @@ export class sidebar extends Component {
                                             <li className={childrenSubItem.active ? 'active' : ''} key={key}>
                                                 {(childrenSubItem.type === 'link') ?
                                                     <Link
-                                                        to={`${process.env.PUBLIC_URL}${childrenSubItem.path}`}
+                                                        to={`${childrenSubItem.path}`}
                                                         className={childrenSubItem.active ? 'active' : ''}
                                                         onClick={() => this.setNavActive(childrenSubItem)}
                                                     >

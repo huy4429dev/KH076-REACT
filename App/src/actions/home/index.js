@@ -1,3 +1,0 @@
-export const types = {
-    GET_POPULAR_PRODUCTS: 'HOME_GET_POPULAR_PRODUCT'
-}

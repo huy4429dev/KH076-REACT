@@ -5,9 +5,13 @@ import Header from './header';
 import Footer from './footer';
 import Sidebar from './siderBar';
 import routesAdmin from './../../../routerAdmin';
+import connect from './../../../lib/connect';
+import * as actions from './../../../actions/backEnd/login';
 // import Footer from './footer';
-// import { ToastContainer } from 'react-toastify';
-// import 'react-toastify/dist/ReactToastify.css';
+import { ToastContainer } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
+import { Redirect } from 'react-router-dom'
+import Login from './../login';
 
 class App extends Component {
     constructor(props) {
@@ -17,6 +21,11 @@ class App extends Component {
             divName: 'RTL',
         }
     }
+    componentDidMount() {
+        const { login } = this.props.login;
+        // this.props.history.push('/admin/login');
+    }
+
     ChangeRtl(divName) {
         if (divName === 'RTL') {
             document.body.classList.add('rtl');
@@ -32,6 +41,18 @@ class App extends Component {
                 <div>
                     <div className="page-wrapper" >
                         <Header />
+                        <ToastContainer
+                            position="top-right"
+                            autoClose={5000}
+                            hideProgressBar={false}
+                            newestOnTop={false}
+                            closeOnClick
+                            rtl={false}
+                            pauseOnFocusLoss
+                            draggable
+                            pauseOnHover
+                        />
+                        <ToastContainer />
                         <div className="page-body-wrapper">
                             <Sidebar />
                             {/* <Right_sidebar /> */}
@@ -64,4 +85,11 @@ class App extends Component {
         return result;
     }
 }
-export default App
+
+
+
+export default connect(App, state => (
+    {
+        login: state.login
+    }
+), actions);

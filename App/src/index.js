@@ -1,12 +1,12 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import App from './pages/frontEnd/layouts';
-import Admin from './pages/backEnd/layouts';
 import * as serviceWorker from './serviceWorker';
 import { Provider } from 'react-redux'
 import configStore from './redux/configStore';
 import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
 import Login from './pages/backEnd/login';
+import App from './pages/frontEnd/layouts';
+import Admin from './pages/backEnd/layouts';
 
 import "./index.scss";
 
@@ -18,21 +18,17 @@ ReactDOM.render(
 			<Router>
 				<Switch>
 					<Route exact path={
-						["/", "/product", "/shop", "/checkout", "/cart", "/login", "/register",
-							"/settings/*"]
-					} >
+						["/", "/product", "/shop", "/checkout", "/cart", "/login", "/register", "/settings/*"]
+					}>
 						<App />
 					</Route>
 					<Route exact path={
-						["/admin", "/admin/dashboard", "/admin/user", "/admin/user/add",
-							"/settings/*", "/admin/products/category",
+						["/admin", "/admin/dashboard", "/admin/user", "/admin/user/add", "/admin/products/category",
 							"/admin/products/list", "/admin/products/detailt", "/admin/products/add",
 							"/admin/profile"
 						]
-					}
-					>
-						<Admin />
-					</Route>
+					} component={({ history }) => <Admin history={history} />} />
+
 					<Route exact path={["/admin/login"]} >
 						<Login />
 					</Route>
