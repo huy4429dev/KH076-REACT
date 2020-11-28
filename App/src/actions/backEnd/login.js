@@ -2,8 +2,8 @@ import * as ep from './../../constants/enpoint';
 export const types = {
     "REGISTER_SUCCESS": 'REGISTER_ADMIN_SUCCESS',
     "REGISTER_ERROR": "REGISTER_ERROR",
-    "A_SUCCESS": "A_SUCCESS",
-    "A_ERROR": "A_ERROR"
+    "ADMIN_LOGIN_FAILE": "ADMIN_LOGIN_FAILE",
+    "ADMIN_LOGIN_SUCCESS": "ADMIN_LOGIN_SUCCESS"
 }
 
 
@@ -17,12 +17,12 @@ export const register = (params) => {
     };
 
 };
-export const test = (data) => {
+export const login = (params) => {
     return {
-        url: `${ep.enpoint}/api/users/register`,
-        method: 'get',
-        onSuccess: types.A_SUCCESS,
-        onError: types.A_ERROR,
+        url: `${ep.enpoint}/api/users/login`,
+        method: 'post',
+        data: params,
+        onSuccess: types.ADMIN_LOGIN_SUCCESS,
+        onError: types.ADMIN_LOGIN_FAILE,
     };
-
 };

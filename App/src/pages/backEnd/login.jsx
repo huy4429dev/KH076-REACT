@@ -6,8 +6,22 @@ import Slider from 'react-slick';
 import stats from './../../assets/images/dashboard/stats.png';
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
+import connect from './../../lib/connect';
+import * as actions from './../../actions/backEnd/login';
+
 
 export class Login extends Component {
+    componentDidMount() {
+        const { login } = this.props.loginAdmin;
+        console.log("a", this.props.a)
+        if (login) {
+            console.log("a", login)
+            this.props.history.push("/admin/dashboard");
+        }
+    }
+    redirect = () => {
+        this.props.history.push("/admin/dashboard");
+    }
     render() {
         var settings = {
             dots: true,
@@ -51,7 +65,9 @@ export class Login extends Component {
                                 <div className="col-md-7 p-0 card-right">
                                     <div className="card tab2-card">
                                         <div className="card-body">
-                                            <LoginTabset />
+                                            <LoginTabset
+                                                redirect={() => this.redirect()}
+                                            />
                                         </div>
                                     </div>
                                 </div>
@@ -65,4 +81,9 @@ export class Login extends Component {
     }
 }
 
-export default Login
+export default connect(Login, state => (
+    {
+        loginAdmin: state.loginAdmin,
+        a: state
+    }
+), actions);

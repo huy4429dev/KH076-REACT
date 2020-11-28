@@ -27,7 +27,7 @@ class LoginTabset extends Component {
         this.validator = new SimpleReactValidator({ autoForceUpdate: this });
     }
     componentDidMount() {
-        window.notify('Đăng ký không thành công', 'danger');
+        // window.notify('Đăng ký không thành công', 'danger');
     }
 
     clickActive = (event) => {
@@ -51,23 +51,63 @@ class LoginTabset extends Component {
     register = (e) => {
         e.stopPropagation();
         e.preventDefault();
-        this.setState({
-            loading: true
-        })
-        const data = {
-            username: this.state.username,
-            email: this.state.email,
-            password: this.state.password,
-            c_password: this.state.confilm
+        const { username, password, confilm, email } = this.state;
+        let err = false;
+        if (!username || !password || !confilm || !email) {
+            err = true
         }
-        this.props.actions.register(data)
-            .then(() => {
-                this.setState({ loading: false });
-                // $.notify('Đăng ký thành công', 'success');
-            }).catch((err) => {
-                this.setState({ loading: false });
-                // $.notify('Đăng ký không thành công', 'danger');
-            });
+        if (!err) {
+            this.setState({
+                loading: true
+            })
+            const data = {
+                username: this.state.username,
+                email: this.state.email,
+                password: this.state.password,
+                c_password: this.state.confilm
+            }
+            this.props.actions.register(data)
+                .then(() => {
+                    this.setState({ loading: false });
+                    window.notify('Đăng ký thành công', 'success');
+                }).catch((err) => {
+                    this.setState({ loading: false });
+                    window.notify('Đăng ký không thành công', 'danger');
+                });
+        } else {
+            window.notify('Vui lòng điền đầy đủ các trường', 'danger');
+        }
+    }
+    login = (e) => {
+        e.stopPropagation();
+        e.preventDefault();
+        const { password, email } = this.state;
+        let err = false;
+        if (!password || !email) {
+            err = true
+        }
+        if (!err) {
+            this.setState({
+                loading: true
+            })
+            const data = {
+                email: this.state.email,
+                password: this.state.password
+            }
+            this.props.actions.login(data)
+                .then(() => {
+                    this.setState({ loading: false });
+                    window.notify('Đăng nhập thành công', 'success');
+                    if (this.props.redirect) {
+                        this.props.redirect();
+                    }
+                }).catch((err) => {
+                    this.setState({ loading: false });
+                    window.notify('Đăng nhập không thành công', 'danger');
+                });
+        } else {
+            window.notify('Vui lòng điền đầy đủ các trường', 'danger');
+        }
     }
     render() {
         return (
@@ -83,10 +123,10 @@ class LoginTabset extends Component {
                         <TabPanel>
                             <form className="form-horizontal auth-form">
                                 <div className="form-group">
-                                    <input value={this.state.username} required="" name="username"
+                                    <input value={this.state.email} required="" name="email"
                                         onChange={(e) => this.setState({ [e.target.name]: e.target.value })}
                                         // onBlur={() => this.validator.showMessageFor('username')}
-                                        type="text" className="form-control" placeholder="Tên" id="exampleInputEmail1" />
+                                        type="email" className="form-control" placeholder="Tên" id="exampleInputEmail1" />
                                 </div>
                                 <div className="form-group">
                                     <input value={this.state.password}
@@ -104,7 +144,7 @@ class LoginTabset extends Component {
                                     </div>
                                 </div>
                                 <div className="form-button">
-                                    <button className="btn btn-primary" type="submit" onClick={(e) => this.register(e)}>Đăng nhập</button>
+                                    <button className="btn btn-primary" onClick={(e) => this.login(e)}>Đăng nhập</button>
                                 </div>
                                 <div className="form-footer">
                                     <span>Or Login up with social platforms</span>

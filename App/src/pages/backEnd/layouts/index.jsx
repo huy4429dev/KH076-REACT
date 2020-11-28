@@ -22,8 +22,10 @@ class App extends Component {
         }
     }
     componentDidMount() {
-        const { login } = this.props.login;
-        this.props.history.push('/admin/login');
+        const { login } = this.props.loginAdmin;
+        if (!login) {
+            this.props.history.push('/admin/login');
+        }
     }
 
     ChangeRtl(divName) {
@@ -79,6 +81,6 @@ class App extends Component {
 
 export default connect(App, state => (
     {
-        login: state.login
+        loginAdmin: state.loginAdmin
     }
 ), actions);
