@@ -4,6 +4,7 @@ import React, { Component, Fragment } from 'react'
 import designer from './../../assets/images/dashboard/designer.jpg';
 import Tabset_profile from './../../components/backEnd/profile/tabset';
 import Breadcrumb from './../../components/backEnd/breadCrumb';
+import {validateComponent} from 'simple-react-validator';
 
 export class Profile extends Component {
     render() {

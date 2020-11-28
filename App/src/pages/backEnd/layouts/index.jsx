@@ -23,7 +23,7 @@ class App extends Component {
     }
     componentDidMount() {
         const { login } = this.props.login;
-        this.props.history.push('/admin/login');
+        // this.props.history.push('/admin/login');
     }
 
     ChangeRtl(divName) {

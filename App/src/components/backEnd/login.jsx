@@ -83,7 +83,6 @@ class LoginTabset extends Component {
         return (
             <div>
                 <React.Fragment>
-                    <Loading show={this.state.loading} />
                     <Tabs>
                         <TabList className="nav nav-tabs tab-coupon" >
                             <Tab className="nav-link" onClick={(e) => this.clickActive(e)}><User />Đăng nhập</Tab>

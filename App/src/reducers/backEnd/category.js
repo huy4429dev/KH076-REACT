@@ -1,19 +1,24 @@
+import { types } from "./../../actions/backEnd/category";
 
-import { types } from './../../actions/backEnd/category';
-
-const initState = {
-    items: []
-}
+const initState = {};
 
 export default (state = initState, action) => {
-    let index;
-    switch (action.type) {
-        // case types.GET_LIST_POST_SUCCESS:
-        //     return {
-        //         ...state,
-        //         posts: action.data,
-        //     }
-        default:
-            return state;
-    }
-}
+  switch (action.type) {
+    case types.GET_CATEGORIES_SUCCESS:
+
+      return {
+        ...state,
+        ...action.data,
+      };
+
+    case types.CREATE_CATEGORY_SUCCESS:
+
+      return {
+        ...state,
+        ...action.data,
+      };
+      
+    default:
+      return state;
+  }
+};

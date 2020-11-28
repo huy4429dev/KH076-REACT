@@ -12,10 +12,19 @@ class List extends Component {
         super(props)
         this.state = {
             checkedValues: [],
-            myData: this.props.myData
+            myData: props.myData 
         }
     }
-
+    componentDidMount() {
+    }
+    
+    UNSAFE_componentWillMount(nextProps){
+        // if(nextProps.myData && nextProps.myData != this.props.myData){
+        //     this.setState({
+        //         myData:  nextProps.myData
+        //     })
+        // }
+    }
     selectRow = (e, i) => {
         if (!e.target.checked) {
             this.setState({
@@ -64,7 +73,7 @@ class List extends Component {
 
     render() {
         const { pageSize, myClass, multiSelectOption, pagination } = this.props;
-        const { myData } = this.state
+        const { myData } = this.state;
 
         const columns = [];
         for (var key in myData[0]) {
@@ -167,7 +176,7 @@ class List extends Component {
                     className={myClass}
                     showPagination={pagination}
                 />
-                <ToastContainer />
+                {/* <ToastContainer /> */}
             </Fragment>
         )
     }

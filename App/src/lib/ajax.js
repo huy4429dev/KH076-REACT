@@ -1,3 +1,5 @@
+import {endpoint} from './../constants/endpoint';
+
 const callAjax = store => next => action => {
     if (action.url) {
         return processAjax(store, action);
@@ -7,7 +9,7 @@ const callAjax = store => next => action => {
 }
 function processAjax(store, action) {
 
-    return fetch(action.url, {
+    return fetch(endpoint + action.url, {
         method: action.method,
         headers: {
             "Content-Type": "application/json"
