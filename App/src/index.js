@@ -7,9 +7,8 @@ import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
 import Login from './pages/backEnd/login';
 import App from './pages/frontEnd/layouts';
 import Admin from './pages/backEnd/layouts';
-
 import "./index.scss";
-
+import "./lib/extensions";
 const store = configStore();
 
 ReactDOM.render(

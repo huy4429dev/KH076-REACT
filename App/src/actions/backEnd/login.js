@@ -1,16 +1,28 @@
+import * as ep from './../../constants/enpoint';
 export const types = {
     "REGISTER_SUCCESS": 'REGISTER_ADMIN_SUCCESS',
+    "REGISTER_ERROR": "REGISTER_ERROR",
+    "A_SUCCESS": "A_SUCCESS",
+    "A_ERROR": "A_ERROR"
 }
-const enpoint = "http://127.0.0.1:8000";
+
 
 export const register = (params) => {
     return {
-        url: `${enpoint}/api/users/register`,
+        url: `${ep.enpoint}/api/users/register`,
         method: 'post',
         data: params,
-        types: {
-            success: types.REGISTER_SUCCESS,
-        }
+        onSuccess: types.REGISTER_SUCCESS,
+        onError: types.REGISTER_ERROR,
+    };
+
+};
+export const test = (data) => {
+    return {
+        url: `${ep.enpoint}/api/users/register`,
+        method: 'get',
+        onSuccess: types.A_SUCCESS,
+        onError: types.A_ERROR,
     };
 
 };
