@@ -29,7 +29,6 @@ class DetailsWithPrice extends Component {
             nav3: this.slider3
         });
     }
-
     minusQty = () => {
         if (this.state.quantity > 1) {
             this.setState({ stock: 'InStock' })
@@ -38,7 +37,7 @@ class DetailsWithPrice extends Component {
     }
 
     plusQty = () => {
-        if (this.props.item.stock >= this.state.quantity) {
+        if (this.props.item.quantity >= this.state.quantity) {
             this.setState({ quantity: this.state.quantity + 1 })
         } else {
             this.setState({ stock: 'Out of Stock !' })
@@ -63,14 +62,23 @@ class DetailsWithPrice extends Component {
             <div className="col-lg-6 rtl-text">
                 <div className="product-right">
                     <h2> {item.name} </h2>
-                    <h4>
-                        <del>{symbol}{item.price}</del>
-                        <span>{item.discount}% off</span></h4>
-                    <h3>{symbol}{item.price - (item.price * item.discount / 100)} </h3>
-                    {item.variants ?
+                    {
+                        item.discount ?
+                            <React.Fragment>
+                                <h4>
+                                    <del>{item.price}</del>
+                                    <span>{item.discount}% off</span></h4>
+                                <h3>{item.price - (item.price * item.discount / 100)} đ</h3>
+                            </React.Fragment>
+                            :
+                            <React.Fragment>
+                                <h3>{item.price} đ</h3>
+                            </React.Fragment>
+                    }
+                    {item.colors ?
                         <ul >
                             <Slider {...colorsnav} asNavFor={this.props.navOne} ref={slider => (this.slider1 = slider)} className="color-variant">
-                                {item.variants.map((vari, i) => {
+                                {item.colors.map((vari, i) => {
                                     return <li className={vari.color} key={i} title={vari.color}></li>
                                 })}
                             </Slider>
@@ -80,7 +88,7 @@ class DetailsWithPrice extends Component {
                             <div>
                                 <h6 className="product-title size-text">select size
                                     <span><a href="#" data-toggle="modal"
-                                        data-target="#sizemodal" onClick={this.onOpenModal} >size chart</a></span></h6>
+                                        data-target="#sizemodal" onClick={this.onOpenModal}>size chart</a></span></h6>
                                 <div className="modal fade" id="sizemodal" tabIndex="-1"
                                     role="dialog" aria-labelledby="exampleModalLabel"
                                     aria-hidden="true">
@@ -97,7 +105,7 @@ class DetailsWithPrice extends Component {
                                                 </button>
                                             </div>
                                             <div className="modal-body">
-                                                <img src={`${process.env.PUBLIC_URL}/assets/images/size-chart.jpg`} alt="" className="img-fluid" />
+                                                <img src={`/assets/images/size-chart.jpg`} alt="" className="img-fluid" />
                                             </div>
                                         </div>
                                     </div>
@@ -130,11 +138,11 @@ class DetailsWithPrice extends Component {
                     </div>
                     <div className="product-buttons" >
                         <a className="btn btn-solid" onClick={() => addToCartClicked(item, this.state.quantity)}>add to cart</a>
-                        <Link to={`${process.env.PUBLIC_URL}/checkout`} className="btn btn-solid" onClick={() => BuynowClicked(item, this.state.quantity)} >buy now</Link>
+                        <Link to={`/checkout`} className="btn btn-solid" onClick={() => BuynowClicked(item, this.state.quantity)} >buy now</Link>
                     </div>
                     <div className="border-product">
                         <h6 className="product-title">product details</h6>
-                        <p>{item.shortDetails}</p>
+                        <p>{item.description}</p>
                     </div>
                     <div className="border-product">
                         <h6 className="product-title">share it</h6>

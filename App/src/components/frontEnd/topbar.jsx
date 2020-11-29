@@ -6,10 +6,8 @@ import * as actions from './../../actions/frontEnd/login';
 import UserMenu from './../frontEnd/userMenu';
 
 class TopBar extends Component {
-
-
     render() {
-        const { translate } = this.props;
+        const { user } = this.props.loginHome;
         return (
             <div className="top-header">
                 <div className="container">
@@ -22,22 +20,26 @@ class TopBar extends Component {
                             </div>
                         </div>
                         <div className="col-lg-6 text-right">
-                            {/* <ul className="header-dropdown">
-                                <li className="onhover-dropdown mobile-account">
-                                    <i className="fa fa-user" aria-hidden="true"></i> {('Tài khoản')}
-                                    <ul className="onhover-show-div">
-                                        <li>
-                                            <Link to={`/login`} data-lng="en">Login</Link>
-                                        </li>
-                                        <li>
-                                            <Link to={`/register`} data-lng="en">Register</Link>
+                            {
+                                user ?
+                                    <ul className="header-dropdown nav-menus">
+                                        <UserMenu user={user} />
+                                    </ul>
+                                    :
+                                    <ul className="header-dropdown">
+                                        <li className="onhover-dropdown mobile-account">
+                                            <i className="fa fa-user" aria-hidden="true"></i> {('Tài khoản')}
+                                            <ul className="onhover-show-div">
+                                                <li>
+                                                    <Link to={`/login`} data-lng="en">Login</Link>
+                                                </li>
+                                                <li>
+                                                    <Link to={`/register`} data-lng="en">Register</Link>
+                                                </li>
+                                            </ul>
                                         </li>
                                     </ul>
-                                </li>
-                            </ul> */}
-                            <ul className="header-dropdown nav-menus">
-                                <UserMenu />
-                            </ul>
+                            }
                         </div>
                     </div>
                 </div>
@@ -48,5 +50,5 @@ class TopBar extends Component {
 
 
 export default connect(TopBar, state => ({
-
+    loginHome: state.loginHome
 }), actions);

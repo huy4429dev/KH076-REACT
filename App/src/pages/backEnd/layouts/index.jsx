@@ -22,10 +22,12 @@ class App extends Component {
         }
     }
     componentDidMount() {
-        // const { login } = this.props.loginAdmin;
-        // if (!login) {
-        //     this.props.history.push('/admin/login');
-        // }
+        const { login, user, token } = this.props.loginAdmin;
+        if (login && user && token) {
+            this.props.actions.account(user.id);
+        } else {
+            this.props.history.push('/admin/login');
+        }
     }
     redirect = () => {
         this.props.history.push('/admin/login');

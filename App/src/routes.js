@@ -21,9 +21,9 @@ const routes = [
         main: () => <Shop />
     },
     {
-        path: '/product',
+        path: '/product/:id',
         exact: true,
-        main: () => <Product />
+        main: ({ match }) => <Product match={match} />
     },
     {
         path: '/checkout',

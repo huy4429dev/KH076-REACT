@@ -12,7 +12,8 @@ export default (state = initState, action) => {
     switch (action.type) {
         case types.ADMIN_LOGIN_SUCCESS:
             state.login = true;
-            state.token = action.data.token
+            state.token = action.data.token;
+            state.user = action.data.user;
             localStorage.setItem('access_token', action.data.token);
             return {
                 ...state,
@@ -22,6 +23,16 @@ export default (state = initState, action) => {
             state.token = null;
             state.user = null;
             localStorage.removeItem('access_token');
+            return {
+                ...state,
+            }
+        case types.GET_USER_ADMIN_SUCCESS:
+            state.user = action.data.data;
+            return {
+                ...state,
+            }
+        case types.GET_USER_ADMIN_ERROR:
+            state.user = null;
             return {
                 ...state,
             }

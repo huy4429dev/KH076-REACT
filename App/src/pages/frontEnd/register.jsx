@@ -37,7 +37,8 @@ class Register extends Component {
                 username: this.state.username,
                 email: this.state.email,
                 password: this.state.password,
-                c_password: this.state.r_password
+                c_password: this.state.r_password,
+                role: "user"
             }
             this.props.actions.register(data)
                 .then(() => {

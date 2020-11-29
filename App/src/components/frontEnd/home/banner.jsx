@@ -12,7 +12,13 @@ class Banner extends Component {
                 <section className="p-0">
                     <Slider className="slide-1 home-slider">
                         <div>
-                            <div className="home home1 text-center">
+                            <div className="home home1 text-center"
+                                style={{
+                                    backgroundImage: "url(https://media.slidesgo.com/storage/50128/responsive-images/teWPFDlO0roD0dA_i8NepvLsQf3L8UIiNyBMNFAee37nY219CSgaQcJmhuCt1tXpe2JTIkeLeIpQxxuL9m2q4D4Wb5lz59klsaHiqrHY9pzZ1Qfv7qkxiaPSZI1eQgSU4fAspFULrV4aWgJV3EXZnJXW426LR7mWfDLEdTo4bt72fDKB_rVy99CCLkqS1DMB13rfdw%3Ds1600___media_library_original_1600_900.png)",
+                                    backgroundRepeat: "no-repeat",
+                                    backgroundPosition: "center"
+                                }}
+                            >
                                 <div className="container">
                                     <div className="row">
                                         <div className="col">
@@ -29,7 +35,36 @@ class Banner extends Component {
                             </div>
                         </div>
                         <div>
-                            <div className="home home2 text-center">
+                            <div className="home home1 text-center"
+                                style={{
+                                    backgroundImage: "url(https://media.slidesgo.com/storage/117798/responsive-images/0-annual-marketing-plan___media_library_original_1600_900.png)",
+                                    backgroundRepeat: "no-repeat",
+                                    backgroundPosition: "center"
+                                }}
+                            >
+                                <div className="container">
+                                    <div className="row">
+                                        <div className="col">
+                                            <div className="slider-contain">
+                                                <div>
+                                                    <h4>welcome to fashion</h4>
+                                                    <h1>men fashion</h1>
+                                                    <Link to={`${process.env.PUBLIC_URL}/left-sidebar/collection`} className="btn btn-solid">shop now</Link>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div>
+                            <div className="home home2 text-center"
+                                style={{
+                                    backgroundImage: "url(https://media.slidesgo.com/storage/135449/responsive-images/0-memphis-marketing-plan___media_library_original_1600_900.png)",
+                                    backgroundRepeat: "no-repeat",
+                                    backgroundPosition: "center"
+                                }}
+                            >
                                 <div className="container">
                                     <div className="row">
                                         <div className="col">
@@ -82,7 +117,7 @@ class Banner extends Component {
                     </div>
                 </section>
                 {/*collection banner end*/}
-            </div>
+            </div >
         )
     }
 }
