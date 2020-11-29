@@ -62,7 +62,8 @@ class UserController extends BaseController
             $token = $user->createToken($user->email.'-'.now(), [$this->scope]);
     
             return response()->json([
-                'token' => $token->accessToken
+                'token' => $token->accessToken,
+                'user' =>  $user 
             ]);
         }
         else {

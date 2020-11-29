@@ -1,48 +1,112 @@
 import React, { Component } from 'react';
 
 import Breadcrumb from "./../../components/frontEnd/home/breadcrumb";
+import SimpleReactValidator from 'simple-react-validator';
+import connect from './../../lib/connect';
+import * as actions from './../../actions/frontEnd/login';
 
 class Register extends Component {
 
     constructor(props) {
-        super(props)
+        super(props);
+        this.state = {
+            username: '',
+            email: '',
+            password: '',
+            r_password: ''
+        }
+        this.validator = new SimpleReactValidator({
+            autoForceUpdate: this,
+            email: 'email không hợp lệ',
+            default: 'Validation has failed!'
+        });
+    }
+    register = (e) => {
+        e.stopPropagation();
+        e.preventDefault();
+        const { username, password, r_password, email } = this.state;
+        let err = false;
+        if (!username || !password || !r_password || !email) {
+            err = true
+        }
+        if (!err) {
+            this.setState({
+                loading: true
+            })
+            const data = {
+                username: this.state.username,
+                email: this.state.email,
+                password: this.state.password,
+                c_password: this.state.r_password
+            }
+            this.props.actions.register(data)
+                .then(() => {
+                    this.setState({ loading: false });
+                    window.notify('Đăng ký thành công', 'success');
+                    this.props.history.push("/login");
+                }).catch((err) => {
+                    this.setState({ loading: false });
+                    window.notify('Đăng ký không thành công', 'danger');
+                });
+        } else {
+            window.notify('Vui lòng điền đầy đủ các trường', 'danger');
+        }
     }
     render() {
         return (
             <div>
-                <Breadcrumb title={'create account'} />
+                <Breadcrumb title={'Tạo tài khoản'} />
                 {/*Regsiter section*/}
                 <section className="register-page section-b-space">
                     <div className="container">
                         <div className="row">
                             <div className="col-lg-12">
-                                <h3>create account</h3>
+                                <h3>Tạo tài khoản</h3>
                                 <div className="theme-card">
                                     <form className="theme-form">
                                         <div className="form-row">
                                             <div className="col-md-6">
-                                                <label htmlFor="email">First Name</label>
-                                                <input type="text" className="form-control" id="fname"
-                                                    placeholder="First Name" required="" />
+                                                <label htmlFor="name">Tên</label>
+                                                <input type="text" className="form-control" id="name"
+                                                    name="username"
+                                                    onChange={(e) => this.setState({ [e.target.name]: e.target.value })}
+                                                    placeholder="Tên" required=""
+                                                    onBlur={() => this.validator.showMessageFor('username')}
+                                                />
+                                                {this.validator.message('username', this.state.username, 'required', { className: 'text-danger' })}
                                             </div>
                                             <div className="col-md-6">
-                                                <label htmlFor="review">Last Name</label>
-                                                <input type="password" className="form-control" id="lname"
-                                                    placeholder="Last Name" required="" />
+                                                <label htmlFor="email">Email</label>
+                                                <input type="email" className="form-control" id="email"
+                                                    name="email"
+                                                    onChange={(e) => this.setState({ [e.target.name]: e.target.value })}
+                                                    placeholder="Email" required=""
+                                                    onBlur={() => this.validator.showMessageFor('email')}
+                                                />
+                                                {this.validator.message('email', this.state.email, 'required|email', { className: 'text-danger' })}
                                             </div>
                                         </div>
                                         <div className="form-row">
                                             <div className="col-md-6">
-                                                <label htmlFor="email">email</label>
-                                                <input type="text" className="form-control" id="email"
-                                                    placeholder="Email" required="" />
+                                                <label htmlFor="password">Mật khẩu</label>
+                                                <input type="password" className="form-control" id="password"
+                                                    name="password"
+                                                    onChange={(e) => this.setState({ [e.target.name]: e.target.value })}
+                                                    placeholder="Mật khẩu" required=""
+                                                    onBlur={() => this.validator.showMessageFor('password')}
+                                                />
+                                                {this.validator.message('password', this.state.password, 'required', { className: 'text-danger' })}
                                             </div>
                                             <div className="col-md-6">
-                                                <label htmlFor="review">Password</label>
-                                                <input type="password" className="form-control" id="review"
-                                                    placeholder="Enter your password" required="" />
+                                                <label htmlFor="r_password">Nhập lại mật khẩu</label>
+                                                <input type="password" className="form-control" id="r_password"
+                                                    name="r_password"
+                                                    onChange={(e) => this.setState({ [e.target.name]: e.target.value })}
+                                                    onBlur={() => this.validator.showMessageFor('r_password')}
+                                                    placeholder="Nhập lại mật khẩu" required="" />
+                                                {this.validator.message('r_password', this.state.r_password, `required|in:${this.state.password}`, { className: 'text-danger' })}
                                             </div>
-                                            <a href="#" className="btn btn-solid">create Account</a>
+                                            <a className="btn btn-solid" onClick={(e) => this.register(e)}>Thêm tài khoản</a>
                                         </div>
                                     </form>
                                 </div>
@@ -56,4 +120,6 @@ class Register extends Component {
     }
 }
 
-export default Register
+export default connect(Register, state => (
+    {}
+), actions);

@@ -1,8 +1,12 @@
 import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
-// import { withTranslate } from 'react-redux-multilingual'
+// import { withTranslate } from 'react-redux-multilingual';
+import connect from './../../lib/connect';
+import * as actions from './../../actions/frontEnd/login';
+import UserMenu from './../frontEnd/userMenu';
 
 class TopBar extends Component {
+
 
     render() {
         const { translate } = this.props;
@@ -18,9 +22,9 @@ class TopBar extends Component {
                             </div>
                         </div>
                         <div className="col-lg-6 text-right">
-                            <ul className="header-dropdown">
+                            {/* <ul className="header-dropdown">
                                 <li className="onhover-dropdown mobile-account">
-                                    <i className="fa fa-user" aria-hidden="true"></i> {('my_account')}
+                                    <i className="fa fa-user" aria-hidden="true"></i> {('Tài khoản')}
                                     <ul className="onhover-show-div">
                                         <li>
                                             <Link to={`/login`} data-lng="en">Login</Link>
@@ -30,6 +34,9 @@ class TopBar extends Component {
                                         </li>
                                     </ul>
                                 </li>
+                            </ul> */}
+                            <ul className="header-dropdown nav-menus">
+                                <UserMenu />
                             </ul>
                         </div>
                     </div>
@@ -40,4 +47,6 @@ class TopBar extends Component {
 }
 
 
-export default TopBar;
+export default connect(TopBar, state => ({
+
+}), actions);

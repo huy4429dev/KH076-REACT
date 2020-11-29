@@ -1,0 +1,40 @@
+.page-loader {
+  @include size(100%, 100%);
+  position: fixed;
+  top: 0;
+  left: 0;
+  background-color: $body-bg;
+  z-index: 999999999;
+  align-items: center;
+  justify-content: center;
+  display: flex;
+}
+.card-loader {
+    @extend .box-loader;
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    border-radius: 2px;
+    z-index: 10;
+}
+.box-loader {
+    align-items: center;
+    justify-content: center;
+    display: flex;
+
+    svg {
+        animation: rotate 2s linear infinite;
+        transform-origin: center center;
+        width: 50px;
+        height: 50px;
+
+        circle {
+            stroke-dasharray: 1, 200;
+            stroke-dashoffset: 0;
+            animation: dash 1.5s ease-in-out infinite, color 6s ease-in-out infinite;
+            stroke-linecap: round;
+        }
+    }
+}

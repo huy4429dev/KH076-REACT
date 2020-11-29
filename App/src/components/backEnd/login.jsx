@@ -27,7 +27,7 @@ class LoginTabset extends Component {
         this.validator = new SimpleReactValidator({ autoForceUpdate: this });
     }
     componentDidMount() {
-        // window.notify('Đăng ký không thành công', 'danger');
+
     }
 
     clickActive = (event) => {
@@ -52,11 +52,7 @@ class LoginTabset extends Component {
         e.stopPropagation();
         e.preventDefault();
         const { username, password, confilm, email } = this.state;
-        let err = false;
-        if (!username || !password || !confilm || !email) {
-            err = true
-        }
-        if (!err) {
+        if (this.validator.allValid()) {
             this.setState({
                 loading: true
             })
@@ -75,6 +71,7 @@ class LoginTabset extends Component {
                     window.notify('Đăng ký không thành công', 'danger');
                 });
         } else {
+            this.validator.showMessages();
             window.notify('Vui lòng điền đầy đủ các trường', 'danger');
         }
     }
@@ -82,11 +79,7 @@ class LoginTabset extends Component {
         e.stopPropagation();
         e.preventDefault();
         const { password, email } = this.state;
-        let err = false;
-        if (!password || !email) {
-            err = true
-        }
-        if (!err) {
+        if (this.validator.allValid()) {
             this.setState({
                 loading: true
             })
@@ -106,8 +99,10 @@ class LoginTabset extends Component {
                     window.notify('Đăng nhập không thành công', 'danger');
                 });
         } else {
+            this.validator.showMessages();
             window.notify('Vui lòng điền đầy đủ các trường', 'danger');
         }
+
     }
     render() {
         return (
@@ -117,7 +112,7 @@ class LoginTabset extends Component {
                     <Tabs>
                         <TabList className="nav nav-tabs tab-coupon" >
                             <Tab className="nav-link" onClick={(e) => this.clickActive(e)}><User />Đăng nhập</Tab>
-                            <Tab className="nav-link" onClick={(e) => this.clickActive(e)}><Unlock />Đăng ký</Tab>
+                            {/* <Tab className="nav-link" onClick={(e) => this.clickActive(e)}><Unlock />Đăng ký</Tab> */}
                         </TabList>
 
                         <TabPanel>
@@ -125,14 +120,16 @@ class LoginTabset extends Component {
                                 <div className="form-group">
                                     <input value={this.state.email} required="" name="email"
                                         onChange={(e) => this.setState({ [e.target.name]: e.target.value })}
-                                        // onBlur={() => this.validator.showMessageFor('username')}
+                                        onBlur={() => this.validator.showMessageFor('username')}
                                         type="email" className="form-control" placeholder="Tên" id="exampleInputEmail1" />
+                                    {this.validator.message('email', this.state.email, 'required|email', { className: 'text-danger' })}
                                 </div>
                                 <div className="form-group">
                                     <input value={this.state.password}
-                                        // onBlur={() => this.validator.showMessageFor('password')}
+                                        onBlur={() => this.validator.showMessageFor('password')}
                                         onChange={(e) => this.setState({ [e.target.name]: e.target.value })}
                                         required="" name="password" type="password" className="form-control" placeholder="Mật khẩu" />
+                                    {this.validator.message('password', this.state.email, 'required', { className: 'text-danger' })}
                                 </div>
                                 <div className="form-terms">
                                     <div className="custom-control custom-checkbox mr-sm-2">
@@ -157,7 +154,7 @@ class LoginTabset extends Component {
                                 </div>
                             </form>
                         </TabPanel>
-                        <TabPanel>
+                        {/* <TabPanel>
                             <form className="form-horizontal auth-form">
                                 <div className="form-group">
                                     <input value={this.state.username} required="" name="username"
@@ -211,7 +208,7 @@ class LoginTabset extends Component {
                                     </ul>
                                 </div>
                             </form>
-                        </TabPanel>
+                        </TabPanel> */}
                     </Tabs>
                 </React.Fragment>
             </div>

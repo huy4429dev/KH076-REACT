@@ -3,10 +3,16 @@ import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
 import routes from './../../../routes';
 import Header from './header';
 import Footer from './footer';
-// import { ToastContainer } from 'react-toastify';
-// import 'react-toastify/dist/ReactToastify.css';
+import connect from '../../../lib/connect';
+import * as actions from './../../../actions/frontEnd/login';
 
 class App extends Component {
+    componentDidMount() {
+        const { login, user, token } = this.props.account;
+        if (login && user && token) {
+            this.props.actions.account(user.id);
+        }
+    }
     render() {
         return (
             <Router>
@@ -37,4 +43,6 @@ class App extends Component {
         return result;
     }
 }
-export default App
+export default connect(App, state => ({
+    account: state.loginHome
+}), actions);

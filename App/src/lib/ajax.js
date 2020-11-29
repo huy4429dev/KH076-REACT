@@ -10,7 +10,8 @@ function processAjax(store, action) {
     return fetch(action.url, {
         method: action.method,
         headers: {
-            "Content-Type": "application/json"
+            "Content-Type": "application/json",
+            Authorization: "Bearer" + localStorage.getItem("access_token")
         },
         body: action.data ? JSON.stringify(action.data) : null
 
