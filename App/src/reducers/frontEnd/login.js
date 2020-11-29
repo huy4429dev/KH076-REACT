@@ -1,19 +1,43 @@
 
-import { types } from './../../actions/backEnd/category';
+import { types } from './../../actions/frontEnd/login';
 
 const initState = {
     login: false,
-
+    user: null,
+    token: null,
 }
 
 export default (state = initState, action) => {
     let index;
     switch (action.type) {
-        // case types.GET_LIST_POST_SUCCESS:
-        //     return {
-        //         ...state,
-        //         posts: action.data,
-        //     }
+        case types.LOGIN_HOME_SUCCESS:
+            state.login = true;
+            state.token = action.data.token;
+            state.user = action.data.user;
+            localStorage.setItem('access_token', action.data.token);
+            return {
+                ...state,
+            }
+        case types.GET_USER_HOME_SUCCESS:
+            return {
+                ...state,
+            }
+        case types.GET_USER_HOME_ERROR:
+            state.login = false;
+            state.token = null;
+            state.user = null;
+            localStorage.removeItem('access_token');
+            return {
+                ...state,
+            }
+        case types.LOGOUT_HOME:
+            state.login = false;
+            state.token = null;
+            state.user = null;
+            localStorage.removeItem('access_token');
+            return {
+                ...state,
+            }
         default:
             return state;
     }

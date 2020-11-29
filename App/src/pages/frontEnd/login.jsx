@@ -1,12 +1,43 @@
 import React, { Component } from 'react';
-
+import SimpleReactValidator from 'simple-react-validator';
 import Breadcrumb from "./../../components/frontEnd/home/breadcrumb";
-
+import connect from './../../lib/connect';
+import * as actions from './../../actions/frontEnd/login';
 class Login extends Component {
 
     constructor(props) {
         super(props)
-
+        this.state = {
+            email: '',
+            password: ''
+        }
+        this.validator = new SimpleReactValidator({ autoForceUpdate: this });
+    }
+    login = (e) => {
+        e.stopPropagation();
+        e.preventDefault();
+        const { password, email } = this.state;
+        if (this.validator.allValid()) {
+            this.setState({
+                loading: true
+            })
+            const data = {
+                email: this.state.email,
+                password: this.state.password
+            }
+            this.props.actions.login(data)
+                .then(() => {
+                    this.setState({ loading: false });
+                    window.notify('Đăng nhập thành công', 'success');
+                    this.props.history.push('/');
+                }).catch((err) => {
+                    this.setState({ loading: false });
+                    window.notify('Đăng nhập không thành công', 'danger');
+                });
+        } else {
+            this.validator.showMessages();
+            window.notify('Vui lòng điền đầy đủ các trường', 'danger');
+        }
     }
     render() {
         return (
@@ -22,15 +53,27 @@ class Login extends Component {
                                     <form className="theme-form">
                                         <div className="form-group">
                                             <label htmlFor="email">Email</label>
-                                            <input type="text" className="form-control" id="email" placeholder="Email"
-                                                required="" />
+                                            <input type="email" className="form-control" id="email" placeholder="Email"
+                                                required=""
+                                                name="email"
+                                                value={this.state.email}
+                                                onChange={(e) => this.setState({ [e.target.name]: e.target.value })}
+                                                onBlur={() => this.validator.showMessageFor('email')}
+                                            />
+                                            {this.validator.message('email', this.state.email, 'required|email', { className: 'text-danger' })}
                                         </div>
                                         <div className="form-group">
                                             <label htmlFor="review">Password</label>
                                             <input type="password" className="form-control" id="review"
-                                                placeholder="Enter your password" required="" />
+                                                placeholder="Mật khẩu..." required=""
+                                                name="password"
+                                                value={this.state.password}
+                                                onChange={(e) => this.setState({ [e.target.name]: e.target.value })}
+                                                onBlur={() => this.validator.showMessageFor('password')}
+                                            />
+                                            {this.validator.message('email', this.state.password, 'required', { className: 'text-danger' })}
                                         </div>
-                                        <a href="#" className="btn btn-solid">Login</a>
+                                        <a className="btn btn-solid" onClick={(e) => this.login(e)}>Đăng nhập</a>
                                     </form>
                                 </div>
                             </div>
@@ -53,4 +96,6 @@ class Login extends Component {
     }
 }
 
-export default Login
+export default connect(Login, state => ({
+
+}), actions);

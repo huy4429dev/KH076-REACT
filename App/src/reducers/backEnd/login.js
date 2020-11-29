@@ -17,6 +17,14 @@ export default (state = initState, action) => {
             return {
                 ...state,
             }
+        case types.ADMIN_LOGOUT_SUCCESS:
+            state.login = false;
+            state.token = null;
+            state.user = null;
+            localStorage.removeItem('access_token');
+            return {
+                ...state,
+            }
         default:
             return state;
     }

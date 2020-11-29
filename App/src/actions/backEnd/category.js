@@ -8,6 +8,10 @@ export const types = {
     GET_CATEGORIES_ERROR: 'GET_CATEGORIES_ERROR',
     CREATE_CATEGORY_SUCCESS: 'CREATE_CATEGORY_SUCCESS',
     CREATE_CATEGORY_ERROR: 'CREATE_CATEGORY_ERROR',
+    UPDATE_CATEGORY_SUCCESS: 'UPDATE_CATEGORY_SUCCESS',
+    UPDATE_CATEGORY_ERROR: 'UPDATE_CATEGORY_ERROR',
+    DELETE_CATEGORY_SUCCESS: 'DELETE_CATEGORY_SUCCESS',
+    DELETE_CATEGORY_ERROR: 'DELETE_CATEGORY_ERROR'
 }
 
 
@@ -32,3 +36,23 @@ export const createCategory = (data) => {
     };
 };
 
+export const updateCategory = (data) => {
+    console.log(data,'EDIT ITEM');
+    return {
+        url: `/api/categories/${data.id}`, 
+        method: 'put',  
+        param: {...data},
+        onSuccess: types.UPDATE_CATEGORY_SUCCESS,
+        onError: types.UPDATE_CATEGORY_ERROR
+    };
+};
+
+export const deleteCategory = (id) => {
+    return {
+        url: `/api/categories/${id}`,
+        method: 'delete',
+        onSuccess: types.DELETE_CATEGORY_SUCCESS,
+        onError: types.DELETE_CATEGORY_ERROR
+    };
+
+};

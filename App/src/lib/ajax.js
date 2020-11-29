@@ -23,7 +23,8 @@ function processAjax(store, action) {
         .then(res => res.json())
         .then(data => {
             if (data.error) {
-                store.dispatch({
+                store.dispatch(
+                    {
                     type: action.onError,
                     data
                 })

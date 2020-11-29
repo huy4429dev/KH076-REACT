@@ -27,7 +27,9 @@ class App extends Component {
         //     this.props.history.push('/admin/login');
         // }
     }
-
+    redirect = () => {
+        this.props.history.push('/admin/login');
+    }
     ChangeRtl(divName) {
         if (divName === 'RTL') {
             document.body.classList.add('rtl');
@@ -42,7 +44,7 @@ class App extends Component {
             <Router>
                 <div>
                     <div className="page-wrapper" >
-                        <Header />
+                        <Header redirect={this.redirect} />
                         <ToastContainer />
                         <div className="page-body-wrapper">
                             <Sidebar />

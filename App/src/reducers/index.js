@@ -8,6 +8,7 @@ import uploads from './backEnd/uploads';
 import shop from './backEnd/shop';
 import product from './backEnd/product';
 import loginAdmin from './backEnd/login';
+import loginHome from './frontEnd/login';
 
 const config = {
     key: 'doremon',
@@ -20,7 +21,8 @@ const rootReducer = combineReducers({
     uploads,
     shop,
     product,
-    loginAdmin
+    loginAdmin,
+    loginHome
 });
 
 export default persistReducer(config, rootReducer);

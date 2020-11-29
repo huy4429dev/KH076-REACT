@@ -1,9 +1,10 @@
 import * as ep from './../../constants/enpoint';
 export const types = {
-    "REGISTER_SUCCESS": 'REGISTER_ADMIN_SUCCESS',
-    "REGISTER_ERROR": "REGISTER_ERROR",
-    "ADMIN_LOGIN_FAILE": "ADMIN_LOGIN_FAILE",
-    "ADMIN_LOGIN_SUCCESS": "ADMIN_LOGIN_SUCCESS"
+    REGISTER_SUCCESS: 'REGISTER_ADMIN_SUCCESS',
+    REGISTER_ERROR: "REGISTER_ERROR",
+    ADMIN_LOGIN_FAILE: "ADMIN_LOGIN_FAILE",
+    ADMIN_LOGIN_SUCCESS: "ADMIN_LOGIN_SUCCESS",
+    ADMIN_LOGOUT_SUCCESS: "ADMIN_LOGOUT_SUCCESS"
 }
 
 
@@ -24,5 +25,10 @@ export const login = (params) => {
         data: params,
         onSuccess: types.ADMIN_LOGIN_SUCCESS,
         onError: types.ADMIN_LOGIN_FAILE,
+    };
+};
+export const logout = () => {
+    return {
+        type: types.ADMIN_LOGOUT_SUCCESS
     };
 };

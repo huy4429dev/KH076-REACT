@@ -5,7 +5,7 @@ import loadingImage from './../../assets/images/loading.gif';
 
 export default class Loading extends React.Component {
     render() {
-        console.log(this.props.type,"aa")
+        console.log("RUNNNNNNNNNNNNNN");
         const { type, padding: pad, background, show, className, ...props } = this.props;
         const classes = classNames(className, {
             'page-loader': type == 'full',
