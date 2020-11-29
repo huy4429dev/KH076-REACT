@@ -67,7 +67,6 @@ class ProductController extends BaseController
 
     
     public function show($id){
-
         $found = Product::where('id', $id)
                         ->with('user')
                         ->with('images')
@@ -173,6 +172,52 @@ class ProductController extends BaseController
         return $this->sendResponse(
             $found, 
             'Delete Product successfully'
+          );
+    }
+
+    public function newProducts(Request $request){
+        $Orders = Product::orderBy('created_at','desc')
+        ->with('user')
+        ->with('images')
+        ->with('colors')
+        ->with('sizes')
+        ->take(6)
+        ->get();
+
+        return $this->sendResponse(
+            $data = [
+                     'items' => $Orders , 
+                    ]
+          );
+    }
+     public function manProducts(Request $request){
+        $Orders = Product::orderBy('created_at','desc')
+        ->with('user')
+        ->with('images')
+        ->with('colors')
+        ->with('sizes')
+        ->take(6)
+        ->get();
+
+        return $this->sendResponse(
+            $data = [
+                     'items' => $Orders , 
+                    ]
+          );
+    }
+     public function womanProducts(Request $request){
+        $Orders = Product::orderBy('created_at','desc')
+        ->with('user')
+        ->with('images')
+        ->with('colors')
+        ->with('sizes')
+        ->take(6)
+        ->get();
+
+        return $this->sendResponse(
+            $data = [
+                     'items' => $Orders , 
+                    ]
           );
     }
   

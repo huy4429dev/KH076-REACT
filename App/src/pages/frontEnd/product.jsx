@@ -12,6 +12,8 @@ import SmallImages from './../../components/frontEnd/product/smallImage'
 import DetailsWithPrice from './../../components/frontEnd/product/detailtPrice'
 import DetailsTopTabs from './../../components/frontEnd/product/detailtTopTabs';
 import Service from './../../components/frontEnd/product/service';
+import connect from './../../lib/connect';
+import * as actions from './../../actions/frontEnd/product';
 
 
 class Product extends Component {
@@ -25,6 +27,8 @@ class Product extends Component {
     }
 
     componentDidMount() {
+        const { id } = this.props.match.params;
+        this.props.actions.getDetailtProduct(id);
         this.setState({
             nav1: this.slider1,
             nav2: this.slider2
@@ -49,57 +53,57 @@ class Product extends Component {
             dots: false,
             focusOnSelect: true
         };
-
+        const { detailt } = this.props.productHome;
         return (
             <div>
-
-                <Breadcrumb title={' Product / ' + item.name} />
-
-                {/*Section Start*/}
-                {(item) ?
-                    <section className="section-b-space">
-                        <div className="collection-wrapper">
-                            <div className="container">
-                                <div className="row">
-                                    <div className="col-lg-9 col-sm-12 col-xs-12">
-                                        <div className="container-fluid">
-                                            <div className="row">
-                                                <div className="col-xl-12">
-                                                    <div className="filter-main-btn mb-2">
-                                                        <span className="filter-btn">
-                                                            <i className="fa fa-filter" aria-hidden="true"></i> filter</span>
+                {
+                    detailt && (
+                        <React.Fragment>
+                            <Breadcrumb title={' Product / ' + detailt.name} />
+                            <section className="section-b-space">
+                                <div className="collection-wrapper">
+                                    <div className="container">
+                                        <div className="row">
+                                            <div className="col-lg-9 col-sm-12 col-xs-12">
+                                                <div className="container-fluid">
+                                                    <div className="row">
+                                                        <div className="col-xl-12">
+                                                            <div className="filter-main-btn mb-2">
+                                                                <span className="filter-btn">
+                                                                    <i className="fa fa-filter" aria-hidden="true"></i> filter</span>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div className="row">
+                                                        <div className="col-lg-6 product-thumbnail">
+                                                            <Slider asNavFor={this.state.nav2} ref={slider => (this.slider1 = slider)} className="product-slick">
+                                                                {detailt.images.map((vari, index) =>
+                                                                    <div key={index}>
+                                                                        <ImageZoom image={vari.url} className="img-fluid image_zoom_cls-0" />
+                                                                    </div>
+                                                                )}
+                                                            </Slider>
+                                                            <SmallImages item={detailt.images} settings={productsnav} navOne={this.state.nav1} />
+                                                        </div>
+                                                        <DetailsWithPrice symbol={symbol} item={detailt} navOne={this.state.nav1} addToCartClicked={addToCart} BuynowClicked={addToCartUnsafe} addToWishlistClicked={addToWishlist} />
                                                     </div>
                                                 </div>
+                                                <DetailsTopTabs item={item} />
                                             </div>
-                                            <div className="row">
-                                                <div className="col-lg-6 product-thumbnail">
-                                                    <Slider asNavFor={this.state.nav2} ref={slider => (this.slider1 = slider)} className="product-slick">
-                                                        {item.map((vari, index) =>
-                                                            <div key={index}>
-                                                                <ImageZoom image={vari.images} className="img-fluid image_zoom_cls-0" />
-                                                            </div>
-                                                        )}
-                                                    </Slider>
-                                                    <SmallImages item={item} settings={productsnav} navOne={this.state.nav1} />
-                                                </div>
-                                                <DetailsWithPrice symbol={symbol} item={item} navOne={this.state.nav1} addToCartClicked={addToCart} BuynowClicked={addToCartUnsafe} addToWishlistClicked={addToWishlist} />
+                                            <div className="col-sm-3 collection-filter">
+
+                                                <Service />
+                                                {/*side-bar single product slider start*/}
+                                                <NewProduct />
+                                                {/*side-bar single product slider end*/}
                                             </div>
                                         </div>
-                                        <DetailsTopTabs item={item} />
-                                    </div>
-                                    <div className="col-sm-3 collection-filter">
-
-                                        <Service />
-                                        {/*side-bar single product slider start*/}
-                                        <NewProduct />
-                                        {/*side-bar single product slider end*/}
                                     </div>
                                 </div>
-                            </div>
-                        </div>
-                    </section> : ''}
-                {/*Section End*/}
-
+                            </section>
+                        </React.Fragment>
+                    )
+                }
             </div>
         )
     }
@@ -107,4 +111,6 @@ class Product extends Component {
 
 
 
-export default Product;
+export default connect(Product, state => ({
+    productHome: state.productHome
+}), actions);

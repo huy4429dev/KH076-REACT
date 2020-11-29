@@ -71,12 +71,12 @@ Route::prefix('users')->group(function(){
     
     Route::post('/register', [UserController::class,'register'] );
     Route::post('/login', [UserController::class,'login'] );
-    
+    Route::get('/{id}', [UserController::class,'show'] );
     Route::middleware(['auth:api', 'role'])->group(function() {
          
         Route::middleware(['scope:admin,shop'])->get('/', [UserController::class,'index'] );
         Route::get('/search', [UserController::class,'search'] );
-        Route::get('/{id}', [UserController::class,'show'] );
+        // Route::get('/{id}', [UserController::class,'show'] );
         Route::post('/', [UserController::class,'create'] );
         Route::put('/{id}', [UserController::class,'update'] );
         Route::delete('/{id}', [UserController::class,'delete'] );
@@ -126,6 +126,9 @@ Route::prefix('products')->group(function(){
     
     Route::get('/', [ProductController::class,'index'] );
     Route::get('/search', [ProductController::class,'search'] );
+    Route::get('/new-products', [ProductController::class,'newProducts'] );
+    Route::get('/man-products', [ProductController::class,'manProducts'] );
+    Route::get('/women-products', [ProductController::class,'womanProducts'] );
     Route::get('/{id}', [ProductController::class,'show'] );
 
     Route::middleware(['auth:api', 'role'])->group(function() {

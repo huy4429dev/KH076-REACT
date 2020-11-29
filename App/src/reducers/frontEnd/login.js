@@ -38,6 +38,16 @@ export default (state = initState, action) => {
             return {
                 ...state,
             }
+        case types.GET_USER_HOME_SUCCESS:
+            state.user = action.data.data;
+            return {
+                ...state,
+            }
+        case types.GET_USER_HOME_ERROR:
+            state.user = null;
+            return {
+                ...state,
+            }
         default:
             return state;
     }

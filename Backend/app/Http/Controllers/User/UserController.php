@@ -20,6 +20,7 @@ class UserController extends BaseController
             'username' => 'required',
             'email' => 'required|email',
             'password' => 'required',
+            'role' => 'required',
             'c_password' => 'required|same:password'
         ]);
    
@@ -31,7 +32,14 @@ class UserController extends BaseController
         $input['password'] = bcrypt($input['password']);
 
         $user = User::create($input);
-        $user->roles()->attach(['role_id' => Role::where('name','user')->first()->id]);
+
+        $foundRole = Role::where('name',$request->role)->first();
+        if($foundRole == null){
+            return $this->sendError('Role Error.', 'Role not found');  
+        }
+
+        $user->roles()->attach(['role_id' => $foundRole->id]);
+
         
         $success['token'] =  $user->createToken('MyApp')->accessToken;
         $success['name'] =  $user->name;

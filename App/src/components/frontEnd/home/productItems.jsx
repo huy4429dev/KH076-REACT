@@ -1,7 +1,8 @@
 import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
 import Modal from 'react-responsive-modal';
-
+import connect from './../../../lib/connect';
+import * as actions from './../../../actions/frontEnd/cart';
 
 class ProductItem extends Component {
 
@@ -44,12 +45,15 @@ class ProductItem extends Component {
     changeQty = (e) => {
         this.setState({ quantity: parseInt(e.target.value) })
     }
-
+    onAddToCartClicked = (item) => {
+        this.props.actions.addCart(item, 1);
+        window.notify("Thêm vào giỏ hàng thành công");
+    }
     render() {
-        const { symbol, onAddToCartClicked, onAddToWishlistClicked, onAddToCompareClicked } = this.props;
-        const product = [];
+        const { symbol, onAddToCartClicked, onAddToWishlistClicked, onAddToCompareClicked, product } = this.props;
+        // const product = [];
         let RatingStars = []
-        for (var i = 0; i < product.rating; i++) {
+        for (var i = 0; i < product?.rating; i++) {
             RatingStars.push(<i className="fa fa-star" key={i}></i>)
         }
         return (
@@ -61,16 +65,13 @@ class ProductItem extends Component {
 
                     </div>
                     <div className="front">
-                        <Link to={`${process.env.PUBLIC_URL}/left-sidebar/product/${product.id}`} ><img
-                            src={`${product.variants ?
-                                this.state.image ? this.state.image : product.variants[0].images
-                                : product.pictures[0]
-                                }`}
+                        <Link to={`/product/${product.id}`} ><img
+                            src={product.images.length >= 0 ? product.images[0].url : ''}
                             className="img-fluid"
                             alt="" /></Link>
                     </div>
                     <div className="cart-info cart-wrap">
-                        <button title="Add to cart" onClick={onAddToCartClicked}>
+                        <button title="Add to cart" onClick={() => this.onAddToCartClicked(product)}>
                             <i className="fa fa-shopping-cart" aria-hidden="true"></i>
                         </button>
                         <a href="javascript:void(0)" title="Add to Wishlist" onClick={onAddToWishlistClicked}>
@@ -80,18 +81,27 @@ class ProductItem extends Component {
                             data-target="#quick-view"
                             title="Quick View"
                             onClick={this.onOpenModal}><i className="fa fa-search" aria-hidden="true"></i></a>
-                        <Link to={`${process.env.PUBLIC_URL}/compare`} title="Compare" onClick={onAddToCompareClicked}>
+                        <Link to={`/compare`} title="Compare" onClick={onAddToCompareClicked}>
                             <i className="fa fa-refresh" aria-hidden="true"></i></Link>
                     </div>
-                    {product.variants ?
-                        <ul className="product-thumb-list">
-                            {product.variants.map((vari, i) =>
-                                <li className={`grid_thumb_img ${(vari.images === this.state.image) ? 'active' : ''}`} key={i}>
-                                    <a href="javascript:void(0)" title="Add to Wishlist">
-                                        <img src={`${vari.images}`} onClick={() => this.onClickHandle(vari.images)} />
-                                    </a>
-                                </li>)}
-                        </ul> : ''}
+                    {
+                        product.images.length >= 1 ?
+                            <ul className="product-thumb-list">
+                                {
+                                    product.images.map((vari, i) => {
+                                        if (i != 0) {
+                                            return (
+                                                <li className={`grid_thumb_img ${(vari.url === this.state.image) ? 'active' : ''}`} key={i}>
+                                                    <a href="javascript:void(0)" title="Add to Wishlist">
+                                                        <img src={`${vari.url}`} onClick={() => this.onClickHandle(vari.url)} />
+                                                    </a>
+                                                </li>
+                                            )
+                                        }
+                                    }
+                                    )}
+                            </ul> : ''
+                    }
 
                 </div>
                 <div className="product-detail">
@@ -99,12 +109,21 @@ class ProductItem extends Component {
                         <div className="rating">
                             {RatingStars}
                         </div>
-                        <Link to={`${process.env.PUBLIC_URL}/left-sidebar/product/${product.id}`}>
+                        <Link to={`/left-sidebar/product/${product.id}`}>
                             <h6>{product.name}</h6>
                         </Link>
-                        <h4>{symbol}{product.price - (product.price * product.discount / 100)}
-                            <del><span className="money">{symbol}{product.price}</span></del>
-                        </h4>
+                        {
+                            product.discount ?
+                                <h4>
+                                    {product.price - (product.price * product.discount / 100)}đ
+                                    <del><span className="money">{product.price} đ</span></del>
+                                </h4>
+                                :
+                                <h4>
+                                    <span className="money">{product.price}</span>
+                                </h4>
+                        }
+
                         {product.variants ?
                             <ul className="color-variant">
                                 {product.variants.map((vari, i) => {
@@ -114,7 +133,7 @@ class ProductItem extends Component {
                             </ul> : ''}
                     </div>
                 </div>
-                <Modal open={this.state.open} onClose={this.onCloseModal} center>
+                {/* <Modal open={this.state.open} onClose={this.onCloseModal} center>
                     <div className="modal-dialog modal-lg modal-dialog-centered" role="document">
                         <div className="modal-content quick-view-modal">
                             <div className="modal-body">
@@ -169,7 +188,7 @@ class ProductItem extends Component {
                                             </div>
                                             <div className="product-buttons">
                                                 <button className="btn btn-solid" onClick={() => onAddToCartClicked(product, this.state.quantity)} >add to cart</button>
-                                                <Link to={`${process.env.PUBLIC_URL}/left-sidebar/product/${product.id}`} className="btn btn-solid">view detail</Link>
+                                                <Link to={`/left-sidebar/product/${product.id}`} className="btn btn-solid">view detail</Link>
                                             </div>
                                         </div>
                                     </div>
@@ -177,10 +196,12 @@ class ProductItem extends Component {
                             </div>
                         </div>
                     </div>
-                </Modal>
+                </Modal> */}
             </div>
         )
     }
 }
 
-export default ProductItem;
+export default connect(ProductItem, state => ({
+
+}), actions);
