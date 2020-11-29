@@ -19,7 +19,7 @@ export class UserMenu extends Component {
                     <div className="media align-items-center">
                         <div className="border text-uppercase border-secondary bg-light text-dark rounded-circle d-flex justify-content-center align-items-center"
                             style={{ width: "50px", height: "50px" }}>
-                            {user.username.charAt(0)}
+                            {user?.username?.charAt(0) ?? 'ADMIN'}
                         </div>
                     </div>
                     <ul className="profile-dropdown onhover-show-div p-20 profile-dropdown-hover d-block">
