@@ -62,6 +62,11 @@ export class Header extends Component {
             document.querySelector(".page-sidebar").classList.remove('open');
         }
     }
+    redirect = () => {
+        if (this.props.redirect) {
+            this.props.redirect();
+        }
+    }
     render() {
         return (
             <Fragment>
@@ -95,7 +100,7 @@ export class Header extends Component {
                                     <Notification />
                                 </li>
                                 <li><a onClick={this.showRightSidebar}><MessageSquare /><span className="dot"></span></a></li>
-                                <User_menu />
+                                <User_menu redirect={this.redirect} />
                             </ul>
                             <div className="d-lg-none mobile-toggle pull-right" onClick={() => this.toggle()}><MoreHorizontal /></div>
                         </div>
