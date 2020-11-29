@@ -27,18 +27,8 @@ export const createCategory = (data) => {
         url: `/api/categories`, 
         method: 'post',  
         param: {...data},
-        onSuccess: types.GET_CATEGORIES_SUCCESS,
+        onSuccess: types.CREATE_CATEGORY_SUCCESS,
         onError: types.CREATE_CATEGORY_ERROR
-    }
-}
+    };
+};
 
-
-// export const addOften = (item, data) => {
-//     return {
-//         url: '/api/conversation/attachment/favorite/' + item.id,
-//         method: 'put',
-//         params: {
-//             ...data
-//         },
-//     };
-// };

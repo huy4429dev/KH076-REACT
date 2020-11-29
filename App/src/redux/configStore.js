@@ -2,6 +2,8 @@ import { createStore, compose, applyMiddleware } from 'redux';
 import rootReducer from './../reducers/index';
 import callAjax from './../lib/ajax';
 import thunk from 'redux-thunk';
+import "./../lib/extensions";
+
 
 const composeEnhancer =
     process.env.NODE_ENV !== 'production' &&

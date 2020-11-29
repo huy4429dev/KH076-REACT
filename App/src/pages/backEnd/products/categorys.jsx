@@ -5,17 +5,22 @@ import Datatable from './../../../components/backEnd/user/list';
 import Modal from 'react-responsive-modal';
 import 'react-responsive-modal/styles.css';
 import connect from './../../../lib/connect';
+import SimpleReactValidator from 'simple-react-validator';
 import * as actions from './../../../actions/backEnd/category';
 import Loading from './../../../components/backEnd/loading';
 import $ from 'jquery';
+import { ToastContainer, toast } from 'react-toastify';
 class Categorys extends Component {
     constructor(props) {
         super(props);
         this.state = {
             open: false,
             loading: true,
-            category: null
+            name: null,
+            description: null,
         };
+
+        this.validator = new SimpleReactValidator();
     }
 
     componentDidMount = () => {
@@ -28,6 +33,7 @@ class Categorys extends Component {
         getCategories()
             .then(() => {
                 this.setState({ loading: false });
+                console.log("GET SUCCESS");
             })
             .catch((err) => {
                 this.setState({ loading: false });
@@ -40,43 +46,62 @@ class Categorys extends Component {
 
         const target = event.target;
         const value = target.value;
-        const name = target.name;
-        const { category } = this.state;
+        const tagName = target.name;
+        const { name, description } = this.state;
 
         this.setState({
-            category: { ...category, ...{ [name]: value } }
+             [tagName]: value 
         });
+
+        
          
     }
 
     handleSubmit = (event) => {
 
         event.preventDefault();
+        const { name, description } = this.state;
+        console.log(name, "category");
+        const {createCategory} = this.props.actions;
+        // if(name === '' || name === null) return;
+        createCategory({
+            name: name,
+            description: description    
+        })
+        .then((data) => {
+            this.setState({ loading: false });
+            toast.success(data.message);
+        })
+        .catch((err) => {
+            this.setState({ loading: false });
+            toast.error(err)
+        });
         
-        const { category } = this.state;
-        console.log('SUBMIT CATEOGRY', this.state);
+
+        this.onCloseModal();
+
     }
 
     onOpenModal = () => {
-        const { category } = this.state;
+
+        const { name } = this.state;
         this.setState({
             open: true,
         });
     };
 
     onCloseModal = () => {
-        const { category } = this.state;
         this.setState({
             open: false,
         });
     };
 
     render() {
-
         const { open,category } = this.state;
-        console.log(category, "WHAT");
         const { categories } = this.props;
-        const items = categories.data ? categories.data.items : [];
+        const items = categories.items ? categories.items : [];
+
+        console.log(categories, "data");
 
         return (
             <Fragment>
@@ -103,10 +128,12 @@ class Categorys extends Component {
                                                         <input
                                                             name="name"
                                                             type="text"
+                                                            value={this.state.name}
                                                             className="form-control"
                                                             onChange={this.handleInputOnchange}
-
                                                         />
+                                                        {this.validator.message('name', this.state.name, 'required', { className: 'text-danger' })}
+
                                                     </div>
                                                     <div className="form-group">
                                                         <label htmlFor="message-text" className="col-form-label">Mô tả :</label>
@@ -118,7 +145,7 @@ class Categorys extends Component {
                                                     </div>
                                                 </div>
                                                 <div className="modal-footer">
-                                                    <button type="submit" className="btn btn-primary" onClick={() => this.onCloseModal('VaryingMdo')}>Lưu</button>
+                                                    <button type="submit" className="btn btn-primary" onClick={() =>this.handleSubmit}>Lưu</button>
                                                     <button type="button" className="btn btn-secondary" onClick={() => this.onCloseModal('VaryingMdo')}>Hủy</button>
                                                 </div>
                                             </form>
@@ -135,6 +162,7 @@ class Categorys extends Component {
                                                     pageSize={5}
                                                     pagination={false}
                                                     class="-striped -highlight"
+                                                    onDelete={(id) => {console.log('ON DELETE', id);}}
                                                 />
                                         }
 

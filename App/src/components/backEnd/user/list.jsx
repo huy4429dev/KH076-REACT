@@ -5,20 +5,23 @@ import ReactTable from "react-table-6";
 import "react-table-6/react-table.css"
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
-
+import Modal from 'react-responsive-modal';
+import 'react-responsive-modal/styles.css';
 
 class List extends Component {
     constructor(props) {
         super(props)
         this.state = {
             checkedValues: [],
-            myData: props.myData 
+            myData: props.myData,
+            open: false
         }
     }
     componentDidMount() {
+
     }
-    
-    UNSAFE_componentWillMount(nextProps){
+
+    UNSAFE_componentWillMount(nextProps) {
         // if(nextProps.myData && nextProps.myData != this.props.myData){
         //     this.setState({
         //         myData:  nextProps.myData
@@ -71,27 +74,43 @@ class List extends Component {
         return str.charAt(0).toUpperCase() + str.slice(1);
     }
 
+    onOpenModal = () => {
+
+        const { name } = this.state;
+        this.setState({
+            open: true,
+        });
+    };
+
+    onCloseModal = () => {
+        this.setState({
+            open: false,
+        });
+    };
+
+
     render() {
+
         const { pageSize, myClass, multiSelectOption, pagination } = this.props;
-        const { myData } = this.state;
+        const { myData, open } = this.state;
 
         const columns = [];
         for (var key in myData[0]) {
 
             let editable = this.renderEditable
-            if (key === "image") {
+            if (key === "id") {
                 editable = null;
             }
-            if (key === "status") {
+            if (key === "name") {
                 editable = null;
             }
-            if (key === "avtar") {
+            if (key === "description") {
                 editable = null;
             }
-            if (key === "vendor") {
+            if (key === "created_at") {
                 editable = null;
             }
-            if (key === "order_status") {
+            if (key === "updated_at") {
                 editable = null;
             }
 
@@ -107,6 +126,7 @@ class List extends Component {
         }
 
         if (multiSelectOption == true) {
+
             columns.push(
                 {
                     Header: <button className="btn btn-danger btn-sm btn-delete mb-0 b-r-4"
@@ -135,6 +155,7 @@ class List extends Component {
                     }
                 }
             )
+
         } else {
             columns.push(
                 {
@@ -143,12 +164,16 @@ class List extends Component {
                     accessor: str => "delete",
                     Cell: (row) => (
                         <div>
-                            <span onClick={() => {
-                                if (window.confirm('Are you sure you wish to delete this item?')) {
+                            <span style={{ cursor: 'pointer' }} onClick={() => {
+
+
+                                if (window.confirm('Bạn có muốn xóa danh mục này không ?')) {
+                                    this.props.onDelete(row.index);
                                     let data = myData;
                                     data.splice(row.index, 1);
                                     this.setState({ myData: data });
                                 }
+
                                 toast.success("Successfully Deleted !")
 
                             }}>
@@ -177,7 +202,22 @@ class List extends Component {
                     showPagination={pagination}
                 />
                 {/* <ToastContainer /> */}
+
+                <div>
+                    <button onClick={this.onOpenModal}>Open modal</button>
+                    <Modal open={open} onClose={this.onCloseModal} >
+                        <div className="modal-header">
+                            <h5 className="modal-title f-w-600" id="exampleModalLabel2">Bạn có muốn xóa danh mục này không ?</h5>
+                        </div>
+                        <div className="modal-footer">
+                            <button type="submit" className="btn btn-primary" onClick={() => this.handleSubmit}>Đồng ý</button>
+                            <button type="button" className="btn btn-secondary" onClick={() => this.onCloseModal('VaryingMdo')}>Hủy</button>
+                        </div>
+                    </Modal>
+                </div>
             </Fragment>
+
+
         )
     }
 }
