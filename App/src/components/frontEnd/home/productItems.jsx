@@ -66,7 +66,7 @@ class ProductItem extends Component {
                     </div>
                     <div className="front">
                         <Link to={`/product/${product.id}`} ><img
-                            src={product.images.length >= 0 ? product.images[0].url : ''}
+                            src={product.images.length > 0 ? product.images[0].url : ''}
                             className="img-fluid"
                             alt="" /></Link>
                     </div>

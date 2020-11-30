@@ -1,4 +1,4 @@
-
+import * as ep from './../../constants/enpoint';
 export const types = {
     GET_CATEGORIES: 'GET_CATEGORIES',
     ADD_CATEGORY: 'CREATE_CATEGORY',
@@ -17,7 +17,7 @@ export const types = {
 
 export const getCategories = () => {
     return {
-        url: `/api/categories`,
+        url: `${ep.enpoint}/api/categories`,
         method: 'get',
         onSuccess: types.GET_CATEGORIES_SUCCESS,
         onError: types.GET_CATEGORIES_ERROR
@@ -28,9 +28,9 @@ export const getCategories = () => {
 
 export const createCategory = (data) => {
     return {
-        url: `/api/categories`, 
+        url: `${ep.enpoint}/api/categories`, 
         method: 'post',  
-        param: {...data},
+        data: {...data},
         onSuccess: types.CREATE_CATEGORY_SUCCESS,
         onError: types.CREATE_CATEGORY_ERROR
     };
@@ -39,9 +39,9 @@ export const createCategory = (data) => {
 export const updateCategory = (data) => {
     console.log(data,'EDIT ITEM');
     return {
-        url: `/api/categories/${data.id}`, 
+        url: `${ep.enpoint}/api/categories/${data.id}`, 
         method: 'put',  
-        param: {...data},
+        data: {...data},
         onSuccess: types.UPDATE_CATEGORY_SUCCESS,
         onError: types.UPDATE_CATEGORY_ERROR
     };
@@ -49,7 +49,7 @@ export const updateCategory = (data) => {
 
 export const deleteCategory = (id) => {
     return {
-        url: `/api/categories/${id}`,
+        url: `${ep.enpoint}/api/categories/${id}`,
         method: 'delete',
         onSuccess: types.DELETE_CATEGORY_SUCCESS,
         onError: types.DELETE_CATEGORY_ERROR
