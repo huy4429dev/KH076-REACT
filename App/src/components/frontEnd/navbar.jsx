@@ -89,11 +89,11 @@ class NavBar extends Component {
                                     {'Cửa hàng'}
                                 </Link>
                             </li>
-                            <li >
+                            {/* <li >
                                 <Link to="/product" className="nav-link">
                                     {'Sản phẩm'}
                                 </Link>
-                            </li>
+                            </li> */}
                             <li >
                                 <Link to="/blog" className="nav-link">
                                     {'Bài viết'}

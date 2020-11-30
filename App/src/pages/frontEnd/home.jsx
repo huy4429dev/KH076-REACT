@@ -29,7 +29,7 @@ class Home extends Component {
                             <div className="row">
                                 <div className="col">
                                     <div className="banner-contain">
-                                        <h2>2018</h2>
+                                        <h2>2020</h2>
                                         <h3>fashion trends</h3>
                                         <h4>special offer</h4>
                                     </div>
@@ -48,8 +48,8 @@ class Home extends Component {
                                 <div className="media">
                                     <div dangerouslySetInnerHTML={{ __html: svgFreeShipping }} />
                                     <div className="media-body">
-                                        <h4>free shipping</h4>
-                                        <p>free shipping world wide</p>
+                                        <h4>Miễn phí vận chuyển</h4>
+                                        <p>Miễn phí vận chuyển mọi nơi</p>
                                     </div>
                                 </div>
                             </div>
@@ -57,8 +57,8 @@ class Home extends Component {
                                 <div className="media">
                                     <div dangerouslySetInnerHTML={{ __html: svgservice }} />
                                     <div className="media-body">
-                                        <h4>24 X 7 service</h4>
-                                        <p>online service for new customer</p>
+                                        <h4>24 X 7 dịch vụ</h4>
+                                        <p>Dịch vụ trực tuyến cho khách hàng </p>
                                     </div>
                                 </div>
                             </div>
@@ -66,8 +66,8 @@ class Home extends Component {
                                 <div className="media">
                                     <div dangerouslySetInnerHTML={{ __html: svgoffer }} />
                                     <div className="media-body">
-                                        <h4>festival offer</h4>
-                                        <p>new online special festival offer</p>
+                                        <h4>Lễ hội ưu đãi</h4>
+                                        <p>Ưu đãi Lễ hội Đặc biệt Trực tuyến Mới</p>
                                     </div>
                                 </div>
                             </div>
@@ -79,8 +79,8 @@ class Home extends Component {
                     <div className="row">
                         <div className="col">
                             <div className="title1 section-t-space">
-                                <h4>Recent Story</h4>
-                                <h2 className="title-inner1">from the blog</h2>
+                                <h4>Gần đây</h4>
+                                <h2 className="title-inner1">Từ bài viết</h2>
                             </div>
                         </div>
                     </div>
@@ -93,7 +93,7 @@ class Home extends Component {
                 {/*logo section*/}
                 <LogoBlock />
                 {/*logo section end*/}
-            </div>
+            </div >
         )
     }
 }
