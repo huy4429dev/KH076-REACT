@@ -6,7 +6,7 @@ $font-themify: themify;
 $font-awesome: FontAwesome;
 $font-ICO: IcoFont;
 $font-work-sans: work-Sans;
-$font-nunito: Nunito;
+$font-nunito: system-ui, sans-serif;
 $font-serif: sans-serif;
 
 //colors
@@ -153,7 +153,7 @@ $page-body-margin-bottom: 0px;
 $page-header-padding : 30px;
 $page-title-font-size: 24px;
 $page-title-margin-bottom: 0;
-$page-title-font-weight: 800;
+$page-title-font-weight: 400;
 $page-title-text-tranform: uppercase;
 $breadcrumb-size: 14px;
 $breadcrumb-content: "/";

@@ -112,7 +112,7 @@ class LoginTabset extends Component {
                     <Tabs>
                         <TabList className="nav nav-tabs tab-coupon" >
                             <Tab className="nav-link" onClick={(e) => this.clickActive(e)}><User />Đăng nhập</Tab>
-                            {/* <Tab className="nav-link" onClick={(e) => this.clickActive(e)}><Unlock />Đăng ký</Tab> */}
+                            {<Tab className="nav-link" onClick={(e) => this.clickActive(e)}><Unlock />Đăng ký</Tab>}
                         </TabList>
 
                         <TabPanel>
@@ -219,4 +219,3 @@ class LoginTabset extends Component {
 export default connect(LoginTabset, state => (
     {}
 ), actions);
-

@@ -11,7 +11,7 @@ function processAjax(store, action) {
         method: action.method,
         headers: {
             "Content-Type": "application/json",
-            Authorization: "Bearer" + localStorage.getItem("access_token")
+            Authorization: "Bearer " + localStorage.getItem("access_token")
         },
         body: action.data ? JSON.stringify(action.data) : null
 

@@ -11,6 +11,7 @@ export default (state = initState, action) => {
     let index;
     switch (action.type) {
         case types.ADMIN_LOGIN_SUCCESS:
+
             state.login = true;
             state.token = action.data.token;
             state.user = action.data.user;
