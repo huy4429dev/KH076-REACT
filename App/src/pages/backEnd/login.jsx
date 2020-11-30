@@ -13,9 +13,7 @@ import * as actions from './../../actions/backEnd/login';
 export class Login extends Component {
     componentDidMount() {
         const { login } = this.props.loginAdmin;
-        console.log("a", this.props.a)
         if (login) {
-            console.log("a", login)
             this.props.history.push("/admin/dashboard");
         }
     }

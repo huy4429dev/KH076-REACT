@@ -2,17 +2,50 @@ import React, { Component } from 'react';
 import { Helmet } from 'react-helmet';
 import { Link } from 'react-router-dom';
 import Breadcrumb from "./../../components/frontEnd/home/breadcrumb";
-
+import connect from './../../lib/connect';
+import * as actions from './../../actions/frontEnd/cart';
+const styles = {
+    td: {
+        minWidth: "150px"
+    }
+}
 class Cart extends Component {
 
     constructor(props) {
         super(props)
     }
+    removeFromCart = () => {
 
+    }
+    totalPrice = (items) => {
+        console.log(items);
+        if (items.length > 0) {
+            return (
+                items.reduce((a, c) => {
+                    if (c.product.discount) {
+                        return [...a, (c.quantity * (c.product.price - (c.product.price * c.product.discount / 100)))]
+                    } else {
+                        return [...a, (c.quantity * c.product.price)]
+                    }
+                }, []).reduce((a, c) => parseInt(a + c))
+            )
+        } else {
+            return 0;
+        }
+    }
+    removeCart = (item) => {
+        this.props.actions.removeCart(item);
+    }
+    addOneItemCart = (id) => {
+        this.props.actions.addOneItemCart(id);
+    }
+    removeOneItemCart = (id) => {
+        this.props.actions.removeOneItemCart(id);
+    }
     render() {
-
         const { symbol, total } = this.props;
         const cartItems = [];
+        const { items } = this.props.cart;
         return (
             <div>
                 {/*SEO Support*/}
@@ -22,102 +55,133 @@ class Cart extends Component {
                 </Helmet>
                 {/*SEO Support End */}
 
-                <Breadcrumb title={'Cart Page'} />
+                <Breadcrumb title={'Giỏ hàng'} />
 
-                {cartItems.length > 0 ?
+                {items.length > 0 ?
                     <section className="cart-section section-b-space">
                         <div className="container">
                             <div className="row">
-                                <div className="col-sm-12">
-                                    <table className="table cart-table table-responsive-xs">
+                                <div className="col-md-12">
+                                    <table className="table table-responsive-xs w-100" style={{ overflowWrap: "break-word" }}>
                                         <thead>
                                             <tr className="table-head">
-                                                <th scope="col">image</th>
-                                                <th scope="col">product name</th>
-                                                <th scope="col">price</th>
-                                                <th scope="col">quantity</th>
-                                                <th scope="col">action</th>
-                                                <th scope="col">total</th>
+                                                <th>Ảnh</th>
+                                                <th>Tên sản phẩm</th>
+                                                <th>Giá</th>
+                                                <th>Số lượng</th>
+                                                <th>hành động</th>
+                                                <th>Tổng tiền</th>
                                             </tr>
                                         </thead>
-                                        {cartItems.map((item, index) => {
+                                        {items.map((item, index) => {
                                             return (
                                                 <tbody key={index}>
                                                     <tr>
-                                                        <td>
-                                                            <Link to={`${process.env.PUBLIC_URL}/left-sidebar/product/${item.id}`}>
-                                                                <img src={item.variants ?
-                                                                    item.variants[0].images
-                                                                    : item.pictures[0]} alt="" />
+                                                        <td style={styles.td}>
+                                                            <Link to={`/product/${item.id}`}>
+                                                                {
+                                                                    item.product.images.length > 0 && (
+                                                                        <img src={item.product.images[0].url} alt="" />
+                                                                    )
+                                                                }
+
                                                             </Link>
                                                         </td>
-                                                        <td><Link to={`${process.env.PUBLIC_URL}/left-sidebar/product/${item.id}`}>{item.name}</Link>
+                                                        <td style={styles.td}><Link to={`/product/${item.id}`}>{item.product.name}</Link>
                                                             <div className="mobile-cart-content row">
                                                                 <div className="col-xs-3">
                                                                     <div className="qty-box">
                                                                         <div className="input-group">
                                                                             <input type="text" name="quantity"
-                                                                                className="form-control input-number" defaultValue={item.qty} />
+                                                                                className="form-control input-number" defaultValue={item.quantity} />
                                                                         </div>
                                                                     </div>
                                                                 </div>
                                                                 <div className="col-xs-3">
-                                                                    <h2 className="td-color">{symbol}{item.price - (item.price * item.discount / 100)}</h2>
+                                                                    {
+                                                                        item.product.discount ?
+                                                                            <h2 className="td-color">{item.product.price - (item.product.price * item.product.discount / 100)}</h2>
+                                                                            :
+                                                                            <h2 className="td-color">{item.product.price}</h2>
+                                                                    }
                                                                 </div>
                                                                 <div className="col-xs-3">
                                                                     <h2 className="td-color">
-                                                                        <a href="#" className="icon" onClick={() => this.props.removeFromCart(item)}>
+                                                                        <div className="icon" onClick={() => this.removeCart(item)}>
                                                                             <i className="icon-close"></i>
-                                                                        </a>
+                                                                        </div>
                                                                     </h2>
                                                                 </div>
                                                             </div>
                                                         </td>
-                                                        <td><h2>{symbol}{item.price - (item.price * item.discount / 100)}</h2></td>
-                                                        <td>
+                                                        <td style={styles.td}>
+                                                            {
+                                                                item.product.discount ?
+                                                                    <h2>{item.product.price - (item.product.price * item.product.discount / 100)}đ</h2>
+                                                                    :
+                                                                    <h2>{item.product.price} đ</h2>
+                                                            }
+
+                                                        </td>
+                                                        <td style={styles.td}>
                                                             <div className="qty-box">
                                                                 <div className="input-group">
                                                                     <span className="input-group-prepend">
-                                                                        <button type="button" className="btn quantity-left-minus" onClick={() => this.props.decrementQty(item.id)} data-type="minus" data-field="">
+                                                                        <button type="button" className="btn quantity-left-minus" onClick={() => this.removeOneItemCart(item.product.id)} data-type="minus" data-field="">
                                                                             <i className="fa fa-angle-left"></i>
                                                                         </button>
                                                                     </span>
-                                                                    <input type="text" name="quantity" value={item.qty} readOnly={true} className="form-control input-number" />
-
+                                                                    <input type="text" name="quantity" value={item.quantity} readOnly={true} className="form-control input-number" />
                                                                     <span className="input-group-prepend">
-                                                                        <button className="btn quantity-right-plus" onClick={() => this.props.incrementQty(item, 1)} data-type="plus" disabled={(item.qty >= item.stock) ? true : false}>
+                                                                        <button className="btn quantity-right-plus" onClick={() => this.addOneItemCart(item.product.id)} data-type="plus" disabled={(item.quantity >= item.product.quantity) ? true : false}>
                                                                             <i className="fa fa-angle-right"></i>
                                                                         </button>
                                                                     </span>
                                                                 </div>
-                                                            </div>{(item.qty >= item.stock) ? 'out of Stock' : ''}
+                                                            </div>{(item.quantity >= item.product.quantity) ? 'out of Stock' : ''}
                                                         </td>
-                                                        <td>
-                                                            <a href="#" className="icon" onClick={() => this.props.removeFromCart(item)}>
+                                                        <td style={styles.td}>
+                                                            <a className="icon" onClick={() => this.removeCart(item)}>
                                                                 <i className="fa fa-times"></i>
                                                             </a>
                                                         </td>
-                                                        <td><h2 className="td-color">{symbol}{item.sum}</h2></td>
+                                                        <td style={styles.td}>
+                                                            {
+                                                                item.product.discount ?
+                                                                    <h2 className="td-color">
+                                                                        {item.quantity * (item.product.price - (item.product.price * item.product.discount / 100))}đ
+                                                                    </h2>
+                                                                    :
+                                                                    <h2 className="td-color">
+                                                                        { }
+                                                                    </h2>
+                                                            }
+
+                                                        </td>
                                                     </tr>
                                                 </tbody>)
                                         })}
                                     </table>
-                                    <table className="table cart-table table-responsive-md">
+                                    {/* <div className="">
                                         <tfoot>
-                                            <tr>
-                                                <td>total price :</td>
-                                                <td><h2>{symbol} {total} </h2></td>
+                                            <tr >
+                                                <td>Tổng :</td>
+                                                <td></td>
                                             </tr>
                                         </tfoot>
-                                    </table>
+                                    </div> */}
+                                    <div className="d-flex justify-content-between">
+                                        <div>Tổng :</div>
+                                        <div><h2>{this.totalPrice(items)}đ</h2></div>
+                                    </div>
                                 </div>
                             </div>
                             <div className="row cart-buttons">
                                 <div className="col-6">
-                                    <Link to={`${process.env.PUBLIC_URL}/left-sidebar/collection`} className="btn btn-solid">continue shopping</Link>
+                                    <Link to={`/left-sidebar/collection`} className="btn btn-solid">continue shopping</Link>
                                 </div>
                                 <div className="col-6">
-                                    <Link to={`${process.env.PUBLIC_URL}/checkout`} className="btn btn-solid">check out</Link>
+                                    <Link to={`/checkout`} className="btn btn-solid">check out</Link>
                                 </div>
                             </div>
                         </div>
@@ -147,4 +211,6 @@ class Cart extends Component {
 }
 
 
-export default Cart;
+export default connect(Cart, state => ({
+    cart: state.cart
+}), actions);

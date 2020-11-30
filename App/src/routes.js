@@ -6,6 +6,8 @@ import Checkout from './pages/frontEnd/checkout';
 import Cart from './pages/frontEnd/cart';
 import Login from './pages/frontEnd/login';
 import Register from './pages/frontEnd/register';
+import Blog from './pages/frontEnd/blog';
+import Contact from './pages/frontEnd/contact';
 
 
 const routes = [
@@ -44,6 +46,16 @@ const routes = [
         path: '/register',
         exact: true,
         main: ({ history }) => <Register history={history} />
+    },
+    {
+        path: '/blog',
+        exact: true,
+        main: ({ history }) => <Blog history={history} />
+    },
+    {
+        path: '/contact',
+        exact: true,
+        main: ({ history }) => <Contact history={history} />
     },
 ];
 

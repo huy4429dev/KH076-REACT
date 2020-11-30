@@ -81,17 +81,27 @@ class NavBar extends Component {
                             </li>
                             <li >
                                 <Link to="/" className="nav-link">
-                                    {'home'}
+                                    {'Trang chủ'}
                                 </Link>
                             </li>
                             <li >
                                 <Link to="/shop" className="nav-link" >
-                                    {'shop'}
+                                    {'Cửa hàng'}
                                 </Link>
                             </li>
                             <li >
                                 <Link to="/product" className="nav-link">
-                                    {'products'}
+                                    {'Sản phẩm'}
+                                </Link>
+                            </li>
+                            <li >
+                                <Link to="/blog" className="nav-link">
+                                    {'Bài viết'}
+                                </Link>
+                            </li>
+                            <li >
+                                <Link to="/contact" className="nav-link">
+                                    {'Liên hệ'}
                                 </Link>
                             </li>
                         </ul >

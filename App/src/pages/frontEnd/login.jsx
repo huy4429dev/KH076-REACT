@@ -73,7 +73,9 @@ class Login extends Component {
                                             />
                                             {this.validator.message('email', this.state.password, 'required', { className: 'text-danger' })}
                                         </div>
-                                        <a className="btn btn-solid" onClick={(e) => this.login(e)}>Đăng nhập</a>
+                                        <div>
+                                            <a className="btn btn-solid" onClick={(e) => this.login(e)}>Đăng nhập</a>
+                                        </div>
                                     </form>
                                 </div>
                             </div>
