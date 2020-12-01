@@ -1,5 +1,5 @@
 import React, { Component, Fragment } from 'react'
-import Breadcrumb from './../../../components/backEnd/breadCrumb';
+import Breadcrumb from '../../../components/backEnd/breadCrumb';
 import Slider from 'react-slick';
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";

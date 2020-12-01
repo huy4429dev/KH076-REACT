@@ -105,7 +105,7 @@ Route::prefix('categories')->group(function(){
     
     Route::get('/', [CategoryController::class,'index'] );
     Route::get('/search', [CategoryController::class,'search'] );
-    Route::get('/{id}', [CategoryController::class,'show'] );
+    Route::get('/{id}', [CategoryController::class,'showChildren'] );
 
     Route::middleware(['auth:api', 'role'])->group(function() {
         

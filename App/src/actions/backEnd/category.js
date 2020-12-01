@@ -1,3 +1,4 @@
+import { type } from 'jquery';
 import * as ep from './../../constants/enpoint';
 export const types = {
     GET_CATEGORIES: 'GET_CATEGORIES',
@@ -11,7 +12,9 @@ export const types = {
     UPDATE_CATEGORY_SUCCESS: 'UPDATE_CATEGORY_SUCCESS',
     UPDATE_CATEGORY_ERROR: 'UPDATE_CATEGORY_ERROR',
     DELETE_CATEGORY_SUCCESS: 'DELETE_CATEGORY_SUCCESS',
-    DELETE_CATEGORY_ERROR: 'DELETE_CATEGORY_ERROR'
+    DELETE_CATEGORY_ERROR: 'DELETE_CATEGORY_ERROR',
+    GET_CATEGORY_SUCCESS: 'GET_CATEGORY_SUCCESS',
+    GET_CATEGORY_ERROR: 'GET_CATEGORY_ERROR'
 }
 
 
@@ -37,7 +40,6 @@ export const createCategory = (data) => {
 };
 
 export const updateCategory = (data) => {
-    console.log(data,'EDIT ITEM');
     return {
         url: `${ep.enpoint}/api/categories/${data.id}`, 
         method: 'put',  
@@ -56,3 +58,12 @@ export const deleteCategory = (id) => {
     };
 
 };
+
+export const getCategory = id => {
+    return {
+        url: `${ep.enpoint}/api/categories/${id}`, 
+        method: 'get', 
+        onSuccess: types.GET_CATEGORY_SUCCESS,
+        onError: types.GET_CATEGORY_ERROR
+    }
+}

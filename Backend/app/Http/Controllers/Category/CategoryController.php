@@ -61,9 +61,9 @@ class CategoryController extends BaseController
     }
 
     
-    public function show($id){
+    public function showChildren($id){
 
-        $found = Category::where('id',$id)->first();
+        $found = Category::where('id',$id)->with('children')->get();
 
         return $this->sendResponse(
             $data = $found

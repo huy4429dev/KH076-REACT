@@ -7,7 +7,7 @@ import Detailt from './pages/backEnd/products/detailtProduct';
 import AddProduct from './pages/backEnd/products/addProduct';
 import AddUser from './pages/backEnd/user/create';
 import Profile from './pages/backEnd/profile';
-import CategoryDetailt from './pages/backEnd/categoryDetailt';
+import CategoryDetailt from './pages/backEnd/products/categoryDetailt';
 
 
 

@@ -14,14 +14,14 @@ import {
 
 export const MENUITEMS = [
     {
-        path: '/dashboard', title: 'Dashboard', icon: Home, type: 'link', badgeType: 'primary', active: false
+        path: '/dashboard', title: 'Tổng quan', icon: Home, type: 'link', badgeType: 'primary', active: false
     },
     {
-        title: 'Products', icon: Box, type: 'sub', active: false, children: [
+        title: 'Sản phẩm', icon: Box, type: 'sub', active: false, children: [
 
-            { path: '/admin/products/category', title: 'Category', type: 'link' },
+            { path: '/admin/products/category', title: 'Danh mục', type: 'link' },
             // { path: '/admin/products/physical/sub-category', title: 'Sub Category', type: 'link' },
-            { path: '/admin/products/list', title: 'Product List', type: 'link' },
+            { path: '/admin/products/list', title: 'Sản phẩm', type: 'link' },
             { path: '/admin/products/detailt', title: 'Product Detail', type: 'link' },
             { path: '/admin/products/add', title: 'Add Product', type: 'link' },
 
@@ -63,7 +63,7 @@ export const MENUITEMS = [
     //     ]
     // },
     {
-        title: 'Users', icon: UserPlus, type: 'sub', active: false, children: [
+        title: 'Khách hàng', icon: UserPlus, type: 'sub', active: false, children: [
             { path: '/admin/user', title: 'User List', type: 'link' },
             { path: '/admin/user/add', title: 'Create User', type: 'link' },
         ]
@@ -85,7 +85,7 @@ export const MENUITEMS = [
     //     title: 'Reports', path: '/reports/report', icon: BarChart, type: 'link', active: false
     // },
     {
-        title: 'Settings', icon: Settings, type: 'sub', children: [
+        title: 'Thiết lập', icon: Settings, type: 'sub', children: [
             { path: '/admin/profile', title: 'Profile', type: 'link' },
         ]
     },
