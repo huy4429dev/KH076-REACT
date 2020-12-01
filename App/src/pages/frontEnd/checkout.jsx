@@ -209,7 +209,7 @@ class CheckOut extends Component {
                                                             </div>
                                                             <div className="shopping-option">
                                                                 <input type="checkbox" name="local-pickup" id="local-pickup" />
-                                                                <label htmlFor="local-pickup">Local Pickup</label>
+                                                                <label htmlFor="local-pickup"></label>
                                                             </div>
                                                         </div>
                                                         </li>
