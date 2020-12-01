@@ -16,15 +16,15 @@ class Service extends Component {
                     <div className="media">
                         <div dangerouslySetInnerHTML={{ __html: svgFreeShipping }} />
                         <div className="media-body">
-                            <h4>free shipping</h4>
-                            <p>free shipping world wide</p>
+                            <h4>Miễn phí vận chuyển</h4>
+                            <p>Miễn phí vận chuyển mọi nơi</p>
                         </div>
                     </div>
                     <div className="media">
                         <div dangerouslySetInnerHTML={{ __html: svgservice }} />
                         <div className="media-body">
-                            <h4>24 X 7 service</h4>
-                            <p>online service for new customer</p>
+                            <h4>24 X 7 dịch vụ</h4>
+                            <p>Dịch vụ trực tuyến cho khách hàng </p>
                         </div>
                     </div>
                     <div className="media">
@@ -42,7 +42,7 @@ class Service extends Component {
                         </div>
                     </div>
                 </div>
-            </div>
+            </div >
         )
     }
 }

@@ -11,6 +11,7 @@ use App\Http\Controllers\Product\SizeController as SizeController;
 use App\Http\Controllers\Order\OrderController as OrderController;
 use App\Http\Controllers\Order\OrderItemController as OrderItemController;
 use App\Http\Controllers\Rating\RatingController as RatingController;
+use App\Http\Controllers\Contact\ContactController as ContactController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -242,3 +243,23 @@ Route::prefix('rates')->group(function(){
 });
 
 //=================
+
+
+//=================
+
+//================================== Contact 
+
+
+Route::prefix('contact')->group(function(){
+      Route::post('/create', [ContactController::class,'create'] );
+    // Route::middleware(['auth:api', 'role'])->group(function() {
+         
+    //     Route::middleware(['scope:admin,shop,user'])->get('/', [ShopController::class,'index'] );
+    //     Route::middleware(['scope:admin,shop,user'])->get('/search', [ShopController::class,'search'] );
+    //     Route::middleware(['scope:admin,shop,user'])->get('/{id}', [ShopController::class,'show'] );
+    //     Route::middleware(['scope:admin,shop,user'])->post('/', [ShopController::class,'create'] );
+    //     Route::middleware(['scope:admin,shop,user'])->put('/{id}', [ShopController::class,'update'] );
+    //     Route::middleware(['scope:admin,shop,user'])->delete('/{id}', [ShopController::class,'delete'] );
+    // });
+
+});

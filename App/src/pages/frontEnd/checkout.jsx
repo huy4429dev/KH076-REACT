@@ -118,7 +118,7 @@ class CheckOut extends Component {
                 </Helmet>
                 {/*SEO Support End */}
 
-                <Breadcrumb title={'Checkout'} />
+                <Breadcrumb title={'Thanh toán'} />
 
                 <section className="section-b-space">
                     <div className="container padding-cls">
@@ -128,30 +128,30 @@ class CheckOut extends Component {
                                     <div className="checkout row">
                                         <div className="col-lg-6 col-sm-12 col-xs-12">
                                             <div className="checkout-title">
-                                                <h3>Billing Details</h3>
+                                                <h3>Chi tiết hóa đơn</h3>
                                             </div>
                                             <div className="row check-out">
                                                 <div className="form-group col-md-6 col-sm-6 col-xs-12">
-                                                    <div className="field-label">First Name</div>
+                                                    <div className="field-label">Họ tên</div>
                                                     <input type="text" name="first_name" value={this.state.first_name} onChange={this.setStateFromInput} />
                                                     {this.validator.message('first_name', this.state.first_name, 'required|alpha')}
                                                 </div>
-                                                <div className="form-group col-md-6 col-sm-6 col-xs-12">
+                                                {/* <div className="form-group col-md-6 col-sm-6 col-xs-12">
                                                     <div className="field-label">Last Name</div>
                                                     <input type="text" name="last_name" value={this.state.last_name} onChange={this.setStateFromInput} />
                                                     {this.validator.message('last_name', this.state.last_name, 'required|alpha')}
-                                                </div>
+                                                </div> */}
                                                 <div className="form-group col-md-6 col-sm-6 col-xs-12">
-                                                    <div className="field-label">Phone</div>
+                                                    <div className="field-label">Điện thoại</div>
                                                     <input type="text" name="phone" value={this.state.phone} onChange={this.setStateFromInput} />
                                                     {this.validator.message('phone', this.state.phone, 'required|phone')}
                                                 </div>
                                                 <div className="form-group col-md-6 col-sm-6 col-xs-12">
-                                                    <div className="field-label">Email Address</div>
+                                                    <div className="field-label">Email</div>
                                                     <input type="text" name="email" value={this.state.email} onChange={this.setStateFromInput} />
                                                     {this.validator.message('email', this.state.email, 'required|email')}
                                                 </div>
-                                                <div className="form-group col-md-12 col-sm-12 col-xs-12">
+                                                {/* <div className="form-group col-md-12 col-sm-12 col-xs-12">
                                                     <div className="field-label">Country</div>
                                                     <select name="country" value={this.state.country} onChange={this.setStateFromInput}>
                                                         <option>India</option>
@@ -160,13 +160,13 @@ class CheckOut extends Component {
                                                         <option>Australia</option>
                                                     </select>
                                                     {this.validator.message('country', this.state.country, 'required')}
-                                                </div>
+                                                </div> */}
                                                 <div className="form-group col-md-12 col-sm-12 col-xs-12">
-                                                    <div className="field-label">Address</div>
+                                                    <div className="field-label">Địa chỉ</div>
                                                     <input type="text" name="address" value={this.state.address} onChange={this.setStateFromInput} placeholder="Street address" />
                                                     {this.validator.message('address', this.state.address, 'required|min:20|max:120')}
                                                 </div>
-                                                <div className="form-group col-md-12 col-sm-12 col-xs-12">
+                                                {/* <div className="form-group col-md-12 col-sm-12 col-xs-12">
                                                     <div className="field-label">Town/City</div>
                                                     <input type="text" name="city" value={this.state.city} onChange={this.setStateFromInput} />
                                                     {this.validator.message('city', this.state.city, 'required|alpha')}
@@ -175,24 +175,24 @@ class CheckOut extends Component {
                                                     <div className="field-label">State / County</div>
                                                     <input type="text" name="state" value={this.state.state} onChange={this.setStateFromInput} />
                                                     {this.validator.message('state', this.state.state, 'required|alpha')}
-                                                </div>
-                                                <div className="form-group col-md-12 col-sm-6 col-xs-12">
+                                                </div> */}
+                                                {/* <div className="form-group col-md-12 col-sm-6 col-xs-12">
                                                     <div className="field-label">Postal Code</div>
                                                     <input type="text" name="pincode" value={this.state.spincode} onChange={this.setStateFromInput} />
                                                     {this.validator.message('pincode', this.state.pincode, 'required|integer')}
-                                                </div>
-                                                <div className="form-group col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                                                </div> */}
+                                                {/* <div className="form-group col-lg-12 col-md-12 col-sm-12 col-xs-12">
                                                     <input type="checkbox" name="create_account" id="account-option" checked={this.state.create_account} onChange={this.setStateFromCheckbox} />
                                                     &ensp; <label htmlFor="account-option">Create An Account?</label>
                                                     {this.validator.message('checkbox', this.state.create_account, 'create_account')}
-                                                </div>
+                                                </div> */}
                                             </div>
                                         </div>
                                         <div className="col-lg-6 col-sm-12 col-xs-12">
                                             <div className="checkout-details">
                                                 <div className="order-box">
                                                     <div className="title-box">
-                                                        <div>Product <span> Total</span></div>
+                                                        <div>Sản phẩm <span> Tổng</span></div>
                                                     </div>
                                                     <ul className="qty">
                                                         {cartItems.map((item, index) => {
@@ -205,7 +205,7 @@ class CheckOut extends Component {
                                                         <li>Shipping <div className="shipping">
                                                             <div className="shopping-option">
                                                                 <input type="checkbox" name="free-shipping" id="free-shipping" />
-                                                                <label htmlFor="free-shipping">Free Shipping</label>
+                                                                <label htmlFor="free-shipping">Miễn phí giao hàng</label>
                                                             </div>
                                                             <div className="shopping-option">
                                                                 <input type="checkbox" name="local-pickup" id="local-pickup" />

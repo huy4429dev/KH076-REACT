@@ -4,7 +4,12 @@ import Breadcrumb from "./../../components/frontEnd/home/breadcrumb";
 import SimpleReactValidator from 'simple-react-validator';
 import connect from './../../lib/connect';
 import * as actions from './../../actions/frontEnd/login';
-
+const styles = {
+    checkbox: {
+        outLine: "none",
+        borderColor: "none"
+    }
+}
 class Register extends Component {
 
     constructor(props) {
@@ -13,7 +18,8 @@ class Register extends Component {
             username: '',
             email: '',
             password: '',
-            r_password: ''
+            r_password: '',
+            role: 'user'
         }
         this.validator = new SimpleReactValidator({
             autoForceUpdate: this,
@@ -25,11 +31,7 @@ class Register extends Component {
         e.stopPropagation();
         e.preventDefault();
         const { username, password, r_password, email } = this.state;
-        let err = false;
-        if (!username || !password || !r_password || !email) {
-            err = true
-        }
-        if (!err) {
+        if (this.validator.allValid()) {
             this.setState({
                 loading: true
             })
@@ -38,7 +40,7 @@ class Register extends Component {
                 email: this.state.email,
                 password: this.state.password,
                 c_password: this.state.r_password,
-                role: "user"
+                role: this.state.role
             }
             this.props.actions.register(data)
                 .then(() => {
@@ -50,10 +52,12 @@ class Register extends Component {
                     window.notify('Đăng ký không thành công', 'danger');
                 });
         } else {
+            this.validator.showMessages();
             window.notify('Vui lòng điền đầy đủ các trường', 'danger');
         }
     }
     render() {
+        console.log(this.state);
         return (
             <div>
                 <Breadcrumb title={'Tạo tài khoản'} />
@@ -107,7 +111,36 @@ class Register extends Component {
                                                     placeholder="Nhập lại mật khẩu" required="" />
                                                 {this.validator.message('r_password', this.state.r_password, `required|in:${this.state.password}`, { className: 'text-danger' })}
                                             </div>
-                                            <a className="btn btn-solid" onClick={(e) => this.register(e)}>Thêm tài khoản</a>
+
+                                        </div>
+                                        <div className="form-row">
+                                            <div className="col-md-6">
+                                                <div className="d-flex">
+                                                    <input type="checkbox" className="form-control form-check-input"
+                                                        name="role" style={styles.checkbox}
+                                                        value="user"
+                                                        checked={this.state.role == 'user' ? true : false}
+                                                        onChange={(e) => this.setState({ [e.target.name]: e.target.value })}
+                                                    />
+                                                    <label htmlFor="">Đăng ký tài khoản user</label>
+                                                </div>
+                                                <div className="d-flex">
+
+                                                    <input type="checkbox" className="form-control form-check-input"
+                                                        name="" style={styles.checkbox} name="role"
+                                                        value="shop"
+                                                        onChange={(e) => this.setState({ [e.target.name]: e.target.value })}
+                                                        checked={this.state.role == 'shop' ? true : false}
+                                                    />
+                                                    <label htmlFor="">Đăng ký tài khoản shop</label>
+                                                </div>
+                                                {/* <input className="form-check-input" type="checkbox" />
+                                                <input className="form-check-input" type="checkbox" /> */}
+
+                                            </div>
+                                            <div className="col-md-6">
+                                                <a className="btn btn-solid" onClick={(e) => this.register(e)}>Thêm tài khoản</a>
+                                            </div>
                                         </div>
                                     </form>
                                 </div>

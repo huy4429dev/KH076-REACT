@@ -32,8 +32,8 @@ class Footer extends Component {
                                 <div className="col-lg-6">
                                     <div className="subscribe">
                                         <div>
-                                            <h4>KNOW IT ALL FIRST!</h4>
-                                            <p>Never Miss Anything From Multikart By Signing Up To Our Newsletter. </p>
+                                            <h4>Bạn có biết!</h4>
+                                            <p>Không bao giờ bỏ lỡ bất cứ điều gì từ Multikart bằng cách đăng ký bản tin của chúng tôi. </p>
                                         </div>
                                     </div>
                                 </div>
@@ -41,9 +41,9 @@ class Footer extends Component {
                                     <form className="form-inline subscribe-form">
                                         <div className="form-group mx-sm-3">
                                             <input type="text" className="form-control" id="exampleFormControlInput1"
-                                                placeholder="Enter your email" />
+                                                placeholder="email..." />
                                         </div>
-                                        <button type="submit" className="btn btn-solid">subscribe</button>
+                                        <button type="submit" className="btn btn-solid">Đăng ký</button>
                                     </form>
                                 </div>
                             </div>
@@ -87,14 +87,14 @@ class Footer extends Component {
                             <div className="col offset-xl-1">
                                 <div className="sub-title">
                                     <div className="footer-title">
-                                        <h4>my account</h4>
+                                        <h4>Tài khoản</h4>
                                     </div>
                                     <div className="footer-contant">
                                         <ul>
-                                            <li><Link to={`${process.env.PUBLIC_URL}/left-sidebar/collection`} >womens</Link></li>
-                                            <li><Link to={`${process.env.PUBLIC_URL}/left-sidebar/collection`} >clothing</Link></li>
-                                            <li><Link to={`${process.env.PUBLIC_URL}/left-sidebar/collection`} >accessories</Link></li>
-                                            <li><Link to={`${process.env.PUBLIC_URL}/left-sidebar/collection`} >featured</Link></li>
+                                            <li><Link to={`${process.env.PUBLIC_URL}/left-sidebar/collection`} >Thời trang nữ</Link></li>
+                                            <li><Link to={`${process.env.PUBLIC_URL}/left-sidebar/collection`} >Quần áo</Link></li>
+                                            <li><Link to={`${process.env.PUBLIC_URL}/left-sidebar/collection`} >Phụ kiện</Link></li>
+                                            <li><Link to={`${process.env.PUBLIC_URL}/left-sidebar/collection`} >Sản phẩm đặc biệt</Link></li>
                                         </ul>
                                     </div>
                                 </div>
@@ -102,15 +102,15 @@ class Footer extends Component {
                             <div className="col">
                                 <div className="sub-title">
                                     <div className="footer-title">
-                                        <h4>why we choose</h4>
+                                        <h4>Tại sao chọn chúng tôi</h4>
                                     </div>
                                     <div className="footer-contant">
                                         <ul>
-                                            <li><a href="#">shipping & return</a></li>
-                                            <li><a href="#">secure shopping</a></li>
-                                            <li><a href="#">gallary</a></li>
-                                            <li><a href="#">affiliates</a></li>
-                                            <li><a href="#">contacts</a></li>
+                                            <li><a href="#">Vận chuyển & Trả hàng</a></li>
+                                            <li><a href="#">Mua sắm an toàn</a></li>
+                                            {/* <li><a href="#">gallary</a></li> */}
+                                            <li><a href="#">Chi nhánh</a></li>
+                                            <li><a href="#">Liên hệ</a></li>
                                         </ul>
                                     </div>
                                 </div>
@@ -118,16 +118,15 @@ class Footer extends Component {
                             <div className="col">
                                 <div className="sub-title">
                                     <div className="footer-title">
-                                        <h4>store information</h4>
+                                        <h4>LƯU TRỮ THÔNG TIN</h4>
                                     </div>
                                     <div className="footer-contant">
                                         <ul className="contact-list">
-                                            <li><i className="fa fa-map-marker"></i>Multikart Demo Store, Demo store
-                                                India 345-659
+                                            <li><i className="fa fa-map-marker"></i>Multikark shop, tp Đà Nẵng
                                             </li>
-                                            <li><i className="fa fa-phone"></i>Call Us: 123-456-7898</li>
-                                            <li><i className="fa fa-envelope-o"></i>Email Us: <a
-                                                href="#">Support@Fiot.com</a></li>
+                                            <li><i className="fa fa-phone"></i>0966756104</li>
+                                            <li><i className="fa fa-envelope-o"></i>Email:<a
+                                                href="#"> admin@gmail.com</a></li>
                                             <li><i className="fa fa-fax"></i>Fax: 123456</li>
                                         </ul>
                                     </div>
@@ -141,8 +140,7 @@ class Footer extends Component {
                         <div className="row">
                             <div className="col-xl-6 col-md-6 col-sm-12">
                                 <div className="footer-end">
-                                    <p><i className="fa fa-copyright" aria-hidden="true"></i> 2018-19 themeforest
-                                        powered by pixelstrap</p>
+                                    <p><i className="fa fa-copyright" aria-hidden="true"></i> 2020 fa-copyright</p>
                                 </div>
                             </div>
                             <div className="col-xl-6 col-md-6 col-sm-12">
