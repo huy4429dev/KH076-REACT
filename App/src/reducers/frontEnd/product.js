@@ -6,12 +6,18 @@ const initState = {
     newProduct: [],
     manProduct: [],
     womenProduct: [],
-    detailt: null
+    detailt: null,
+    listProduct: null
 }
 
 export default (state = initState, action) => {
     let index;
     switch (action.type) {
+        case types.GET_LIST_PRODUCTS_SUCCESS:
+            state.listProduct = action.data.data;
+            return {
+                ...state
+            }
         case types.GET_NEW_PRODUCTS_SUCCESS:
             state.newProduct = action.data.data.items;
             return {

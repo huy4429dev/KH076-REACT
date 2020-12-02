@@ -3,13 +3,17 @@ import SimpleReactValidator from 'simple-react-validator';
 import Breadcrumb from "./../../components/frontEnd/home/breadcrumb";
 import connect from './../../lib/connect';
 import * as actions from './../../actions/frontEnd/login';
+import { Link, Redirect } from 'react-router-dom';
+import Loading from './../../components/loadding2';
+
 class Login extends Component {
 
     constructor(props) {
         super(props)
         this.state = {
             email: '',
-            password: ''
+            password: '',
+            loading: false
         }
         this.validator = new SimpleReactValidator({ autoForceUpdate: this });
     }
@@ -42,7 +46,8 @@ class Login extends Component {
     render() {
         return (
             <div>
-                <Breadcrumb title={'Login'} />
+                <Breadcrumb title={'Đăng nhập'} />
+                <Loading type="full" show={this.state.loading} />
                 {/*Login section*/}
                 <section className="login-page section-b-space">
                     <div className="container">
@@ -80,13 +85,14 @@ class Login extends Component {
                                 </div>
                             </div>
                             <div className="col-lg-6 right-login">
-                                <h3>New Customer</h3>
+                                <h3>Khách hàng mới</h3>
                                 <div className="theme-card authentication-right">
-                                    <h6 className="title-font">Create A Account</h6>
-                                    <p>Sign up for a free account at our store. Registration is quick and easy. It
-                                    allows you to be able to order from our shop. To start shopping click
-                                        register.</p>
-                                    <a href="#" className="btn btn-solid">Create an Account</a>
+                                    <h6 className="title-font">Tạo tài khoản</h6>
+                                    <p>Đăng ký một tài khoản miễn phí tại cửa hàng của chúng tôi. Thủ tục đăng kí nhanh chóng và đơn giản. Nó cho phép bạn có thể đặt hàng từ cửa hàng của chúng tôi. Để bắt đầu mua sắm bấm đăng ký.</p>
+                                    {/* <a href="#" className="btn btn-solid"></a> */}
+                                    <Link to={'/register'} className="btn btn-solid">
+                                        Tạo tài khoản
+                                    </Link>
                                 </div>
                             </div>
                         </div>

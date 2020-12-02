@@ -1,7 +1,7 @@
 // import React from 'react';
 // import PropTypes from 'prop-types';
 // import classNames from 'classnames';
-// import loadingImage from './../../assets/images/fb-loading.gif';
+// // import loadingImage from './../../assets/images/fb-loading.gif';
 
 // export default class Loading extends React.Component {
 //     render() {

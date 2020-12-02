@@ -53,7 +53,7 @@ class Cart extends Component {
                         <div>
                             <li>
                                 <div className="total">
-                                    <h5>Tổng số : <span>{this.totalPrice(items)}đ</span></h5>
+                                    <h5>Tổng số: <span>{this.totalPrice(items)}đ</span></h5>
                                 </div>
                             </li>
                             <li>

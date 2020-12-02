@@ -25,7 +25,7 @@ class TopBar extends Component {
                                     <ul className="header-dropdown nav-menus">
                                         <UserMenu user={user} />
                                     </ul>
-                                    :
+                                 m   :
                                     <ul className="header-dropdown">
                                         <li className="onhover-dropdown mobile-account">
                                             <i className="fa fa-user" aria-hidden="true"></i> {('Tài khoản')}

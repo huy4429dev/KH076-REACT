@@ -3,6 +3,7 @@ import { Link } from 'react-router-dom';
 import InfiniteScroll from 'react-infinite-scroll-component';
 
 import ProductListItem from "./productListItem";
+import Loadding from './../../loadding2';
 
 class ProductListing extends Component {
 
@@ -34,17 +35,16 @@ class ProductListing extends Component {
 
     render() {
         const { products, addToCart, symbol, addToWishlist, addToCompare } = this.props;
-        console.log(this.props.colSize)
         return (
             <div>
                 <div className="product-wrapper-grid">
                     <div className="container-fluid">
-                        {products.length > 0 ?
+                        {products?.items?.length > 0 ?
                             <InfiniteScroll
                                 dataLength={this.state.limit} //This is important field to render the next data
                                 next={this.fetchMoreItems}
                                 hasMore={this.state.hasMoreItems}
-                                loader={<div className="loading-cls"></div>}
+                                // loader={<div className="loading-cls"></div>}
                                 endMessage={
                                     <p className="seen-cls seen-it-cls">
                                         <b>Yay! You have seen it all</b>
@@ -52,7 +52,7 @@ class ProductListing extends Component {
                                 }
                             >
                                 <div className="row">
-                                    {products.slice(0, this.state.limit).map((product, index) =>
+                                    {products?.items?.slice(0, this.state.limit).map((product, index) =>
                                         <div className={`${this.props.colSize === 3 ? 'col-xl-3 col-md-6 col-grid-box' : 'col-lg-' + this.props.colSize}`} key={index}>
                                             <ProductListItem product={product} symbol={symbol}
                                                 onAddToCompareClicked={() => addToCompare(product)}

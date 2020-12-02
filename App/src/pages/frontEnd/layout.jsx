@@ -92,7 +92,7 @@ class Cart extends Component {
                                                                         </button>
                                                                     </span>
                                                                 </div>
-                                                            </div>{(item.qty >= item.stock) ? 'out of Stock' : ''}
+                                                            </div>{(item.qty >= item.stock) ? 'Quá số lượng hàng trong kho' : ''}
                                                         </td>
                                                         <td>
                                                             <a href="#" className="icon" onClick={() => this.props.removeFromCart(item)}>
