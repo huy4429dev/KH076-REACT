@@ -12,7 +12,11 @@ import CategoryDetailt from './pages/backEnd/products/categoryDetailt';
 
 
 const routesAdmin = [
-
+    {
+        path: '/admin',
+        exact: true,
+        main: () => <Dashboard />
+    },
     {
         path: '/admin/dashboard',
         exact: true,

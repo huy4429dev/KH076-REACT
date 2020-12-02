@@ -7,6 +7,7 @@ import connect from '../../../lib/connect';
 import SimpleReactValidator from 'simple-react-validator';
 import * as actions from '../../../actions/backEnd/category';
 import Loading from '../../../components/backEnd/loading';
+import Pagination from "react-js-pagination";
 import $ from 'jquery';
 
 class Categorys extends Component {
@@ -34,10 +35,10 @@ class Categorys extends Component {
             .catch((err) => {
                 this.setState({ loading: false });
                 $.notify({ message: 'Tải xuống danh mục sản phẩm không thành công' }, { type: 'danger' });
-                $.notify('Tải xuống danh mục sản phẩm không thành công', 'danger');
             });
 
     }
+
 
     handleInputOnchange = (event) => {
 
@@ -113,7 +114,7 @@ class Categorys extends Component {
         const { open, category } = this.state;
         const { categories } = this.props;
         const items = categories.items ? categories.items : [];
-
+        const total = categories.total ?? 0;
         return (
             <Fragment>
                 <Breadcrumb title="Danh mục" parent="Sản phẩm" />
@@ -172,6 +173,7 @@ class Categorys extends Component {
                                                 ? "LOADINGGGGGGGGG"
                                                 : <Datatable
                                                     myData={items}
+                                                    total={total}
                                                     class="-striped -highlight"
                                                     onDelete={(id) => { console.log('ON DELETE', id); }}
                                                 />
@@ -184,6 +186,7 @@ class Categorys extends Component {
                     </div>
                 </div>
                 {/* <!-- Container-fluid Ends--> */}
+           
             </Fragment>
         )
     }

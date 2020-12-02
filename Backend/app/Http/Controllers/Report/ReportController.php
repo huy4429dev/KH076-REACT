@@ -10,7 +10,7 @@ use App\Models\Profile;
 use Validator;
 use Illuminate\Support\Facades\Auth;
 
-class OverViewReportController extends BaseController
+class ReportController extends BaseController
 {
     public function index(Request $request){
         return 'index';

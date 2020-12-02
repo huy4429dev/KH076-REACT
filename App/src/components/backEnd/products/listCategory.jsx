@@ -16,6 +16,7 @@ import Loading from '../loading';
 import { LogIn } from 'react-feather';
 import ModalEdit from './editCategory';
 import ModalDelete from './../../../components/backEnd/modalDelete';
+import Pagination from "react-bootstrap-4-pagination";
 
 class List extends Component {
     constructor(props) {
@@ -24,23 +25,34 @@ class List extends Component {
             loading: true,
             checkedValues: [],
             myData: props.myData,
+            total: props.total,
             itemEdit: null,
             showEdit: false,
             openModalEdit: false,
             itemId: null,
             openModalDelete: false,
+            page: 1,
+            pageSize: 25,
+            filter: {
+            }
+
         }
     }
+
     componentDidMount() {
+
         this.setState({ loading: false });
+        $('.page-link').on('click', (e) => e.preventDefault());
     }
 
-    UNSAFE_componentWillMount(nextProps) {
-        // if(nextProps?.myData && nextProps?.myData != this.props.myData){
-        //     this.setState({
-        //         myData:  nextProps.myData
-        //     })
-        // }
+    componentWillReceiveProps(nextProps) {
+        
+        if(nextProps?.myData && nextProps?.myData != this.props.myData){
+
+            this.setState({
+                myData:  nextProps.myData
+            })
+        }
 
     }
 
@@ -84,6 +96,7 @@ class List extends Component {
         })
 
     }
+
 
     handleEditItem = (item) => {
 
@@ -153,10 +166,48 @@ class List extends Component {
             });
     }
 
+    applyFilter = (filter) => {
+
+        filter = { ...this.state.filter, ...filter };
+        this.setState({
+            filter,
+            loading: true
+        });
+
+        const { getCategories } = this.props.actions;
+        getCategories()
+            .then(() => {
+                this.setState({ loading: false });
+            })
+            .catch((err) => {
+                this.setState({ loading: false });
+                $.notify({ message: 'Tải xuống danh mục sản phẩm không thành công' }, { type: 'danger' });
+            });
+    }
+
+    handlePageChange = (page) => {
+        const {getCategories} = this.props.actions;
+        this.setState({
+             loading: true
+        });
+
+        getCategories(page)
+        .then(() => {
+            this.setState({loading: false, page: page}, () => {console.log(this.state)});
+            console.log("runnn");
+            
+        })
+        .catch(err => {
+            this.setState({loading: false});
+            window.notify('Lỗi: ', err.message)
+        })
+    }
+
     render() {
 
-        const { myData, loading, openModalEdit, openModalDelete } = this.state;
-
+        const { myData, total, loading, openModalEdit, openModalDelete, page, pageSize , filter } = this.state;
+    
+        console.log(myData, 'MYDATA');
         return (
 
             <Fragment>
@@ -171,8 +222,8 @@ class List extends Component {
                                 <th style={{ width: '15%' }}>Ngày cập nhật</th>
                                 <th style={{ width: '10%' }} className='text-center' colSpan='2'>Action</th>
                             </tr>
-
                             {
+
                                 myData.map((item, index) => {
                                     return (
                                         <tr >
@@ -191,11 +242,25 @@ class List extends Component {
                             }
 
 
-
                         </table>
+
                 }
+                {
+                    myData?.length <= 0 &&
+                    <p className="text-center alert alert-warning">Chưa có danh mục</p>
+                }
+                <div className='d-flex justify-content-end'>
 
+                    <Pagination
+                        totalPages={ total / pageSize + 1}
+                        currentPage={page}
+                        showMax={total / pageSize + 1}
+                        size={"md"}
+                        prevNext={true}
+                        onClick={this.handlePageChange}
+                    />
 
+                </div>
                 <ModalEdit
                     open={this.state.showEdit}
                     data={this.state.itemEdit}

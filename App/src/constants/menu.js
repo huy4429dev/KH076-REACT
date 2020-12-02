@@ -14,7 +14,7 @@ import {
 
 export const MENUITEMS = [
     {
-        path: '/dashboard', title: 'Tổng quan', icon: Home, type: 'link', badgeType: 'primary', active: false
+        path: '/admin/dashboard', title: 'Tổng quan', icon: Home, type: 'link', badgeType: 'primary', active: false
     },
     {
         title: 'Sản phẩm', icon: Box, type: 'sub', active: false, children: [

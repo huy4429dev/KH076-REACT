@@ -12,6 +12,7 @@ use App\Http\Controllers\Order\OrderController as OrderController;
 use App\Http\Controllers\Order\OrderItemController as OrderItemController;
 use App\Http\Controllers\Rating\RatingController as RatingController;
 use App\Http\Controllers\Contact\ContactController as ContactController;
+use App\Http\Controllers\Report\ReportController as ReportController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -263,3 +264,23 @@ Route::prefix('contact')->group(function(){
     // });
 
 });
+
+
+//================================== REPORT 
+
+
+Route::prefix('report')->group(function(){
+    
+    Route::middleware(['auth:api', 'role'])->group(function() {
+         
+        Route::middleware(['scope:admin,shop'])->get('/', [ReportController::class,'index'] );
+        // Route::middleware(['scope:admin,shop,user'])->get('/search', [RatingController::class,'search'] );
+        // Route::middleware(['scope:admin,shop,user'])->get('/{id}', [RatingController::class,'show'] );
+        // Route::middleware(['scope:admin,shop,user'])->post('/', [RatingController::class,'create'] );
+        // Route::middleware(['scope:admin,shop,user'])->put('/{id}', [RatingController::class,'update'] );
+        // Route::middleware(['scope:admin,shop,user'])->delete('/{id}', [RatingController::class,'delete'] );
+    });
+
+});
+
+//=================
