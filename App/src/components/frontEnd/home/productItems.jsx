@@ -46,7 +46,7 @@ class ProductItem extends Component {
         this.setState({ quantity: parseInt(e.target.value) })
     }
     onAddToCartClicked = (item) => {
-        this.props.actions.addCart(item, 1);
+        this.props.actions.addCart(item, this.state.quantity);
         window.notify("Thêm vào giỏ hàng thành công");
     }
     render() {
