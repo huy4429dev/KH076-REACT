@@ -15,7 +15,7 @@ class TopBar extends Component {
                         <div className="col-lg-6">
                             <div className="header-contact">
                                 <ul>
-                                    <li><i className="fa fa-phone" aria-hidden="true"></i>{('call_us')}:  123 - 456 - 7890</li>
+                                    <li><i className="fa fa-phone" aria-hidden="true"></i>{('Gọi cho chúng tôi')}:  123 - 456 - 7890</li>
                                 </ul>
                             </div>
                         </div>
@@ -31,10 +31,10 @@ class TopBar extends Component {
                                             <i className="fa fa-user" aria-hidden="true"></i> {('Tài khoản')}
                                             <ul className="onhover-show-div">
                                                 <li>
-                                                    <Link to={`/login`} data-lng="en">Login</Link>
+                                                    <Link to={`/login`} data-lng="en">Đăng nhập</Link>
                                                 </li>
                                                 <li>
-                                                    <Link to={`/register`} data-lng="en">Register</Link>
+                                                    <Link to={`/register`} data-lng="en">Đăng kí</Link>
                                                 </li>
                                             </ul>
                                         </li>
