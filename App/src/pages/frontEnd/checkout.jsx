@@ -3,7 +3,8 @@ import { Helmet } from 'react-helmet';
 import { Link, Redirect } from 'react-router-dom';
 import PaypalExpressBtn from 'react-paypal-express-checkout';
 import SimpleReactValidator from 'simple-react-validator';
-
+import connect from './../../lib/connect';
+import * as actions from './../../actions/frontEnd/cart';
 import Breadcrumb from "./../../components/frontEnd/home/breadcrumb";
 
 class CheckOut extends Component {
@@ -78,7 +79,22 @@ class CheckOut extends Component {
             this.forceUpdate();
         }
     }
-
+    totalPrice = (items) => {
+        console.log(items);
+        if (items.length > 0) {
+            return (
+                items.reduce((a, c) => {
+                    if (c.product.discount) {
+                        return [...a, (c.quantity * (c.product.price - (c.product.price * c.product.discount / 100)))]
+                    } else {
+                        return [...a, (c.quantity * c.product.price)]
+                    }
+                }, []).reduce((a, c) => parseInt(a + c))
+            )
+        } else {
+            return 0;
+        }
+    }
     render() {
         const { symbol } = this.props;
         const cartItems = [];
@@ -106,20 +122,16 @@ class CheckOut extends Component {
             sandbox: 'AZ4S98zFa01vym7NVeo_qthZyOnBhtNvQDsjhaZSMH-2_Y9IAJFbSD3HPueErYqN8Sa8WYRbjP7wWtd_',
             production: 'AZ4S98zFa01vym7NVeo_qthZyOnBhtNvQDsjhaZSMH-2_Y9IAJFbSD3HPueErYqN8Sa8WYRbjP7wWtd_',
         }
-
-
+        const { items } = this.props.cart;
         return (
             <div>
-
                 {/*SEO Support*/}
                 <Helmet>
                     <title>MultiKart | CheckOut Page</title>
                     <meta name="description" content="Multikart – Multipurpose eCommerce React Template is a multi-use React template. It is designed to go well with multi-purpose websites. Multikart Bootstrap 4 Template will help you run multiple businesses." />
                 </Helmet>
                 {/*SEO Support End */}
-
                 <Breadcrumb title={'Thanh toán'} />
-
                 <section className="section-b-space">
                     <div className="container padding-cls">
                         <div className="checkout-page">
@@ -133,59 +145,36 @@ class CheckOut extends Component {
                                             <div className="row check-out">
                                                 <div className="form-group col-md-6 col-sm-6 col-xs-12">
                                                     <div className="field-label">Họ tên</div>
-                                                    <input type="text" name="first_name" value={this.state.first_name} onChange={this.setStateFromInput} />
-                                                    {this.validator.message('first_name', this.state.first_name, 'required|alpha')}
+                                                    <input type="text" name="username" value={this.state.username}
+                                                        value={this.state.username}
+                                                        onChange={(e) => this.setState({ [e.target.name]: e.target.value })}
+                                                    />
+                                                    {this.validator.message('username', this.state.username, 'required')}
                                                 </div>
-                                                {/* <div className="form-group col-md-6 col-sm-6 col-xs-12">
-                                                    <div className="field-label">Last Name</div>
-                                                    <input type="text" name="last_name" value={this.state.last_name} onChange={this.setStateFromInput} />
-                                                    {this.validator.message('last_name', this.state.last_name, 'required|alpha')}
-                                                </div> */}
                                                 <div className="form-group col-md-6 col-sm-6 col-xs-12">
                                                     <div className="field-label">Điện thoại</div>
-                                                    <input type="text" name="phone" value={this.state.phone} onChange={this.setStateFromInput} />
+                                                    <input type="text" name="phone" value={this.state.phone}
+                                                        value={this.state.phone}
+                                                        onChange={(e) => this.setState({ [e.target.name]: e.target.value })}
+                                                    />
                                                     {this.validator.message('phone', this.state.phone, 'required|phone')}
                                                 </div>
                                                 <div className="form-group col-md-6 col-sm-6 col-xs-12">
                                                     <div className="field-label">Email</div>
-                                                    <input type="text" name="email" value={this.state.email} onChange={this.setStateFromInput} />
+                                                    <input type="text" name="email" value={this.state.email}
+                                                        value={this.state.email}
+                                                        onChange={(e) => this.setState({ [e.target.name]: e.target.value })}
+                                                    />
                                                     {this.validator.message('email', this.state.email, 'required|email')}
                                                 </div>
-                                                {/* <div className="form-group col-md-12 col-sm-12 col-xs-12">
-                                                    <div className="field-label">Country</div>
-                                                    <select name="country" value={this.state.country} onChange={this.setStateFromInput}>
-                                                        <option>India</option>
-                                                        <option>South Africa</option>
-                                                        <option>United State</option>
-                                                        <option>Australia</option>
-                                                    </select>
-                                                    {this.validator.message('country', this.state.country, 'required')}
-                                                </div> */}
                                                 <div className="form-group col-md-12 col-sm-12 col-xs-12">
                                                     <div className="field-label">Địa chỉ</div>
-                                                    <input type="text" name="address" value={this.state.address} onChange={this.setStateFromInput} placeholder="Street address" />
+                                                    <input type="text" name="address" value={this.state.address}
+                                                        value={this.state.address}
+                                                        onChange={(e) => this.setState({ [e.target.name]: e.target.value })}
+                                                        placeholder="Địa chỉ..." />
                                                     {this.validator.message('address', this.state.address, 'required|min:20|max:120')}
                                                 </div>
-                                                {/* <div className="form-group col-md-12 col-sm-12 col-xs-12">
-                                                    <div className="field-label">Town/City</div>
-                                                    <input type="text" name="city" value={this.state.city} onChange={this.setStateFromInput} />
-                                                    {this.validator.message('city', this.state.city, 'required|alpha')}
-                                                </div>
-                                                <div className="form-group col-md-12 col-sm-6 col-xs-12">
-                                                    <div className="field-label">State / County</div>
-                                                    <input type="text" name="state" value={this.state.state} onChange={this.setStateFromInput} />
-                                                    {this.validator.message('state', this.state.state, 'required|alpha')}
-                                                </div> */}
-                                                {/* <div className="form-group col-md-12 col-sm-6 col-xs-12">
-                                                    <div className="field-label">Postal Code</div>
-                                                    <input type="text" name="pincode" value={this.state.spincode} onChange={this.setStateFromInput} />
-                                                    {this.validator.message('pincode', this.state.pincode, 'required|integer')}
-                                                </div> */}
-                                                {/* <div className="form-group col-lg-12 col-md-12 col-sm-12 col-xs-12">
-                                                    <input type="checkbox" name="create_account" id="account-option" checked={this.state.create_account} onChange={this.setStateFromCheckbox} />
-                                                    &ensp; <label htmlFor="account-option">Create An Account?</label>
-                                                    {this.validator.message('checkbox', this.state.create_account, 'create_account')}
-                                                </div> */}
                                             </div>
                                         </div>
                                         <div className="col-lg-6 col-sm-12 col-xs-12">
@@ -195,28 +184,33 @@ class CheckOut extends Component {
                                                         <div>Sản phẩm <span> Tổng</span></div>
                                                     </div>
                                                     <ul className="qty">
-                                                        {cartItems.map((item, index) => {
-                                                            return <li key={index}>{item.name} × {item.qty} <span>{symbol} {item.sum}</span></li>
+                                                        {items.map((item, index) => {
+                                                            if (item.product.discount) {
+                                                                return <li key={index}>{item.product.name} {item.product.price - (item.product.price * item.product.discount / 100)} × {item.quantity} <span> {item.quantity * (item.product.price - (item.product.price * item.product.discount / 100))} đ</span></li>
+                                                            } else {
+                                                                return <li key={index}>{item.product.name} {item.product.price} × {item.quantity} <span> {item.quantity * item.product.price} đ</span></li>
+                                                            }
+
                                                         })
                                                         }
                                                     </ul>
                                                     <ul className="sub-total">
-                                                        <li>Subtotal <span className="count">{symbol}{total}</span></li>
-                                                        <li>Shipping <div className="shipping">
+                                                        <li>Tổng <span className="count">{this.totalPrice(items)}đ</span></li>
+                                                        <li>Vận chuyển <div className="shipping">
                                                             <div className="shopping-option">
                                                                 <input type="checkbox" name="free-shipping" id="free-shipping" />
-                                                                <label htmlFor="free-shipping">Miễn phí giao hàng</label>
+                                                                <label htmlFor="free-shipping">Miễn phí</label>
                                                             </div>
                                                             <div className="shopping-option">
                                                                 <input type="checkbox" name="local-pickup" id="local-pickup" />
-                                                                <label htmlFor="local-pickup"></label>
+                                                                <label htmlFor="local-pickup">Local Pickup</label>
                                                             </div>
                                                         </div>
                                                         </li>
                                                     </ul>
 
                                                     <ul className="total">
-                                                        <li>Total <span className="count">{symbol}{total}</span></li>
+                                                        <li>Tổng tiền: <span className="count">{total}</span></li>
                                                     </ul>
                                                 </div>
 
@@ -239,12 +233,7 @@ class CheckOut extends Component {
                                                             </ul>
                                                         </div>
                                                     </div>
-                                                    {(total !== 0) ?
-                                                        <div className="text-right">
-                                                            {(this.state.payment === 'stripe') ? <button type="button" className="btn-solid btn" onClick={() => this.StripeClick()} >Place Order</button> :
-                                                                <PaypalExpressBtn env={'sandbox'} client={client} currency={'USD'} total={total} onError={onError} onSuccess={onSuccess} onCancel={onCancel} />}
-                                                        </div>
-                                                        : ''}
+                                                    <button type="button" className="btn-solid btn" onClick={() => this.addOrder()} >Đặt hàng</button>
                                                 </div>
                                             </div>
                                         </div>
@@ -310,4 +299,6 @@ class CheckOut extends Component {
 }
 
 
-export default CheckOut;
+export default connect(CheckOut, state => ({
+    cart: state.cart
+}), actions);

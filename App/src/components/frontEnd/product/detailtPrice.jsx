@@ -2,7 +2,8 @@ import React, { Component } from 'react';
 import { Link } from 'react-router-dom'
 import Slider from 'react-slick';
 import Modal from 'react-responsive-modal';
-
+import connect from './../../../lib/connect';
+import * as actions from './../../../actions/frontEnd/cart';
 
 class DetailsWithPrice extends Component {
 
@@ -46,7 +47,10 @@ class DetailsWithPrice extends Component {
     changeQty = (e) => {
         this.setState({ quantity: parseInt(e.target.value) })
     }
-
+    addCart = (item, quantity) => {
+        this.props.actions.addCart(item, quantity);
+        window.notify("Thêm vào giỏ hàng thành công");
+    }
     render() {
         const { symbol, item, addToCartClicked, BuynowClicked, addToWishlistClicked } = this.props
 
@@ -57,7 +61,6 @@ class DetailsWithPrice extends Component {
             dots: false,
             focusOnSelect: true
         };
-
         return (
             <div className="col-lg-6 rtl-text">
                 <div className="product-right">
@@ -137,8 +140,8 @@ class DetailsWithPrice extends Component {
                         </div>
                     </div>
                     <div className="product-buttons" >
-                        <a className="btn btn-solid" onClick={() => addToCartClicked(item, this.state.quantity)}>add to cart</a>
-                        <Link to={`/checkout`} className="btn btn-solid" onClick={() => BuynowClicked(item, this.state.quantity)} >buy now</Link>
+                        <a className="btn btn-solid" onClick={() => this.addCart(item, this.state.quantity)}> Thêm vào giỏ hàng</a>
+                        <Link to={`/checkout`} className="btn btn-solid" onClick={() => this.addCart(item, this.state.quantity)} >Thanh toán</Link>
                     </div>
                     <div className="border-product">
                         <h6 className="product-title">product details</h6>
@@ -200,4 +203,6 @@ class DetailsWithPrice extends Component {
 }
 
 
-export default DetailsWithPrice;
+export default connect(DetailsWithPrice, state => ({
+    cart: state.cart
+}), actions);

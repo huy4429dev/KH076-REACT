@@ -138,7 +138,7 @@ class Cart extends Component {
                                                                         </button>
                                                                     </span>
                                                                 </div>
-                                                            </div>{(item.quantity >= item.product.quantity) ? 'out of Stock' : ''}
+                                                            </div>{(item.quantity >= item.product.quantity) ? 'Quá số lượng hàng trong kho' : ''}
                                                         </td>
                                                         <td style={styles.td}>
                                                             <a className="icon" onClick={() => this.removeCart(item)}>
@@ -178,10 +178,10 @@ class Cart extends Component {
                             </div>
                             <div className="row cart-buttons">
                                 <div className="col-6">
-                                    <Link to={`/left-sidebar/collection`} className="btn btn-solid">continue shopping</Link>
+                                    <Link to={`/`} className="btn btn-solid">Tiếp tục mua hàng</Link>
                                 </div>
                                 <div className="col-6">
-                                    <Link to={`/checkout`} className="btn btn-solid">check out</Link>
+                                    <Link to={`/checkout`} className="btn btn-solid">Thanh toán</Link>
                                 </div>
                             </div>
                         </div>
@@ -195,9 +195,8 @@ class Cart extends Component {
                                         <div className="col-sm-12 empty-cart-cls text-center">
                                             <img src={`${process.env.PUBLIC_URL}/assets/images/icon-empty-cart.png`} className="img-fluid mb-4" alt="" />
                                             <h3>
-                                                <strong>Your Cart is Empty</strong>
+                                                <strong>Giỏ hàng trống</strong>
                                             </h3>
-                                            <h4>Explore more shortlist some items.</h4>
                                         </div>
                                     </div>
                                 </div>

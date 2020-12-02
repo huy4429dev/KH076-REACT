@@ -12,13 +12,13 @@ class CartHeader extends Component {
         return (
             <li >
                 <div className="media">
-                    <Link to={``}><img alt="" className="mr-3" />
+                    <Link to={`/cart`}><img alt="" className="mr-3" />
                         {item.product.images.length > 0 &&
                             < img alt="" className="mr-3" src={`${item.product.images[0].url}`} />
                         }
                     </Link>
                     <div className="media-body">
-                        <Link to={`/product/`}>
+                        <Link to={`/cart`}>
                             <h4>{item.name}</h4>
                         </Link>
                         <h4>

@@ -63,6 +63,12 @@ export const MENUITEMS = [
     //     ]
     // },
     {
+        title: 'Blog', icon: UserPlus, type: 'sub', active: false, children: [
+            { path: '/admin/blog', title: 'Danh sách bài viết', type: 'link' },
+            { path: '/admin/blog/add', title: 'Thêm bài viết', type: 'link' },
+        ]
+    },
+    {
         title: 'Users', icon: UserPlus, type: 'sub', active: false, children: [
             { path: '/admin/user', title: 'User List', type: 'link' },
             { path: '/admin/user/add', title: 'Create User', type: 'link' },

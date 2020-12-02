@@ -27,10 +27,10 @@ class TopBarWhite extends Component {
                                         <i className="fa fa-user" aria-hidden="true"></i> {('my_account')}
                                         <ul className="onhover-show-div">
                                             <li>
-                                                <Link to={`/pages/login`} data-lng="en">Login</Link>
+                                                <Link to={`/pages/login`} data-lng="en">Đăng nhập</Link>
                                             </li>
                                             <li>
-                                                <Link to={`/pages/register`} data-lng="en">Register</Link>
+                                                <Link to={`/pages/register`} data-lng="en">Đăng ký</Link>
                                             </li>
                                         </ul>
                                     </li>

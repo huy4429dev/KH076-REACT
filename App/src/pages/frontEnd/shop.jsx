@@ -5,14 +5,22 @@ import FilterBar from "./../../components/frontEnd/shop/filterBar";
 import ProductListing from "./../../components/frontEnd/shop/productListing";
 import NewProduct from "./../../components/frontEnd/shop/newProduct";
 import StickyBox from "react-sticky-box";
-
+import connect from './../../lib/connect';
+import * as actions from './../../actions/frontEnd/product';
+// import Loadding from './../../components/loading';
+import Loadding from './../../components/loadding2';
 
 class Shop extends Component {
-
     state = {
-        layoutColumns: 3
+        layoutColumns: 3,
+        loading: false
     }
-
+    componentDidMount() {
+        this.setState({ loading: true })
+        this.props.actions.getListProducts()
+            .then(() => this.setState({ loading: false }))
+            .catch(() => this.setState({ loading: false }));
+    }
     LayoutViewClicked(colums) {
         this.setState({
             layoutColumns: colums
@@ -24,9 +32,11 @@ class Shop extends Component {
     }
 
     render() {
+        const { listProduct } = this.props.productHome;
         return (
             <div>
-                <Breadcrumb title={'Collection'} />
+                <Loadding show={this.state.loading} type="full" />
+                <Breadcrumb title={'Sản phẩm'} />
                 <section className="section-b-space">
                     <div className="collection-wrapper">
                         <div className="container">
@@ -37,11 +47,11 @@ class Shop extends Component {
                                             <div className="row">
                                                 <div className="col-sm-12">
                                                     <div className="top-banner-wrapper">
-                                                        <a href="#"><img src={`${process.env.PUBLIC_URL}/assets/images/mega-menu/2.jpg`} className="img-fluid" alt="" /></a>
+                                                        <a href="#"><img src={`https://media.slidesgo.com/storage/222093/conversions/0-beauty-salon-business-plan-thumb.jpg`} className="img-fluid" alt="" /></a>
                                                         <div className="top-banner-content small-section">
-                                                            <h4>fashion</h4>
-                                                            <h5>Lorem Ipsum is simply dummy text of the printing and typesetting industry.</h5>
-                                                            <p>Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum. </p>
+                                                            <h4>Thời trang</h4>
+                                                            <h5>Cam kết với sản phẩm</h5>
+                                                            <p>Là thương hiệu uy tín</p>
                                                         </div>
                                                     </div>
                                                     <div className="collection-product-wrapper">
@@ -53,7 +63,7 @@ class Shop extends Component {
                                                                             <span onClick={this.openFilter}
                                                                                 className="filter-btn btn btn-theme"><i
                                                                                     className="fa fa-filter"
-                                                                                    aria-hidden="true"></i> Filter</span>
+                                                                                    aria-hidden="true"></i>Bộ lọc</span>
                                                                         </div>
                                                                     </div>
                                                                 </div>
@@ -64,9 +74,7 @@ class Shop extends Component {
                                                                 </div>
                                                             </div>
                                                         </div>
-
-                                                        {/*Products Listing Component*/}
-                                                        <ProductListing colSize={this.state.layoutColumns} products={[]} />
+                                                        <ProductListing colSize={this.state.layoutColumns} products={listProduct} />
 
                                                     </div>
                                                 </div>
@@ -99,4 +107,6 @@ class Shop extends Component {
     }
 }
 
-export default Shop;
+export default connect(Shop, state => ({
+    productHome: state.productHome
+}), actions);

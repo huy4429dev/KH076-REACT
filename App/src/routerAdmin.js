@@ -8,6 +8,8 @@ import AddProduct from './pages/backEnd/products/addProduct';
 import AddUser from './pages/backEnd/user/create';
 import Profile from './pages/backEnd/profile';
 import CategoryDetailt from './pages/backEnd/categoryDetailt';
+import Blog from './pages/backEnd/blog';
+import Contact from './pages/backEnd/contact';
 
 
 
@@ -56,7 +58,17 @@ const routesAdmin = [
     {
         path: '/admin/products/category/:id',
         exact: true,
-        main: ({match}) => <CategoryDetailt match={match}/>
+        main: ({ match }) => <CategoryDetailt match={match} />
+    },
+    {
+        path: '/admin/blog',
+        exact: true,
+        main: () => <Blog />
+    },
+    {
+        path: '/admin/contact',
+        exact: true,
+        main: () => <Contact />
     },
 ];
 
