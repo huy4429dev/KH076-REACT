@@ -46,11 +46,11 @@ class List extends Component {
     }
 
     componentWillReceiveProps(nextProps) {
-        
-        if(nextProps?.myData && nextProps?.myData != this.props.myData){
+
+        if (nextProps?.myData && nextProps?.myData != this.props.myData) {
 
             this.setState({
-                myData:  nextProps.myData
+                myData: nextProps.myData
             })
         }
 
@@ -186,33 +186,37 @@ class List extends Component {
     }
 
     handlePageChange = (page) => {
-        const {getCategories} = this.props.actions;
+        const { getCategories } = this.props.actions;
         this.setState({
-             loading: true
+            loading: true
         });
 
         getCategories(page)
-        .then(() => {
-            this.setState({loading: false, page: page}, () => {console.log(this.state)});
-            console.log("runnn");
-            
-        })
-        .catch(err => {
-            this.setState({loading: false});
-            window.notify('Lỗi: ', err.message)
-        })
+            .then(() => {
+                this.setState({ loading: false, page: page }, () => { console.log(this.state) });
+                console.log("runnn");
+
+            })
+            .catch(err => {
+                this.setState({ loading: false });
+                window.notify('Lỗi: ', err.message)
+            })
     }
 
     render() {
 
-        const { myData, total, loading, openModalEdit, openModalDelete, page, pageSize , filter } = this.state;
-    
+        const { myData, total, loading, openModalEdit, openModalDelete, page, pageSize, filter } = this.state;
+
         console.log(myData, 'MYDATA');
         return (
 
             <Fragment>
                 {
-                    loading ? 'LOADING'
+                    loading
+                        ?
+                        <div className='d-flex justify-content-center align-items-center'>
+                            <Loading type='box' />
+                        </div>
                         : <table className="table">
                             <tr>
                                 <th style={{ width: '5%' }}>#</th>
@@ -252,7 +256,7 @@ class List extends Component {
                 <div className='d-flex justify-content-end'>
 
                     <Pagination
-                        totalPages={ total / pageSize + 1}
+                        totalPages={total / pageSize + 1}
                         currentPage={page}
                         showMax={total / pageSize + 1}
                         size={"md"}

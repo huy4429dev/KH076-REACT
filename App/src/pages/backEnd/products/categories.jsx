@@ -170,13 +170,18 @@ class Categorys extends Component {
                                     <div id="basicScenario" className="product-physical">
                                         {
                                             this.state.loading
-                                                ? "LOADINGGGGGGGGG"
+                                                ?
+                                                <div className='d-flex justify-content-center align-items-center'>
+                                                    <Loading type='box' />
+                                                </div>
                                                 : <Datatable
                                                     myData={items}
                                                     total={total}
                                                     class="-striped -highlight"
                                                     onDelete={(id) => { console.log('ON DELETE', id); }}
                                                 />
+
+
                                         }
 
                                     </div>
@@ -186,7 +191,7 @@ class Categorys extends Component {
                     </div>
                 </div>
                 {/* <!-- Container-fluid Ends--> */}
-           
+
             </Fragment>
         )
     }
