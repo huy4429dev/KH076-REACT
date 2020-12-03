@@ -16,7 +16,10 @@ class CategoryDetailt extends Component {
         this.state = {
             open: false,
             loading: false,
-            categories: null
+            category: null,
+            name: '',
+            description: '', 
+            parentId: 0
         };
 
         this.validator = new SimpleReactValidator({ autoForceUpdate: this });
@@ -27,12 +30,13 @@ class CategoryDetailt extends Component {
         const { getCategory } = this.props.actions;
 
         this.setState({
-            loading: true
+            loading: true, 
+            parentId: id
         });
 
         getCategory(id)
             .then(data => {
-                this.setState({ loading: false, categories: data.data });
+                this.setState({ loading: false, category: data.data });
             })
             .catch(err => {
                 this.setState({ loading: false });
@@ -52,11 +56,68 @@ class CategoryDetailt extends Component {
         });
     }
 
-    render() {
-        const { open, categories } = this.state;
+    handleSubmit = (event) => {
 
-        console.log(categories, 'DATA');
-        const items = [{ id: 1, name: 'x1', description: 'xxx' }];
+        event.preventDefault();
+
+
+        if (this.validator.allValid()) {
+
+            this.setState({
+                loading: true
+            });
+
+            const { name, description, category, parentId} = this.state;
+            const { createCategoryChildren } = this.props.actions;
+            if (name === '' || name === null) return;
+            createCategoryChildren({
+                name: name,
+                description: description
+            },parentId)
+                .then((data) => {
+                    if (data.success) {
+                        return data;
+                    } else {
+                        throw new Error('Something went wrong');
+                    }
+                })
+                .then((data) => {
+                    let item = data.data;
+                    this.setState({
+                         loading: false , 
+                        category: {...category,children:[{...item,...category.children}]}
+                    });
+
+                    window.notify("Thêm mới danh mục thành công");
+                })
+                .catch((err) => {
+                    this.setState({ loading: false });
+                });
+
+            this.onCloseModal();
+
+        } else {
+
+            this.validator.showMessages();
+        }
+
+    }
+
+    handleInputOnchange = (event) => {
+
+        const target = event.target;
+        const value = target.value;
+        const tagName = target.name;
+        this.setState({
+            [tagName]: value
+        });
+
+    }
+
+    render() {
+        const { open, category } = this.state;
+        const items = category?.children;
+        console.log(items, 'DATA');
         return (
             <Fragment>
                 <Breadcrumb title="Chi tiết" parent="Danh mục" />
@@ -81,7 +142,6 @@ class CategoryDetailt extends Component {
                                                         <input
                                                             name="name"
                                                             type="text"
-                                                            value="1"
                                                             className="form-control"
                                                             onChange={this.handleInputOnchange}
                                                         // onBlur={() => this.validator.showMessageFor('name')}
@@ -106,11 +166,11 @@ class CategoryDetailt extends Component {
                                             </form>
                                         </Modal>
                                     </div>
-                                    <div className="card bg-light mb-3" style={{maxWidth: '18rem'}}>
-                                        <div className="card-header">Header</div>
+                                    <div className="card bg-light mb-4" style={{ maxWidth: '18rem' }}>
+                                        <div className="card-header" style={{ color: 'black' }}>Danh mục gốc</div>
                                         <div className="card-body">
-                                            <h5 className="card-title">Light card title</h5>
-                                            <p className="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
+                                            <h5 className="card-title">{category?.name}</h5>
+                                            <p className="card-text">{category?.description}</p>
                                         </div>
                                     </div>
                                     <div id="basicScenario" className="product-physical">

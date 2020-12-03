@@ -15,7 +15,11 @@ import Customer from './pages/backEnd/customer';
 
 
 const routesAdmin = [
-
+    {
+        path: '/admin',
+        exact: true,
+        main: () => <Dashboard />
+    },
     {
         path: '/admin/dashboard',
         exact: true,
