@@ -1,10 +1,5 @@
-import { type } from 'jquery';
 import * as ep from './../../constants/enpoint';
 export const types = {
-    GET_CATEGORIES: 'GET_CATEGORIES',
-    ADD_CATEGORY: 'CREATE_CATEGORY',
-    DELETE_CATEGORY: 'DELETE_CATEGORY',
-    UPDATE_CATEGORY: 'UPDATE_CATEGORY',
     GET_CATEGORIES_SUCCESS: 'GET_CATEGORIES_SUCCESS',
     GET_CATEGORIES_ERROR: 'GET_CATEGORIES_ERROR',
     CREATE_CATEGORY_SUCCESS: 'CREATE_CATEGORY_SUCCESS',
@@ -14,11 +9,22 @@ export const types = {
     DELETE_CATEGORY_SUCCESS: 'DELETE_CATEGORY_SUCCESS',
     DELETE_CATEGORY_ERROR: 'DELETE_CATEGORY_ERROR',
     GET_CATEGORY_SUCCESS: 'GET_CATEGORY_SUCCESS',
-    GET_CATEGORY_ERROR: 'GET_CATEGORY_ERROR'
+    GET_CATEGORY_ERROR: 'GET_CATEGORY_ERROR',
+    CREATE_CATEGORY_CHILDREN_SUCCESS: 'CREATE_CATEGORY_CHILDREN_SUCCESS',
+    CREATE_CATEGORY_CHILDREN_ERROR: 'CREATE_CATEGORY_CHILDREN_ERROR'
 }
 
+export const getCategories = (page = 1) => {
+    return {
+        url: `${ep.enpoint}/api/categories?page=${page}`,
+        method: 'get',
+        onSuccess: types.GET_CATEGORIES_SUCCESS,
+        onError: types.GET_CATEGORIES_ERROR
+    };
 
-export const getCategories = () => {
+};
+
+export const filterCategories = (filter) => {
     return {
         url: `${ep.enpoint}/api/categories`,
         method: 'get',
@@ -28,10 +34,9 @@ export const getCategories = () => {
 
 };
 
-
-export const createCategory = (data) => {
+export const createCategory = (data,parentId = 0) => {
     return {
-        url: `${ep.enpoint}/api/categories`, 
+        url: `${ep.enpoint}/api/categories?parentId=${parentId}`, 
         method: 'post',  
         data: {...data},
         onSuccess: types.CREATE_CATEGORY_SUCCESS,
@@ -67,3 +72,13 @@ export const getCategory = id => {
         onError: types.GET_CATEGORY_ERROR
     }
 }
+
+export const createCategoryChildren = (data,parentId) => {
+    return {
+        url: `${ep.enpoint}/api/categories?parentId=${parentId}`, 
+        method: 'post',  
+        data: {...data},
+        onSuccess: types.CREATE_CATEGORY_CHILDREN_SUCCESS,
+        onError: types.CREATE_CATEGORY_CHILDREN_ERROR
+    };
+};

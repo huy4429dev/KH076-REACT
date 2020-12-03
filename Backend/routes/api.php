@@ -12,6 +12,7 @@ use App\Http\Controllers\Order\OrderController as OrderController;
 use App\Http\Controllers\Order\OrderItemController as OrderItemController;
 use App\Http\Controllers\Rating\RatingController as RatingController;
 use App\Http\Controllers\Contact\ContactController as ContactController;
+use App\Http\Controllers\Report\ReportController as ReportController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -46,7 +47,9 @@ Route::prefix('admins')->group(function(){
 
 
 Route::prefix('shops')->group(function(){
-    
+
+    Route::get('/init', [ShopController::class,'initDataTest'] );
+
     Route::middleware(['auth:api', 'role'])->group(function() {
          
         Route::middleware(['scope:admin,shop,user'])->get('/', [ShopController::class,'index'] );
@@ -83,6 +86,28 @@ Route::prefix('users')->group(function(){
         Route::delete('/{id}', [UserController::class,'delete'] );
 
     });
+
+});
+
+//=================
+
+//================================== Customer 
+
+Route::prefix('customer')->group(function(){
+       Route::get('/', [UserController::class,'index'] );
+         Route::get('/search', [UserController::class,'search'] );
+        Route::get('/{id}', [UserController::class,'show'] );
+        Route::post('/', [UserController::class,'create'] );
+        Route::put('/{id}', [UserController::class,'update'] );
+        Route::delete('/{id}', [UserController::class,'delete'] );
+
+
+    // Route::middleware(['auth:api', 'role'])->group(function() {
+         
+    //     Route::middleware(['scope:shop'])->get('/', [CustomerController::class,'index'] );
+        
+   
+    // });
 
 });
 
@@ -263,3 +288,27 @@ Route::prefix('contact')->group(function(){
     // });
 
 });
+
+
+//================================== REPORT 
+
+
+Route::prefix('report')->group(function(){
+    
+    Route::middleware(['auth:api', 'role'])->group(function() {
+         
+        Route::middleware(['scope:admin,shop'])->get('/', [ReportController::class,'index'] );
+        // Route::middleware(['scope:admin,shop,user'])->get('/search', [RatingController::class,'search'] );
+        // Route::middleware(['scope:admin,shop,user'])->get('/{id}', [RatingController::class,'show'] );
+        // Route::middleware(['scope:admin,shop,user'])->post('/', [RatingController::class,'create'] );
+        // Route::middleware(['scope:admin,shop,user'])->put('/{id}', [RatingController::class,'update'] );
+        // Route::middleware(['scope:admin,shop,user'])->delete('/{id}', [RatingController::class,'delete'] );
+    });
+
+});
+
+//=================
+
+Route::get('/test',function(){
+    return 'test1';
+ });

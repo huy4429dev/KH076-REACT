@@ -17,7 +17,8 @@ class CategoryController extends BaseController
         $page = $request->query('page') ?? 1;
         $pageSize = $request->query('pageSize') ?? 25;
 
-        $categories = Category::orderBy('id','desc')
+    $categories = Category::has('children')
+        ->orderBy('id','desc')
         ->skip( ($page - 1) * $pageSize )
         ->take($pageSize)
         ->get();
@@ -25,7 +26,7 @@ class CategoryController extends BaseController
         return $this->sendResponse(
             $data = [
                      'items' => $categories , 
-                     'total' => $categories->count()
+                     'total' => Category::has('children')->count()
                     ]
           );
     }
@@ -63,13 +64,15 @@ class CategoryController extends BaseController
     
     public function showChildren($id){
 
-        $found = Category::where('id',$id)->with('children')->get();
+        $found = Category::where('id',$id)->with('children')->first();
 
         return $this->sendResponse(
             $data = $found
         );
 
     }
+
+    
     public function update($id,Request $request){
 
         $validator = Validator::make($request->all(), [
@@ -98,6 +101,8 @@ class CategoryController extends BaseController
     }
     public function create(Request $request){
 
+
+
         $validator = Validator::make($request->all(), [
 
             'name' => 'required|unique:categories'
@@ -107,12 +112,22 @@ class CategoryController extends BaseController
             return $this->sendError('Validation Error.', $validator->errors());       
         }
 
-        $category = new Category();
-        
 
-            $category->name = $request->name;
-            $category->description = $request->description;
-            $category->save();
+        $parentId = $request->parentId;
+        $parentCategory = Category::find($parentId);
+        $category = new Category();
+        if($parentCategory == null ){
+                $category->name = $request->name;
+                $category->description = $request->description;
+                $category->save();
+        }
+
+        else {
+                $category->name = $request->name;
+                $category->description = $request->description;
+                $category->parent_id = $parentId;
+                $category->save();
+        }
 
             return $this->sendResponse(
                 $data = $category,

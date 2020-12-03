@@ -2,6 +2,7 @@ import { types } from "./../../actions/backEnd/category";
 
 const initState = {
   items: [],
+  total: 0
 };
 
 export default (state = initState, action) => {
@@ -12,10 +13,10 @@ export default (state = initState, action) => {
   switch (action.type) {
 
     case types.GET_CATEGORIES_SUCCESS:
-
       return {
         ...state,
         items: [...action.data.data.items],
+        total: action.data.data.total
       };
 
     case types.CREATE_CATEGORY_SUCCESS:
