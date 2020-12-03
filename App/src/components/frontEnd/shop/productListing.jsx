@@ -14,24 +14,24 @@ class ProductListing extends Component {
 
     }
 
-    componentWillMount() {
-        this.fetchMoreItems();
-    }
+    // componentWillMount() {
+    //     this.fetchMoreItems();
+    // }
 
-    fetchMoreItems = () => {
-        if (this.state.limit >= this.props.products.length) {
-            this.setState({ hasMoreItems: false });
-            return;
-        }
-        // a fake async api call
-        setTimeout(() => {
-            this.setState({
-                limit: this.state.limit + 5
-            });
-        }, 3000);
+    // fetchMoreItems = () => {
+    //     if (this.state.limit >= this.props.products.length) {
+    //         this.setState({ hasMoreItems: false });
+    //         return;
+    //     }
+    //     // a fake async api call
+    //     setTimeout(() => {
+    //         this.setState({
+    //             limit: this.state.limit + 5
+    //         });
+    //     }, 3000);
 
 
-    }
+    // }
 
     render() {
         const { products, addToCart, symbol, addToWishlist, addToCompare } = this.props;

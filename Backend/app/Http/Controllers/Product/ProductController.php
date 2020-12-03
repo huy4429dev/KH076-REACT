@@ -17,7 +17,7 @@ class ProductController extends BaseController
         $page = $request->query('page') ?? 1;
         $pageOrder = $request->query('pageOrder') ?? 25;
 
-        $Orders = Product::orderBy('id','desc')
+        $Orders = Product::orderBy('id','asc')
         ->with('user')
         ->with('images')
         ->with('colors')
@@ -176,7 +176,7 @@ class ProductController extends BaseController
     }
 
     public function newProducts(Request $request){
-        $Orders = Product::orderBy('created_at','desc')
+        $Orders = Product::orderBy('id','asc')
         ->with('user')
         ->with('images')
         ->with('colors')
@@ -191,7 +191,7 @@ class ProductController extends BaseController
           );
     }
      public function manProducts(Request $request){
-        $Orders = Product::orderBy('created_at','desc')
+        $Orders = Product::orderBy('id','asc')
         ->with('user')
         ->with('images')
         ->with('colors')
@@ -206,7 +206,7 @@ class ProductController extends BaseController
           );
     }
      public function womanProducts(Request $request){
-        $Orders = Product::orderBy('created_at','desc')
+        $Orders = Product::orderBy('id','asc')
         ->with('user')
         ->with('images')
         ->with('colors')
