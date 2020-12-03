@@ -20,11 +20,10 @@ class NavBar extends Component {
         }
     }
 
-    openNav() {
-        console.log('open')
+    openNav = () => {
         this.setState({ navClose: { right: '0px' } })
     }
-    closeNav() {
+    closeNav = () => {
         this.setState({ navClose: { right: '-410px' } })
     }
 
@@ -69,11 +68,11 @@ class NavBar extends Component {
             <div>
                 <div className="main-navbar">
                     <div id="mainnav" >
-                        <div className="toggle-nav" onClick={this.openNav.bind(this)} >
+                        {/* <div className="toggle-nav" onClick={this.openNav} >
                             <i className="fa fa-bars sidebar-bar"></i>
-                        </div>
+                        </div> */}
                         <ul className="nav-menu" style={this.state.navClose}>
-                            <li className="back-btn" onClick={this.closeNav.bind(this)} >
+                            <li className="back-btn" onClick={this.closeNav} >
                                 <div className="mobile-back text-right">
                                     <span >Back</span>
                                     <i className="fa fa-angle-right pl-2" aria-hidden="true"></i>
@@ -86,7 +85,7 @@ class NavBar extends Component {
                             </li>
                             <li >
                                 <Link to="/shop" className="nav-link" >
-                                    {'Cửa hàng'}
+                                    {'Sản Phẩm'}
                                 </Link>
                             </li>
                             {/* <li >
@@ -96,12 +95,17 @@ class NavBar extends Component {
                             </li> */}
                             <li >
                                 <Link to="/blog" className="nav-link">
-                                    {'Bài viết'}
+                                    {'Tin tức'}
                                 </Link>
                             </li>
                             <li >
                                 <Link to="/contact" className="nav-link">
                                     {'Liên hệ'}
+                                </Link>
+                            </li>
+                            <li >
+                                <Link to="/about" className="nav-link">
+                                    {'Giới thiệu'}
                                 </Link>
                             </li>
                         </ul >

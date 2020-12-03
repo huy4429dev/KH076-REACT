@@ -4,6 +4,7 @@ import Breadcrumb from "./../../components/frontEnd/home/breadcrumb";
 import SimpleReactValidator from 'simple-react-validator';
 import connect from './../../lib/connect';
 import * as actions from './../../actions/frontEnd/login';
+import Loading from './../../components/loadding2';
 const styles = {
     checkbox: {
         outLine: "none",
@@ -19,7 +20,8 @@ class Register extends Component {
             email: '',
             password: '',
             r_password: '',
-            role: 'user'
+            role: 'user',
+            loading: false
         }
         this.validator = new SimpleReactValidator({
             autoForceUpdate: this,
@@ -57,9 +59,9 @@ class Register extends Component {
         }
     }
     render() {
-        console.log(this.state);
         return (
             <div>
+                <Loading type="full" show={this.state.loading} />
                 <Breadcrumb title={'Tạo tài khoản'} />
                 {/*Regsiter section*/}
                 <section className="register-page section-b-space">

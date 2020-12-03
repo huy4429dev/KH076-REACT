@@ -17,19 +17,6 @@ class Contact extends Component {
         }
         this.validator = new SimpleReactValidator({ autoForceUpdate: this });
     }
-    componentDidMount() {
-        const { user, login } = this.props.login;
-        if (login) {
-            console.log(user);
-            this.setState({
-                username: user.username,
-                email: user.email,
-                phone: user.phone,
-                address: user.address,
-                message: ''
-            })
-        }
-    }
     addContact = (e) => {
         e.stopPropagation();
         e.preventDefault();
@@ -58,23 +45,9 @@ class Contact extends Component {
                 .then(() => {
                     // this.setState({ loading: false });
                     window.notify('Thêm liên hệ thành công', 'success');
-                    this.setState({
-                        username: '',
-                        email: '',
-                        phone: "",
-                        address: '',
-                        message: ''
-                    })
                 }).catch((err) => {
                     // this.setState({ loading: false });
                     window.notify('Thêm liên hệ không thành công', 'danger');
-                    this.setState({
-                        username: '',
-                        email: '',
-                        phone: "",
-                        address: '',
-                        message: ''
-                    })
                 });
         } else {
             this.validator.showMessages();

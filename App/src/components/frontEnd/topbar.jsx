@@ -31,10 +31,10 @@ class TopBar extends Component {
                                             <i className="fa fa-user" aria-hidden="true"></i> {('Tài khoản')}
                                             <ul className="onhover-show-div">
                                                 <li>
-                                                    <Link to={`/login`} data-lng="en">Login</Link>
+                                                    <Link to={`/login`} data-lng="en">Đăng nhập</Link>
                                                 </li>
                                                 <li>
-                                                    <Link to={`/register`} data-lng="en">Register</Link>
+                                                    <Link to={`/register`} data-lng="en">Đăng ký</Link>
                                                 </li>
                                             </ul>
                                         </li>
@@ -47,7 +47,6 @@ class TopBar extends Component {
         )
     }
 }
-
 
 export default connect(TopBar, state => ({
     loginHome: state.loginHome

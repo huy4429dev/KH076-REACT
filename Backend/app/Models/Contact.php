@@ -9,11 +9,11 @@ class Contact extends Model
 {
     use HasFactory;
     
-    protected $table = 'contact';
+    protected $table = 'contacts';
 
     public $timestamps = true;
      
     public function user(){
-        return $this->belongsTo(User::class);
+        return $this->belongsTo(Customer ::class);
     }
 }

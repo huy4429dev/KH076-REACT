@@ -1,4 +1,3 @@
-import { type } from 'jquery';
 import * as ep from './../../constants/enpoint';
 export const types = {
     GET_CATEGORIES_SUCCESS: 'GET_CATEGORIES_SUCCESS',

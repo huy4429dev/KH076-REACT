@@ -7,10 +7,19 @@ export const types = {
     GET_WOMEN_PRODUCTS_SUCCESS: "GET_WOMEN_PRODUCTS_SUCCESS",
     GET_WOMEN_PRODUCTS_ERROR: "GET_WOMEN_PRODUCTS_ERROR",
     GET_DETAILT_PRODUCTS_SUCCESS: "GET_DETAILT_PRODUCTS_SUCCESS",
-    GET_DETAILT_PRODUCTS_ERROR: "GET_DETAILT_PRODUCTS_ERROR"
+    GET_DETAILT_PRODUCTS_ERROR: "GET_DETAILT_PRODUCTS_ERROR",
+    GET_LIST_PRODUCTS_SUCCESS: "GET_LIST_PRODUCTS_SUCCESS",
+    GET_LIST_PRODUCTS_ERROR: "GET_LIST_PRODUCTS_ERROR"
 }
 
-
+export const getListProducts = () => {
+    return {
+        url: `${ep.enpoint}/api/products`,
+        method: 'get',
+        onSuccess: types.GET_LIST_PRODUCTS_SUCCESS,
+        onError: types.GET_LIST_PRODUCTS_ERROR,
+    };
+};
 export const getNewProducts = () => {
     return {
         url: `${ep.enpoint}/api/products/new-products`,

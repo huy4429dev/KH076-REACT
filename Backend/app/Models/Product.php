@@ -22,6 +22,7 @@ class Product extends Model
         'bought',
         'quantity',
         'trend_count',
+        'count_purchases',
         'image',
     ];
 

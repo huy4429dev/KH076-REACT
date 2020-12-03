@@ -47,7 +47,9 @@ Route::prefix('admins')->group(function(){
 
 
 Route::prefix('shops')->group(function(){
-    
+
+    Route::get('/init', [ShopController::class,'initDataTest'] );
+
     Route::middleware(['auth:api', 'role'])->group(function() {
          
         Route::middleware(['scope:admin,shop,user'])->get('/', [ShopController::class,'index'] );
@@ -284,3 +286,7 @@ Route::prefix('report')->group(function(){
 });
 
 //=================
+
+Route::get('/test',function(){
+    return 'test1';
+ });

@@ -4,10 +4,67 @@ import LogoImage from './../../../components/frontEnd/logo';
 import NavBar from './../../../components/frontEnd/navbar';
 import CartContainer from './../../../components/frontEnd/cart';
 import SideBar from './../../../components/frontEnd/sidebar';
+import { Link } from 'react-router-dom';
+import SiderBar from './../../../components/frontEnd/sidebar';
 
 class Header extends Component {
+    constructor(props) {
+        super(props);
+
+        this.state = {
+            navClose: { right: '0px' }
+        }
+    }
+    componentWillMount() {
+        if (window.innerWidth < 750) {
+            this.setState({ navClose: { right: '-410px' } })
+        }
+        if (window.innerWidth < 1199) {
+            this.setState({ navClose: { right: '-300px' } })
+        }
+    }
     changeLanguage = () => {
 
+    }
+    openNav = () => {
+        this.setState({ navClose: { right: '410px' } })
+    }
+    closeNav = () => {
+        this.setState({ navClose: { right: '-410px' } })
+    }
+    onMouseEnterHandler() {
+        if (window.innerWidth > 1199) {
+            document.querySelector("#main-menu").classList.add("hover-unset");
+        }
+    }
+
+    handleSubmenu = (event) => {
+        if (event.target.classList.contains('sub-arrow'))
+            return;
+
+        if (event.target.nextElementSibling.classList.contains('opensubmenu'))
+            event.target.nextElementSibling.classList.remove('opensubmenu')
+        else {
+            document.querySelectorAll('.nav-submenu').forEach(function (value) {
+                value.classList.remove('opensubmenu');
+            });
+            document.querySelector('.mega-menu-container').classList.remove('opensubmenu')
+            event.target.nextElementSibling.classList.add('opensubmenu')
+        }
+    }
+
+    handleMegaSubmenu = (event) => {
+        if (event.target.classList.contains('sub-arrow'))
+            return;
+
+        if (event.target.parentNode.nextElementSibling.classList.contains('opensubmegamenu'))
+            event.target.parentNode.nextElementSibling.classList.remove('opensubmegamenu')
+        else {
+            document.querySelectorAll('.menu-content').forEach(function (value) {
+                value.classList.remove('opensubmegamenu');
+            });
+            event.target.parentNode.nextElementSibling.classList.add('opensubmegamenu')
+        }
     }
     render() {
         return (
@@ -24,9 +81,9 @@ class Header extends Component {
                                 <div className="main-menu">
                                     <div className="menu-left">
                                         <div className="navbar">
-                                            <a href="javascript:void(0)" onClick={this.openNav}>
-                                                <div className="bar-style"> <i className="fa fa-bars sidebar-bar" aria-hidden="true"></i></div>
-                                            </a>
+                                            <SiderBar />
+
+
                                             {/*SideBar Navigation Component*/}
                                             <SideBar />
                                         </div>
@@ -45,24 +102,14 @@ class Header extends Component {
                                                         <div><img src={`${process.env.PUBLIC_URL}/assets/images/icon/search.png`} onClick={this.openSearch} className="img-fluid" alt="" />
                                                             <i className="fa fa-search" onClick={this.openSearch}></i></div>
                                                     </li>
-                                                    <li className="onhover-div mobile-setting">
+                                                    {/* <li className="onhover-div mobile-setting">
                                                         <div><img src={`${process.env.PUBLIC_URL}/assets/images/icon/setting.png`} className="img-fluid" alt="" />
                                                             <i className="fa fa-cog"></i></div>
                                                         <div className="show-div setting">
                                                             <h6>language</h6>
-                                                            {/* <ul>
-                                                                <li><a href={null} onClick={() => this.changeLanguage('en')}>English</a> </li>
-                                                                <li><a href={null} onClick={() => this.changeLanguage('fn')}>French</a> </li>
-                                                            </ul>
-                                                            <h6>currency</h6>
-                                                            <ul className="list-inline">
-                                                                <li><a href={null} onClick={() => this.props.changeCurrency('€')}>euro</a> </li>
-                                                                <li><a href={null} onClick={() => this.props.changeCurrency('₹')}>rupees</a> </li>
-                                                                <li><a href={null} onClick={() => this.props.changeCurrency('£')}>pound</a> </li>
-                                                                <li><a href={null} onClick={() => this.props.changeCurrency('$')}>doller</a> </li>
-                                                            </ul> */}
+                                                         
                                                         </div>
-                                                    </li>
+                                                    </li> */}
                                                     {/*Header Cart Component */}
                                                     <CartContainer />
                                                 </ul>

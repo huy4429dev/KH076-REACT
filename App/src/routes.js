@@ -8,6 +8,7 @@ import Login from './pages/frontEnd/login';
 import Register from './pages/frontEnd/register';
 import Blog from './pages/frontEnd/blog';
 import Contact from './pages/frontEnd/contact';
+import About from './pages/frontEnd/about';
 
 
 const routes = [
@@ -56,6 +57,11 @@ const routes = [
         path: '/contact',
         exact: true,
         main: ({ history }) => <Contact history={history} />
+    },
+    {
+        path: '/about',
+        exact: true,
+        main: ({ history }) => <About history={history} />
     },
 ];
 

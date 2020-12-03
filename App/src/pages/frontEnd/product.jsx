@@ -14,7 +14,7 @@ import DetailsTopTabs from './../../components/frontEnd/product/detailtTopTabs';
 import Service from './../../components/frontEnd/product/service';
 import connect from './../../lib/connect';
 import * as actions from './../../actions/frontEnd/product';
-
+import Loading from './../../components/loadding2';
 
 class Product extends Component {
 
@@ -22,13 +22,17 @@ class Product extends Component {
         super();
         this.state = {
             nav1: null,
-            nav2: null
+            nav2: null,
+            loading: false
         };
     }
 
     componentDidMount() {
         const { id } = this.props.match.params;
-        this.props.actions.getDetailtProduct(id);
+        this.setState({ loading: true })
+        this.props.actions.getDetailtProduct(id)
+            .then(() => this.setState({ loading: false }))
+            .catch(() => this.setState({ loading: false }))
         this.setState({
             nav1: this.slider1,
             nav2: this.slider2
@@ -56,10 +60,11 @@ class Product extends Component {
         const { detailt } = this.props.productHome;
         return (
             <div>
+                <Loading show={this.state.loading} type="full" />
                 {
                     detailt && (
                         <React.Fragment>
-                            <Breadcrumb title={' Product / ' + detailt.name} />
+                            <Breadcrumb title={' Sản phẩm / ' + detailt.name} />
                             <section className="section-b-space">
                                 <div className="collection-wrapper">
                                     <div className="container">
