@@ -1,6 +1,6 @@
 import React from 'react';
 import Dashboard from './pages/backEnd/dashboard';
-import User from './pages/backEnd/user/user';
+import User from './pages/backEnd/user';
 import Product from './pages/backEnd/products/categories';
 import ProductList from './pages/backEnd/products/products';
 import Detailt from './pages/backEnd/products/detailtProduct';
@@ -10,6 +10,7 @@ import Profile from './pages/backEnd/profile';
 import CategoryDetailt from './pages/backEnd/products/categoryDetailt';
 import Blog from './pages/backEnd/blog';
 import Contact from './pages/backEnd/contact';
+import Customer from './pages/backEnd/customer';
 
 
 
@@ -69,6 +70,11 @@ const routesAdmin = [
         path: '/admin/contact',
         exact: true,
         main: () => <Contact />
+    },
+    {
+        path: '/admin/customer',
+        exact: true,
+        main: () => <Customer />
     },
 ];
 

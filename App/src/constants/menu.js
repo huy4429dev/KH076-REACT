@@ -37,8 +37,8 @@ export const MENUITEMS = [
     },
     {
         title: 'Khách hàng', icon: UserPlus, type: 'sub', active: false, children: [
-            { path: '/admin/user', title: 'User List', type: 'link' },
-            { path: '/admin/user/add', title: 'Create User', type: 'link' },
+            { path: '/admin/customer', title: 'Danh sách khách hàng', type: 'link' },
+            { path: '/admin/customer/add', title: 'Create User', type: 'link' },
         ]
     },
     // {
@@ -69,15 +69,15 @@ export const MENUITEMS = [
     //     ]
     // },
     {
-        title: 'Blog', icon: UserPlus, type: 'sub', active: false, children: [
-            { path: '/admin/blog', title: 'Danh sách bài viết', type: 'link' },
-            { path: '/admin/blog/add', title: 'Thêm bài viết', type: 'link' },
+        title: 'Nhân viên', icon: Chrome, type: 'sub', active: false, children: [
+            { path: '/admin/user', title: 'Danh sách nhân viên', type: 'link' },
+            { path: '/admin/user/add', title: 'Create User', type: 'link' },
         ]
     },
     {
-        title: 'Users', icon: UserPlus, type: 'sub', active: false, children: [
-            { path: '/admin/user', title: 'User List', type: 'link' },
-            { path: '/admin/user/add', title: 'Create User', type: 'link' },
+        title: 'Tin tức', icon: UserPlus, type: 'sub', active: false, children: [
+            { path: '/admin/blog', title: 'Danh sách bài viết', type: 'link' },
+            { path: '/admin/blog/add', title: 'Thêm bài viết', type: 'link' },
         ]
     },
     // {

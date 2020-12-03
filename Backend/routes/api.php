@@ -12,6 +12,7 @@ use App\Http\Controllers\Order\OrderController as OrderController;
 use App\Http\Controllers\Order\OrderItemController as OrderItemController;
 use App\Http\Controllers\Rating\RatingController as RatingController;
 use App\Http\Controllers\Contact\ContactController as ContactController;
+use App\Http\Controllers\Customer\CustomerController as CustomerController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -83,6 +84,28 @@ Route::prefix('users')->group(function(){
         Route::delete('/{id}', [UserController::class,'delete'] );
 
     });
+
+});
+
+//=================
+
+//================================== Customer 
+
+Route::prefix('customer')->group(function(){
+       Route::get('/', [UserController::class,'index'] );
+         Route::get('/search', [UserController::class,'search'] );
+        Route::get('/{id}', [UserController::class,'show'] );
+        Route::post('/', [UserController::class,'create'] );
+        Route::put('/{id}', [UserController::class,'update'] );
+        Route::delete('/{id}', [UserController::class,'delete'] );
+
+
+    // Route::middleware(['auth:api', 'role'])->group(function() {
+         
+    //     Route::middleware(['scope:shop'])->get('/', [CustomerController::class,'index'] );
+        
+   
+    // });
 
 });
 

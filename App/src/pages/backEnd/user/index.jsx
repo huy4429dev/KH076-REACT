@@ -1,3 +1,4 @@
+
 import React, { Component, Fragment } from 'react';
 import Breadcrumb from '../../../components/backEnd/breadCrumb';
 import Datatable from '../../../components/backEnd/products/listCategory';
@@ -9,7 +10,7 @@ import * as actions from '../../../actions/backEnd/category';
 import Loading from './../../../components/loadding2';
 import $ from 'jquery';
 
-class Categorys extends Component {
+class Customer extends Component {
     constructor(props) {
         super(props);
         this.state = {
@@ -33,8 +34,7 @@ class Categorys extends Component {
             })
             .catch((err) => {
                 this.setState({ loading: false });
-                $.notify({ message: 'Tải xuống danh mục sản phẩm không thành công' }, { type: 'danger' });
-                $.notify('Tải xuống danh mục sản phẩm không thành công', 'danger');
+                // windown.notify('Tải xuống danh mục sản phẩm không thành công', 'danger');
             });
 
     }
@@ -117,7 +117,6 @@ class Categorys extends Component {
         return (
             <Fragment>
                 <Breadcrumb title="Danh mục" parent="Sản phẩm" />
-
                 {/* <!-- Container-fluid starts--> */}
                 <div className="container-fluid">
                     <div className="row">
@@ -190,7 +189,7 @@ class Categorys extends Component {
     }
 }
 
-export default connect(Categorys, state => (
+export default connect(Customer, state => (
     {
         categories: state.category
     }
