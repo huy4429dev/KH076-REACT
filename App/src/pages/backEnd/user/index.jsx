@@ -1,3 +1,4 @@
+
 import React, { Component, Fragment } from 'react';
 import Breadcrumb from '../../../components/backEnd/breadCrumb';
 import Datatable from '../../../components/backEnd/products/listCategory';
@@ -6,10 +7,10 @@ import 'react-responsive-modal/styles.css';
 import connect from '../../../lib/connect';
 import SimpleReactValidator from 'simple-react-validator';
 import * as actions from '../../../actions/backEnd/category';
-import Loading from '../../../components/backEnd/loading';
+import Loading from './../../../components/loadding2';
 import $ from 'jquery';
 
-class Categorys extends Component {
+class Customer extends Component {
     constructor(props) {
         super(props);
         this.state = {
@@ -33,11 +34,10 @@ class Categorys extends Component {
             })
             .catch((err) => {
                 this.setState({ loading: false });
-                $.notify({ message: 'Tải xuống danh mục sản phẩm không thành công' }, { type: 'danger' });
+                // windown.notify('Tải xuống danh mục sản phẩm không thành công', 'danger');
             });
 
     }
-
 
     handleInputOnchange = (event) => {
 
@@ -113,11 +113,10 @@ class Categorys extends Component {
         const { open, category } = this.state;
         const { categories } = this.props;
         const items = categories.items ? categories.items : [];
-        const total = categories.total ?? 0;
+
         return (
             <Fragment>
                 <Breadcrumb title="Danh mục" parent="Sản phẩm" />
-
                 {/* <!-- Container-fluid starts--> */}
                 <div className="container-fluid">
                     <div className="row">
@@ -170,13 +169,11 @@ class Categorys extends Component {
                                         {
                                             this.state.loading
                                                 ?
-                                                <div className='d-flex justify-content-center align-items-center'>
-                                                    <Loading type='box' />
-                                                </div>
+                                                <Loading show={this.state.loading} type="full" />
                                                 : <Datatable
                                                     myData={items}
-                                                    total={total}
                                                     class="-striped -highlight"
+                                                    onDelete={(id) => { console.log('ON DELETE', id); }}
                                                 />
                                         }
 
@@ -187,13 +184,12 @@ class Categorys extends Component {
                     </div>
                 </div>
                 {/* <!-- Container-fluid Ends--> */}
-
             </Fragment>
         )
     }
 }
 
-export default connect(Categorys, state => (
+export default connect(Customer, state => (
     {
         categories: state.category
     }

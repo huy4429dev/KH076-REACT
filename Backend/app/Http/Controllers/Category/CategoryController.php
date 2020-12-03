@@ -17,7 +17,7 @@ class CategoryController extends BaseController
         $page = $request->query('page') ?? 1;
         $pageSize = $request->query('pageSize') ?? 25;
 
-        $categories = Category::has('children')
+    $categories = Category::has('children')
         ->orderBy('id','desc')
         ->skip( ($page - 1) * $pageSize )
         ->take($pageSize)
@@ -26,7 +26,7 @@ class CategoryController extends BaseController
         return $this->sendResponse(
             $data = [
                      'items' => $categories , 
-                     'total' => Category::count()
+                     'total' => Category::has('children')->count()
                     ]
           );
     }

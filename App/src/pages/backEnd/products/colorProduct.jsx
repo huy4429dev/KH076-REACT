@@ -1,6 +1,5 @@
 import React, { Component, Fragment } from 'react';
 import Breadcrumb from '../../../components/backEnd/breadCrumb';
-import Datatable from '../../../components/backEnd/products/listCategory';
 import Modal from 'react-responsive-modal';
 import 'react-responsive-modal/styles.css';
 import connect from '../../../lib/connect';
@@ -9,7 +8,7 @@ import * as actions from '../../../actions/backEnd/category';
 import Loading from '../../../components/backEnd/loading';
 import $ from 'jquery';
 
-class Categorys extends Component {
+class ColorProduct extends Component {
     constructor(props) {
         super(props);
         this.state = {
@@ -116,7 +115,7 @@ class Categorys extends Component {
         const total = categories.total ?? 0;
         return (
             <Fragment>
-                <Breadcrumb title="Danh mục" parent="Sản phẩm" />
+                <Breadcrumb title="MẪU MÀU" parent="Sản phẩm" />
 
                 {/* <!-- Container-fluid starts--> */}
                 <div className="container-fluid">
@@ -124,14 +123,14 @@ class Categorys extends Component {
                         <div className="col-sm-12">
                             <div className="card">
                                 <div className="card-header d-flex justify-content-between">
-                                    <h5>DANH MỤC SẢN PHẨM</h5>
+                                    <h5>MẪU MÀU</h5>
                                     <button type="button" className="btn btn-secondary" onClick={this.onOpenModal} data-toggle="modal" data-original-title="test" data-target="#exampleModal">Thêm mới</button>
                                 </div>
                                 <div className="card-body">
                                     <div className="btn-popup pull-right">
                                         <Modal open={open} onClose={this.onCloseModal} >
                                             <div className="modal-header">
-                                                <h5 className="modal-title f-w-600" id="exampleModalLabel2">Thêm danh mục</h5>
+                                                <h5 className="modal-title f-w-600" id="exampleModalLabel2">Thêm mẫu màu</h5>
                                             </div>
                                             <form onSubmit={this.handleSubmit}>
                                                 <div className="modal-body">
@@ -173,11 +172,13 @@ class Categorys extends Component {
                                                 <div className='d-flex justify-content-center align-items-center'>
                                                     <Loading type='box' />
                                                 </div>
-                                                : <Datatable
-                                                    myData={items}
-                                                    total={total}
-                                                    class="-striped -highlight"
-                                                />
+                                                :
+                                                <div className="alert alert-warning text-center">
+                                                    Chức năng đang bảo trì 
+                                                </div>
+                                                // <table>
+
+                                                // </table>
                                         }
 
                                     </div>
@@ -193,7 +194,7 @@ class Categorys extends Component {
     }
 }
 
-export default connect(Categorys, state => (
+export default connect(ColorProduct, state => (
     {
         categories: state.category
     }

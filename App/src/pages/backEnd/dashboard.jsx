@@ -161,7 +161,7 @@ class Dashboard extends Component {
                             </div>
                         </div>
                         <div className="col-xl-6 xl-100">
-                            <div className="card">
+                            <div className="card" style={{paddingBottom:'20px'}}>
                                 <div className="card-header">
                                     <h5>Biểu đồ doanh thu theo ngày</h5>
                                 </div>
