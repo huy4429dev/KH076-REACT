@@ -12,11 +12,8 @@ use App\Http\Controllers\Order\OrderController as OrderController;
 use App\Http\Controllers\Order\OrderItemController as OrderItemController;
 use App\Http\Controllers\Rating\RatingController as RatingController;
 use App\Http\Controllers\Contact\ContactController as ContactController;
-<<<<<<< HEAD
 use App\Http\Controllers\Customer\CustomerController as CustomerController;
-=======
 use App\Http\Controllers\Report\ReportController as ReportController;
->>>>>>> b341412ed900a792fc97e68023341162cb987491
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 

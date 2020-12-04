@@ -5,7 +5,7 @@ import { toast } from 'react-toastify';
 import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import SimpleReactValidator from 'simple-react-validator';
-import Loading from './../../components/backEnd/loading';
+import Loading from './../../components/loadding2';
 import connect from './../../lib/connect';
 import * as actions from './../../actions/backEnd/login';
 // import $ from 'jquery';
@@ -108,11 +108,11 @@ class LoginTabset extends Component {
         return (
             <div>
                 <React.Fragment>
-                    <Loading show={this.state.loading} />
+                    <Loading show={this.state.loading} type="full" />
                     <Tabs>
                         <TabList className="nav nav-tabs tab-coupon" >
                             <Tab className="nav-link" onClick={(e) => this.clickActive(e)}><User />Đăng nhập</Tab>
-                            {<Tab className="nav-link" onClick={(e) => this.clickActive(e)}><Unlock />Đăng ký</Tab>}
+                            {/* {<Tab className="nav-link" onClick={(e) => this.clickActive(e)}><Unlock />Đăng ký</Tab>} */}
                         </TabList>
 
                         <TabPanel>
