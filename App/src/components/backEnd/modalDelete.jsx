@@ -24,11 +24,11 @@ export default class ModalDelete extends Component {
 
 
     render() {
-        const { open } = this.props;
+        const { open, title } = this.props;
         return (
             <Modal open={open} onClose={this.onCloseModal} >
                 <div className="modal-header">
-                    <h5 className="modal-title f-w-600" id="exampleModalLabel2">Xóa danh mục</h5>
+                    <h5 className="modal-title f-w-600" id="exampleModalLabel2">{title}</h5>
                 </div>
                 <div className="modal-footer">
                     <button type="button" className="btn btn-primary" onClick={() => this.handleSubmit()}>Lưu</button>

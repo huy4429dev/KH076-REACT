@@ -13,6 +13,7 @@ import Contact from './pages/backEnd/contact';
 import Customer from './pages/backEnd/customer';
 import ColorProduct from './pages/backEnd/products/colorProduct';
 import SizeProduct from './pages/backEnd/products/sizeProduct';
+import Order from './pages/backEnd/order/order';
 
 
 
@@ -91,6 +92,11 @@ const routesAdmin = [
         path: '/admin/customer',
         exact: true,
         main: () => <Customer />
+    },
+    {
+        path: '/admin/orders',
+        exact: true,
+        main: () => <Order/>
     },
 ];
 

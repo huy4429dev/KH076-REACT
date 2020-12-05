@@ -64,6 +64,15 @@ export const MENUITEMS = [
     ],
   },
   {
+    title: "Đơn hàng",
+    icon: DollarSign,
+    type: "sub",
+    active: false,
+    children: [
+      { path: "/admin/orders", title: "Danh sách", type: "link" },
+    ],
+  },
+  {
     title: "Khách hàng",
     icon: UserPlus,
     type: "sub",
@@ -100,6 +109,7 @@ export const MENUITEMS = [
   //         { path: '/menus/create-menu', title: 'Create Menu', type: 'link' },
   //     ]
   // },
+
   {
     title: "Nhân viên",
     icon: UserPlus,
@@ -110,17 +120,7 @@ export const MENUITEMS = [
       { path: "/admin/user/add", title: "Thêm mới", type: "link" },
     ],
   },
-  {
-    title: "Đơn hàng",
-    icon: DollarSign,
-    type: "sub",
-    active: false,
-    children: [
-      { path: "/admin/products/category", title: "Danh mục", type: "link" },
-      { path: "/admin/products/color", title: "Mẫu màu", type: "link" },
-      { path: "/admin/products/size", title: "Kích cỡ", type: "link" },
-    ],
-  },
+
   {
     title: "Báo cáo",
     icon: BarChart,

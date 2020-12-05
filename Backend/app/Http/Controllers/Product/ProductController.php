@@ -7,6 +7,7 @@ use App\Http\Controllers\BaseController as BaseController;
 use App\Models\Product;
 use App\Models\Role;
 use App\Models\Profile;
+use App\Models\Shop;
 use Validator;
 use Illuminate\Support\Facades\Auth;
 
@@ -14,22 +15,43 @@ class ProductController extends BaseController
 {
     public function index(Request $request){
 
+        $user = $request->user();
         $page = $request->query('page') ?? 1;
-        $pageOrder = $request->query('pageOrder') ?? 25;
+        $pageSize = $request->query('pageSize') ?? 25;
 
-        $Orders = Product::orderBy('id','desc')
-        ->with('user')
-        ->with('images')
-        ->with('colors')
-        ->with('sizes')
-        ->skip( ($page - 1) * $pageOrder )
-        ->take($pageOrder)
-        ->get();
+        if($user->roles->contains('name', 'admin')){
+
+            $Products = Product::orderBy('id','desc')
+            ->with('user')
+            ->with('images')
+            ->with('colors')
+            ->with('sizes')
+            ->skip( ($page - 1) * $pageSize )
+            ->take($pageSize)
+            ->get();
+
+        }
+
+        else if($user->roles->contains('name', 'shop')){
+            $shopId = $user->shops()->first()->id; 
+            $userIdsOfShop = Shop::find($shopId)->users->pluck('id');
+
+            $Products = Product::whereIn('user_id',$userIdsOfShop)
+            ->orderBy('id','desc')
+            ->with('user')
+            ->with('images')
+            ->with('colors')
+            ->with('sizes')
+            ->skip( ($page - 1) * $pageSize )
+            ->take($pageSize)
+            ->get();
+
+        }
 
         return $this->sendResponse(
             $data = [
-                     'items' => $Orders , 
-                     'total' => $Orders->count()
+                     'items' => $Products , 
+                     'total' => $Products->count()
                     ]
           );
     }
@@ -38,7 +60,7 @@ class ProductController extends BaseController
     public function search(Request $request){
 
         $page = $request->query('page') ?? 1;
-        $pageOrder = $request->query('pageOrder') ?? 25;
+        $pageSize = $request->query('pageSize') ?? 25;
 
         $query = Product::query();
 
@@ -51,16 +73,16 @@ class ProductController extends BaseController
                            
         }
 
-        $Orders = $query
+        $Products = $query
         ->orderBy('id','desc')
-        ->skip( ($page - 1) * $pageOrder )
-        ->take($pageOrder)
+        ->skip( ($page - 1) * $pageSize )
+        ->take($pageSize)
         ->get();
 
         return $this->sendResponse(
             $data = [
-                     'items' => $Orders , 
-                     'total' => $Orders->count()
+                     'items' => $Products , 
+                     'total' => $Products->count()
                     ]
           );
     }
@@ -176,7 +198,7 @@ class ProductController extends BaseController
     }
 
     public function newProducts(Request $request){
-        $Orders = Product::orderBy('created_at','desc')
+        $Products = Product::orderBy('created_at','desc')
         ->with('user')
         ->with('images')
         ->with('colors')
@@ -186,12 +208,12 @@ class ProductController extends BaseController
 
         return $this->sendResponse(
             $data = [
-                     'items' => $Orders , 
+                     'items' => $Products , 
                     ]
           );
     }
      public function manProducts(Request $request){
-        $Orders = Product::orderBy('created_at','desc')
+        $Products = Product::orderBy('created_at','desc')
         ->with('user')
         ->with('images')
         ->with('colors')
@@ -201,12 +223,12 @@ class ProductController extends BaseController
 
         return $this->sendResponse(
             $data = [
-                     'items' => $Orders , 
+                     'items' => $Products , 
                     ]
           );
     }
      public function womanProducts(Request $request){
-        $Orders = Product::orderBy('created_at','desc')
+        $Products = Product::orderBy('created_at','desc')
         ->with('user')
         ->with('images')
         ->with('colors')
@@ -216,7 +238,7 @@ class ProductController extends BaseController
 
         return $this->sendResponse(
             $data = [
-                     'items' => $Orders , 
+                     'items' => $Products , 
                     ]
           );
     }

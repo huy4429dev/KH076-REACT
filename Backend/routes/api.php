@@ -129,12 +129,11 @@ Route::prefix('uploads')->group(function(){
 
 Route::prefix('categories')->group(function(){
     
-    Route::get('/', [CategoryController::class,'index'] );
-    Route::get('/search', [CategoryController::class,'search'] );
-    Route::get('/{id}', [CategoryController::class,'showChildren'] );
-
     Route::middleware(['auth:api', 'role'])->group(function() {
         
+        Route::get('/', [CategoryController::class,'index'] );
+        Route::get('/search', [CategoryController::class,'search'] );
+        Route::get('/{id}', [CategoryController::class,'showChildren'] );
         Route::middleware(['scope:admin,shop,user'])->post('/', [CategoryController::class,'create'] );
         Route::middleware(['scope:admin,shop,user'])->put('/{id}', [CategoryController::class,'update'] );
         Route::middleware(['scope:admin,shop,user'])->delete('/{id}', [CategoryController::class,'delete'] );
@@ -150,15 +149,14 @@ Route::prefix('categories')->group(function(){
 
 Route::prefix('products')->group(function(){
     
-    Route::get('/', [ProductController::class,'index'] );
-    Route::get('/search', [ProductController::class,'search'] );
     Route::get('/new-products', [ProductController::class,'newProducts'] );
     Route::get('/man-products', [ProductController::class,'manProducts'] );
     Route::get('/women-products', [ProductController::class,'womanProducts'] );
     Route::get('/{id}', [ProductController::class,'show'] );
 
     Route::middleware(['auth:api', 'role'])->group(function() {
-        
+        Route::get('/', [ProductController::class,'index'] );
+        Route::get('/search', [ProductController::class,'search'] );
         Route::middleware(['scope:admin,shop,user'])->post('/', [ProductController::class,'create'] );
         Route::middleware(['scope:admin,shop,user'])->put('/{id}', [ProductController::class,'update'] );
         Route::middleware(['scope:admin,shop,user'])->delete('/{id}', [ProductController::class,'delete'] );
@@ -213,12 +211,12 @@ Route::prefix('order-items')->group(function(){
 
 Route::prefix('colors')->group(function(){
     
-    Route::get('/', [ColorController::class,'index'] );
-    Route::get('/search', [ColorController::class,'search'] );
-    Route::get('/{id}', [ColorController::class,'show'] );
-
+    
     Route::middleware(['auth:api', 'role'])->group(function() {
         
+        Route::get('/', [ColorController::class,'index'] );
+        Route::get('/search', [ColorController::class,'search'] );
+        Route::get('/{id}', [ColorController::class,'show'] );
         Route::middleware(['scope:admin,shop'])->post('/', [ColorController::class,'create'] );
         Route::middleware(['scope:admin,shop'])->put('/{id}', [ColorController::class,'update'] );
         Route::middleware(['scope:admin,shop'])->delete('/{id}', [ColorController::class,'delete'] );
@@ -233,12 +231,11 @@ Route::prefix('colors')->group(function(){
 
 Route::prefix('sizes')->group(function(){
     
-    Route::get('/', [SizeController::class,'index'] );
-    Route::get('/search', [SizeController::class,'search'] );
-    Route::get('/{id}', [SizeController::class,'show'] );
-
     Route::middleware(['auth:api', 'role'])->group(function() {
-        
+
+        Route::get('/', [SizeController::class,'index'] );
+        Route::get('/search', [SizeController::class,'search'] );
+        Route::get('/{id}', [SizeController::class,'show'] );
         Route::middleware(['scope:admin,shop'])->post('/', [SizeController::class,'create'] );
         Route::middleware(['scope:admin,shop'])->put('/{id}', [SizeController::class,'update'] );
         Route::middleware(['scope:admin,shop'])->delete('/{id}', [SizeController::class,'delete'] );

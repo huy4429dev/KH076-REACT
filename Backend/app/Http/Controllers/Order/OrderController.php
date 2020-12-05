@@ -14,10 +14,13 @@ class OrderController extends BaseController
 {
     public function index(Request $request){
 
+        $user = $request->user();
         $page = $request->query('page') ?? 1;
         $pageOrder = $request->query('pageOrder') ?? 25;
 
         $Orders = Order::orderBy('id','desc')
+        ->where('creator_id', $user->id)
+        ->with('user')
         ->skip( ($page - 1) * $pageOrder )
         ->take($pageOrder)
         ->get();
@@ -62,12 +65,16 @@ class OrderController extends BaseController
     
     public function show($id){
 
-        $found = Order::find($id);
+      
+        $user = $request->user();
+
+        $found = Order::where('creator_id',$user->id)->where('id', $request->id)->first(); 
 
         if($found == null){
             
             return $this->sendError('Order Errors.',['error' => 'Order not found !']);
         }
+
 
         return $this->sendResponse(
             $data = $found
@@ -142,7 +149,9 @@ class OrderController extends BaseController
 
     public function delete($id,Request $request){
 
-        $found = Order::find($id); 
+        $user = $request->user();
+
+        $found = Order::where('creator_id',$user->id)->where('id', $request->id)->first(); 
 
         if($found == null){
             
