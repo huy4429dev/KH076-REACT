@@ -1,7 +1,7 @@
 import React, { Component, Fragment } from 'react';
-import Breadcrumb from './../../../components/backEnd/breadCrumb';
+import Breadcrumb from '../../../components/backEnd/breadCrumb';
 import CKEditors from "react-ckeditor-component";
-import MyDropzone from './../../../components/backEnd/dropZone';
+import MyDropzone from '../../../components/backEnd/dropZone';
 
 export class Add extends Component {
     constructor(props) {
@@ -13,26 +13,26 @@ export class Add extends Component {
     render() {
         return (
             <Fragment>
-                <Breadcrumb title="Add Products" parent="Digital" />
+                <Breadcrumb title="Thêm Sản phẩm" parent="Sản phẩm" />
                 <div className="container-fluid">
                     <div className="row product-adding">
                         <div className="col-xl-6">
                             <div className="card">
                                 <div className="card-header">
-                                    <h5>General</h5>
+                                    <h5>Thông tin chung</h5>
                                 </div>
                                 <div className="card-body">
                                     <div className="digital-add needs-validation">
                                         <div className="form-group">
-                                            <label className="col-form-label pt-0"><span>*</span> Title</label>
+                                            <label className="col-form-label pt-0"><span>*</span>Tên sản phẩm</label>
                                             <input className="form-control" id="validationCustom01" type="text" required="" />
                                         </div>
                                         <div className="form-group">
-                                            <label className="col-form-label pt-0"><span>*</span> SKU</label>
+                                            <label className="col-form-label pt-0"><span>*</span> Số lượng</label>
                                             <input className="form-control" id="validationCustom02" type="text" required="" />
                                         </div>
                                         <div className="form-group">
-                                            <label className="col-form-label"><span>*</span> Categories</label>
+                                            <label className="col-form-label"><span>*</span> Danh mục</label>
                                             <select className="custom-select" required="">
                                                 <option value="">--Select--</option>
                                                 <option value="1">eBooks</option>
@@ -43,27 +43,23 @@ export class Add extends Component {
                                             </select>
                                         </div>
                                         <div className="form-group">
-                                            <label className="col-form-label">Sort Summary</label>
-                                            <textarea rows="4" cols="12"></textarea>
-                                        </div>
-                                        <div className="form-group">
-                                            <label className="col-form-label"><span>*</span> Product Price</label>
+                                            <label className="col-form-label"><span>*</span> Giá bán</label>
                                             <input className="form-control" id="validationCustom02" type="text" required="" />
                                         </div>
                                         <div className="form-group">
-                                            <label className="col-form-label"><span>*</span> Status</label>
+                                            <label className="col-form-label"><span>*</span> Trạng thái</label>
                                             <div className="m-checkbox-inline mb-0 custom-radio-ml d-flex radio-animated">
                                                 <label className="d-block">
                                                     <input className="radio_animated" id="edo-ani" type="radio" name="rdo-ani" />
-                                                    Enable
+                                                    Đang kinh doanh
                                             </label>
                                                 <label className="d-block" >
                                                     <input className="radio_animated" id="edo-ani1" type="radio" name="rdo-ani" />
-                                                    Disable
+                                                    Ngừng kinh doanh
                                             </label>
                                             </div>
                                         </div>
-                                        <label className="col-form-label pt-0"> Product Upload</label>
+                                        <label className="col-form-label pt-0"> Thêm hình ảnh</label>
                                         <MyDropzone />
                                     </div>
                                 </div>
@@ -72,7 +68,7 @@ export class Add extends Component {
                         <div className="col-xl-6">
                             <div className="card">
                                 <div className="card-header">
-                                    <h5>Add Description</h5>
+                                    <h5>Thêm mô tả</h5>
                                 </div>
                                 <div className="card-body">
                                     <div className="digital-add needs-validation">
@@ -93,24 +89,11 @@ export class Add extends Component {
                                 </div>
                             </div>
                             <div className="card">
-                                <div className="card-header">
-                                    <h5>Meta Data</h5>
-                                </div>
                                 <div className="card-body">
-                                    <div className="digital-add needs-validation">
-                                        <div className="form-group">
-                                            <label className="col-form-label pt-0"> Meta Title</label>
-                                            <input className="form-control" id="validationCustom05" type="text" required="" />
-                                        </div>
-                                        <div className="form-group">
-                                            <label className="col-form-label">Meta Description</label>
-                                            <textarea rows="4" cols="12"></textarea>
-                                        </div>
-                                        <div className="form-group mb-0">
-                                            <div className="product-buttons text-center">
-                                                <button type="button" className="btn btn-primary">Add</button>
-                                                <button type="button" className="btn btn-light">Discard</button>
-                                            </div>
+                                    <div className="form-group mb-0">
+                                        <div className="product-buttons text-center">
+                                            <button type="button" className="btn btn-primary">Lưu</button>
+                                            <button type="button" className="btn btn-light">Hủy</button>
                                         </div>
                                     </div>
                                 </div>
@@ -118,7 +101,7 @@ export class Add extends Component {
                         </div>
                     </div>
                 </div>
-            </Fragment>
+            </Fragment >
         )
     }
 }

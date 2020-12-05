@@ -14,6 +14,7 @@ class OrderItem extends Model
      *
      * @var array
      */
+    protected $table = 'orders_items';
     protected $fillable = [
         'quantity','product_id','total'
     ];

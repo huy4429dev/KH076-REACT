@@ -7,6 +7,8 @@ use App\Http\Controllers\BaseController as BaseController;
 use App\Models\Product;
 use App\Models\Role;
 use App\Models\Profile;
+use App\Models\Comment;
+use App\Models\User;
 use Validator;
 use Illuminate\Support\Facades\Auth;
 
@@ -220,5 +222,90 @@ class ProductController extends BaseController
                     ]
           );
     }
-  
+    public function topProduct(Request $request){
+    $Orders = Product::orderBy('created_at','desc')
+    ->with('user')
+    ->with('images')
+    ->with('colors')
+    ->with('sizes')
+    ->take(8)
+    ->get();
+
+    return $this->sendResponse(
+        $data = [
+                    'items' => $Orders , 
+                ]
+        );
+    }
+    public function saleMen(Request $request){
+        $Orders = Product::orderBy('created_at','desc')
+        ->with('user')
+        ->with('images')
+        ->with('colors')
+        ->with('sizes')
+        ->take(1)
+        ->get();
+
+    return $this->sendResponse(
+        $data = [
+                    'items' => $Orders , 
+                ]
+        );
+    }
+    public function saleWomen(Request $request){
+        $Orders = Product::orderBy('created_at','desc')
+        ->with('user')
+        ->with('images')
+        ->with('colors')
+        ->with('sizes')
+        ->take(1)
+        ->get();
+
+    return $this->sendResponse(
+        $data = [
+                    'items' => $Orders , 
+                ]
+        );
+    }
+     public function comment(Request $request){
+
+        $validator = Validator::make($request->all(), [
+
+            'username' => 'required',
+            'email' => 'required|email',
+            'title' => 'required',
+            'content' => 'required',
+            'productId' => 'required',
+        ]);
+
+        if($validator->fails()){
+            return $this->sendError('Validation Error.', $validator->errors());       
+        }
+
+        $comment = new Comment();
+
+        $comment->title = $request->title;
+        $comment->content = $request->content;
+        $comment->product_id = $request->productId;
+        if($request->userId != null){
+            $user = User::where('id',$request->userId)->first();
+            $user->username = $request->username;
+            $user->email = $request->email;
+            $user->save();
+            $comment->user_id = $request->userId;
+        }else{
+            $user = new User();
+            $user->username = $request->username;
+            $user->email = $request->email;
+            $user->password = "123456";
+            $user->save();
+            $comment->user_id = $user->id;
+        }
+        $comment->save();
+        return $this->sendResponse(
+            $data = $comment,
+            'Create contact successfully.'
+        );
+
+    }
 }

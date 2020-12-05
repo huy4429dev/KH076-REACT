@@ -42,7 +42,7 @@ class Product extends Component {
 
     render() {
         const { symbol, addToCart, addToCartUnsafe, addToWishlist } = this.props;
-        const item = [];
+
         var products = {
             slidesToShow: 1,
             slidesToScroll: 1,
@@ -93,7 +93,7 @@ class Product extends Component {
                                                         <DetailsWithPrice symbol={symbol} item={detailt} navOne={this.state.nav1} addToCartClicked={addToCart} BuynowClicked={addToCartUnsafe} addToWishlistClicked={addToWishlist} />
                                                     </div>
                                                 </div>
-                                                <DetailsTopTabs item={item} />
+                                                <DetailsTopTabs item={detailt} />
                                             </div>
                                             <div className="col-sm-3 collection-filter">
 

@@ -1,7 +1,5 @@
 import React, { Component, Fragment } from 'react';
 import { Link } from 'react-router-dom'
-//images import
-import man from './../../assets/images/dashboard/man.png';
 import connect from './../../lib/connect';
 import * as actions from './../../actions/backEnd/login';
 export class UserMenu extends Component {
@@ -27,7 +25,7 @@ export class UserMenu extends Component {
                         <li><a href="javascript:void(0)"><i data-feather="mail"></i>Inbox</a></li>
                         <li><a href="javascript:void(0)"><i data-feather="lock"></i>Lock Screen</a></li>
                         <li><a href="javascript:void(0)"><i data-feather="settings"></i>Settings</a></li> */}
-                        <li onClick={() => this.logout()}>Logout</li>
+                        <li onClick={() => this.logout()}>Đăng xuất</li>
                     </ul>
                 </li>
             </Fragment>

@@ -18,7 +18,7 @@ class CategoryDetailt extends Component {
             loading: false,
             category: null,
             name: '',
-            description: '', 
+            description: '',
             parentId: 0
         };
 
@@ -30,7 +30,7 @@ class CategoryDetailt extends Component {
         const { getCategory } = this.props.actions;
 
         this.setState({
-            loading: true, 
+            loading: true,
             parentId: id
         });
 
@@ -67,13 +67,13 @@ class CategoryDetailt extends Component {
                 loading: true
             });
 
-            const { name, description, category, parentId} = this.state;
+            const { name, description, category, parentId } = this.state;
             const { createCategoryChildren } = this.props.actions;
             if (name === '' || name === null) return;
             createCategoryChildren({
                 name: name,
                 description: description
-            },parentId)
+            }, parentId)
                 .then((data) => {
                     if (data.success) {
                         return data;
@@ -84,8 +84,8 @@ class CategoryDetailt extends Component {
                 .then((data) => {
                     let item = data.data;
                     this.setState({
-                         loading: false , 
-                        category: {...category,children:[{...item,...category.children}]}
+                        loading: false,
+                        category: { ...category, children: [{ ...item, ...category.children }] }
                     });
 
                     window.notify("Thêm mới danh mục thành công");
@@ -129,62 +129,70 @@ class CategoryDetailt extends Component {
                                     <h5>CHI TIẾT DANH MỤC</h5>
                                     <button type="button" className="btn btn-secondary" onClick={this.onOpenModal} data-toggle="modal" data-original-title="test" data-target="#exampleModal">Thêm mới</button>
                                 </div>
-                                <div className="card-body">
-                                    <div className="btn-popup pull-right">
-                                        <Modal open={open} onClose={this.onCloseModal} >
-                                            <div className="modal-header">
-                                                <h5 className="modal-title f-w-600" id="exampleModalLabel2">Thêm danh mục</h5>
-                                            </div>
-                                            <form onSubmit={this.handleSubmit}>
-                                                <div className="modal-body">
-                                                    <div className="form-group">
-                                                        <label htmlFor="recipient-name" className="col-form-label" >{this.props.name} Tên :</label>
-                                                        <input
-                                                            name="name"
-                                                            type="text"
-                                                            className="form-control"
-                                                            onChange={this.handleInputOnchange}
-                                                        // onBlur={() => this.validator.showMessageFor('name')}
-                                                        />
-                                                        {this.validator.message('name', this.state.name, 'required', { className: 'text-danger' })}
+                                {
 
-                                                    </div>
-                                                    <div className="form-group">
-                                                        <label htmlFor="message-text" className="col-form-label">Mô tả :</label>
-                                                        <textarea
-                                                            name="description"
-                                                            className="form-control"
-                                                            onChange={this.handleInputOnchange}
-
-                                                        />
-                                                    </div>
-                                                </div>
-                                                <div className="modal-footer">
-                                                    <button type="submit" className="btn btn-secondary" onClick={() => this.handleSubmit}>Lưu</button>
-                                                    <button type="button" className="btn btn-primary" onClick={() => this.onCloseModal()}>Hủy</button>
-                                                </div>
-                                            </form>
-                                        </Modal>
-                                    </div>
-                                    <div className="card bg-light mb-4" style={{ maxWidth: '18rem' }}>
-                                        <div className="card-header" style={{ color: 'black' }}>Danh mục gốc</div>
-                                        <div className="card-body">
-                                            <h5 className="card-title">{category?.name}</h5>
-                                            <p className="card-text">{category?.description}</p>
+                                    this.state.loading
+                                        ?
+                                        <div className='d-flex justify-content-center align-items-center'>
+                                            <Loading type='box' />
                                         </div>
-                                    </div>
-                                    <div id="basicScenario" className="product-physical">
-                                        {
-                                            this.state.loading
-                                                ? "LOADINGGGGGGGGG"
-                                                : <Datatable
+                                        :
+                                        <div className="card-body">
+                                            <div className="btn-popup pull-right">
+                                                <Modal open={open} onClose={this.onCloseModal} >
+                                                    <div className="modal-header">
+                                                        <h5 className="modal-title f-w-600" id="exampleModalLabel2">Thêm danh mục</h5>
+                                                    </div>
+                                                    <form onSubmit={this.handleSubmit}>
+                                                        <div className="modal-body">
+                                                            <div className="form-group">
+                                                                <label htmlFor="recipient-name" className="col-form-label" >{this.props.name} Tên :</label>
+                                                                <input
+                                                                    name="name"
+                                                                    type="text"
+                                                                    className="form-control"
+                                                                    onChange={this.handleInputOnchange}
+                                                                // onBlur={() => this.validator.showMessageFor('name')}
+                                                                />
+                                                                {this.validator.message('name', this.state.name, 'required', { className: 'text-danger' })}
+
+                                                            </div>
+                                                            <div className="form-group">
+                                                                <label htmlFor="message-text" className="col-form-label">Mô tả :</label>
+                                                                <textarea
+                                                                    name="description"
+                                                                    className="form-control"
+                                                                    onChange={this.handleInputOnchange}
+
+                                                                />
+                                                            </div>
+                                                        </div>
+                                                        <div className="modal-footer">
+                                                            <button type="submit" className="btn btn-secondary" onClick={() => this.handleSubmit}>Lưu</button>
+                                                            <button type="button" className="btn btn-primary" onClick={() => this.onCloseModal()}>Hủy</button>
+                                                        </div>
+                                                    </form>
+                                                </Modal>
+                                            </div>
+                                            <div className="card bg-light mb-4" style={{ maxWidth: '18rem' }}>
+                                                <div className="card-header" style={{ color: 'black' }}>Danh mục gốc</div>
+                                                <div className="card-body">
+                                                    <h5 className="card-title">{category?.name}</h5>
+                                                    <p className="card-text">{category?.description}</p>
+                                                </div>
+                                            </div>
+                                            <div id="basicScenario" className="product-physical">
+
+
+                                                <Datatable
                                                     myData={items}
                                                     class="-striped -highlight"
                                                 />
-                                        }
 
-                                    </div>
-                                </div>
+
+                                            </div>
+                                        </div>
+                                }
                             </div>
                         </div>
                     </div>

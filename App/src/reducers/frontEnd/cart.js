@@ -48,6 +48,11 @@ export default (state = initState, action) => {
             return {
                 ...state,
             }
+        case types.REMOVE_ALL_CART:
+            state.items = [];
+            return {
+                ...state,
+            }
         default:
             return state;
     }

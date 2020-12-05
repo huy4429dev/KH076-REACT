@@ -61,20 +61,21 @@ class Dashboard extends Component {
 
     render() {
 
-        const { data, loading } = this.state.data;
+        const { data } = this.state.data;
+        const { loading } = this.state;
+
+        console.log('LOADING', loading);
 
         const date = new Date();
         const curentMonth = date.getMonth();
-        
+
         let labelLineData = [];
         let dataLineData = [];
 
-        if(data?.totalAmount != null){
-            labelLineData =  data.totalAmount.map(item => item.day + '/' + curentMonth);
-            dataLineData =  data.totalAmount.map(item => item.total);
+        if (data?.totalAmount != null) {
+            labelLineData = data.totalAmount.map(item => item.day + '/' + curentMonth);
+            dataLineData = data.totalAmount.map(item => item.total);
         }
-
-        console.log(labelLineData);
 
 
         const lineData = {
@@ -96,7 +97,7 @@ class Dashboard extends Component {
                 // }
             ]
         };
-        
+
         return (
 
             <Fragment>
@@ -160,14 +161,22 @@ class Dashboard extends Component {
                             </div>
                         </div>
                         <div className="col-xl-6 xl-100">
-                            <div className="card">
+                            <div className="card" style={{paddingBottom:'20px'}}>
                                 <div className="card-header">
                                     <h5>Biểu đồ doanh thu theo ngày</h5>
                                 </div>
                                 <div className="card-body">
-                                    <div className="market-chart">
-                                        <Bar data={lineData} options={lineOptions} width={778} height={308} />
-                                    </div>
+                                    {
+                                        loading ?
+                                            <div className='d-flex justify-content-center align-items-center'>
+                                                <Loading type='box' />
+                                            </div>
+                                            :
+                                            <div className="market-chart">
+                                                <Bar data={lineData} options={lineOptions} width={778} height={308} />
+                                            </div>
+                                    }
+
                                 </div>
                             </div>
                         </div>
@@ -188,31 +197,41 @@ class Dashboard extends Component {
                                                 </tr>
                                             </thead>
                                             {
-                                                data?.productHots?.length > 0 && !loading ?
-                                                    <tbody>
-                                                        {
-                                                            data.productHots.map((item, index) => {
-                                                                return (
-                                                                    <tr key={item.id}>
-                                                                        <td>{item.name}</td>
-                                                                        <td className="digits">{item.quantity}</td>
-                                                                        <td className="font-primary">{item.count_purchases}</td>
-                                                                        <td className="digits">{item.price}</td>
-                                                                    </tr>
-                                                                )
+                                                data?.productHots?.length > 0 && !loading &&
+                                                <tbody>
+                                                    {
+                                                        data.productHots.map((item, index) => {
+                                                            return (
+                                                                <tr key={item.id}>
+                                                                    <td>{item.name}</td>
+                                                                    <td className="digits">{item.quantity}</td>
+                                                                    <td className="font-primary">{item.count_purchases}</td>
+                                                                    <td className="digits">{item.price}</td>
+                                                                </tr>
+                                                            )
 
-                                                            })
+                                                        })
 
-                                                        }
-                                                    </tbody>
-                                                    :
-                                                    <Loading />
+                                                    }
+                                                </tbody>
+
                                             }
+
                                         </table>
                                         {
                                             data?.productHots?.length === 0 && !loading &&
                                             <p className='alert alert-warning w-100'>Chưa có sản phẩm nào</p>
+
+
                                         }
+                                        {
+                                            loading &&
+                                            <div className='d-flex justify-content-center align-items-center'>
+                                                <Loading type='box' />
+                                            </div>
+                                        }
+
+
                                     </div>
                                 </div>
                             </div>

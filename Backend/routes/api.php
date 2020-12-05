@@ -152,11 +152,16 @@ Route::prefix('categories')->group(function(){
 Route::prefix('products')->group(function(){
     
     Route::get('/', [ProductController::class,'index'] );
+    Route::get('/sale-men', [ProductController::class,'saleMen'] );
+    Route::get('/sale-women', [ProductController::class,'saleWomen'] );
     Route::get('/search', [ProductController::class,'search'] );
     Route::get('/new-products', [ProductController::class,'newProducts'] );
     Route::get('/man-products', [ProductController::class,'manProducts'] );
     Route::get('/women-products', [ProductController::class,'womanProducts'] );
+    Route::get('/top-product', [ProductController::class,'topProduct'] );
+    Route::post('/comment', [ProductController::class,'comment'] );
     Route::get('/{id}', [ProductController::class,'show'] );
+
 
     Route::middleware(['auth:api', 'role'])->group(function() {
         
@@ -174,13 +179,13 @@ Route::prefix('products')->group(function(){
 
 
 Route::prefix('orders')->group(function(){
-    
+    Route::post('/', [OrderController::class,'create'] );
     Route::middleware(['auth:api', 'role'])->group(function() {
         
         Route::middleware(['scope:admin,shop,user'])->get('/', [OrderController::class,'index'] );
         Route::middleware(['scope:admin,shop,user'])->get('/search', [OrderController::class,'search'] );
         Route::middleware(['scope:admin,shop,user'])->get('/{id}', [OrderController::class,'show'] );
-        Route::middleware(['scope:admin,shop,user'])->post('/', [OrderController::class,'create'] );
+        // Route::middleware(['scope:admin,shop,user'])->post('/', [OrderController::class,'create'] );
         Route::middleware(['scope:admin,shop,user'])->put('/{id}', [OrderController::class,'update'] );
         Route::middleware(['scope:admin,shop,user'])->delete('/{id}', [OrderController::class,'delete'] );
     });

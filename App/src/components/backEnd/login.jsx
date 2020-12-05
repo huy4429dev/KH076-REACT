@@ -26,10 +26,6 @@ class LoginTabset extends Component {
         this.handleChange = this.handleChange.bind(this);
         this.validator = new SimpleReactValidator({ autoForceUpdate: this });
     }
-    componentDidMount() {
-
-    }
-
     clickActive = (event) => {
         this.setState({
             username: '',
@@ -63,9 +59,15 @@ class LoginTabset extends Component {
                 c_password: this.state.confilm
             }
             this.props.actions.register(data)
-                .then(() => {
-                    this.setState({ loading: false });
-                    window.notify('Đăng ký thành công', 'success');
+                .then((data) => {
+                    if (data.success) {
+                        window.notify('Đăng ký thành công', 'success');
+                        if (this.props.redirect) {
+                            this.props.redirect();
+                        }
+                    } else {
+                        window.notify('Đăng ký không thành công', 'danger');
+                    }
                 }).catch((err) => {
                     this.setState({ loading: false });
                     window.notify('Đăng ký không thành công', 'danger');
@@ -88,11 +90,16 @@ class LoginTabset extends Component {
                 password: this.state.password
             }
             this.props.actions.login(data)
-                .then(() => {
+                .then((data) => {
                     this.setState({ loading: false });
-                    window.notify('Đăng nhập thành công', 'success');
-                    if (this.props.redirect) {
-                        this.props.redirect();
+                    if (data.token) {
+                        window.notify('Đăng nhập thành công', 'success');
+                        if (this.props.redirect) {
+                            this.props.redirect();
+                        }
+                    }
+                    else {
+                        window.notify('Đăng nhập không thành công', 'danger');
                     }
                 }).catch((err) => {
                     this.setState({ loading: false });

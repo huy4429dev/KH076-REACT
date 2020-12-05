@@ -35,7 +35,7 @@ class ReportController extends BaseController
 
         $countContact = Contact::whereBetween('created_at',[$fromDate,$toDate])->count();
         $countNewOrder =  Order::whereBetween('created_at',[$fromDate,$toDate])->count();
-        $productHots = Product::orderBy('count_purchases','desc')->take(10)->get() ;
+        $productHots = Product::orderBy('count_purchases','desc')->take(6)->get() ;
 
 
         $totalAmount = DB::select("select Date(created_at) date, sum(total) total 

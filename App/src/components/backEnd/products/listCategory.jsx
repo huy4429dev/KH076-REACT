@@ -16,7 +16,7 @@ import Loading from '../loading';
 import { LogIn } from 'react-feather';
 import ModalEdit from './editCategory';
 import ModalDelete from './../../../components/backEnd/modalDelete';
-// import Pagination from "react-bootstrap-4-pagination";
+import Pagination from "react-bootstrap-4-pagination";
 
 class List extends Component {
     constructor(props) {
@@ -212,7 +212,11 @@ class List extends Component {
 
             <Fragment>
                 {
-                    loading ? 'LOADING'
+                    loading
+                        ?
+                        <div className='d-flex justify-content-center align-items-center'>
+                            <Loading type='box' />
+                        </div>
                         : <table className="table">
                             <tr>
                                 <th style={{ width: '5%' }}>#</th>
@@ -251,14 +255,14 @@ class List extends Component {
                 }
                 <div className='d-flex justify-content-end'>
 
-                    {/* <Pagination
-                        totalPages={ total / pageSize + 1}
+                    <Pagination
+                        totalPages={total / pageSize + 1}
                         currentPage={page}
-                        showMax={total / pageSize + 1}
+                        showMax={total > pageSize ? total / pageSize + 1 : 0}
                         size={"md"}
                         prevNext={true}
                         onClick={this.handlePageChange}
-                    /> */}
+                    /> 
 
                 </div>
                 <ModalEdit

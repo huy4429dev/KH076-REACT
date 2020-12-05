@@ -3,7 +3,7 @@ import Breadcrumb from "./../../components/frontEnd/home/breadcrumb";
 import SimpleReactValidator from 'simple-react-validator';
 import connect from './../../lib/connect';
 import * as actions from './../../actions/frontEnd/contact';
-
+import Loading from './../../components/loadding2';
 class Contact extends Component {
 
     constructor(props) {
@@ -13,7 +13,8 @@ class Contact extends Component {
             email: '',
             phone: "",
             address: '',
-            message: ''
+            message: '',
+            loading: false
         }
         this.validator = new SimpleReactValidator({ autoForceUpdate: this });
     }
@@ -41,12 +42,18 @@ class Contact extends Component {
                     idUser: null
                 }
             }
+            this.setState({ loading: true });
             this.props.actions.addContact(data)
-                .then(() => {
-                    // this.setState({ loading: false });
-                    window.notify('Thêm liên hệ thành công', 'success');
+                .then((data) => {
+                    this.setState({ loading: false });
+                    if (data.success) {
+                        window.notify('Thêm liên hệ thành công', 'success');
+                    } else {
+                        window.notify('Thêm liên hệ không thành công', 'danger');
+                    }
+
                 }).catch((err) => {
-                    // this.setState({ loading: false });
+                    this.setState({ loading: false });
                     window.notify('Thêm liên hệ không thành công', 'danger');
                 });
         } else {
@@ -58,6 +65,7 @@ class Contact extends Component {
         return (
             <div>
                 <Breadcrumb title={'Liên hệ'} />
+                <Loading show={this.state.loading} type="full" />
                 {/*Forget Password section*/}
                 <section className=" contact-page section-b-space">
                     <div className="container">

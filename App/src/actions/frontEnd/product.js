@@ -9,7 +9,15 @@ export const types = {
     GET_DETAILT_PRODUCTS_SUCCESS: "GET_DETAILT_PRODUCTS_SUCCESS",
     GET_DETAILT_PRODUCTS_ERROR: "GET_DETAILT_PRODUCTS_ERROR",
     GET_LIST_PRODUCTS_SUCCESS: "GET_LIST_PRODUCTS_SUCCESS",
-    GET_LIST_PRODUCTS_ERROR: "GET_LIST_PRODUCTS_ERROR"
+    GET_LIST_PRODUCTS_ERROR: "GET_LIST_PRODUCTS_ERROR",
+    GET_TOP_PRODUCTS_SUCCESS: "GET_TOP_PRODUCTS_SUCCESS",
+    GET_TOP_PRODUCTS_ERROR: "GET_TOP_PRODUCTS_ERROR",
+    GET_TOP_SALE_WOMEN_SUCCESS: "GET_TOP_SALE_WOMEN_SUCCESS",
+    GET_TOP_SALE_WOMEN_ERROR: "GET_TOP_SALE_WOMEN_ERROR",
+    GET_TOP_SALE_MEN_SUCCESS: "GET_TOP_SALE_MEN_SUCCESS",
+    GET_TOP_SALE_MEN_ERROR: "GET_TOP_SALE_MEN_ERROR",
+    COMMENT_SUCCESS: "COMMENT_SUCCESS",
+    COMMENT_FAILE: "COMMENT_FAILE"
 }
 
 export const getListProducts = () => {
@@ -50,5 +58,38 @@ export const getDetailtProduct = (id) => {
         method: 'get',
         onSuccess: types.GET_DETAILT_PRODUCTS_SUCCESS,
         onError: types.GET_DETAILT_PRODUCTS_ERROR,
+    };
+};
+export const getTopProducts = () => {
+    return {
+        url: `${ep.enpoint}/api/products/top-product`,
+        method: 'get',
+        onSuccess: types.GET_TOP_PRODUCTS_SUCCESS,
+        onError: types.GET_TOP_PRODUCTS_ERROR,
+    };
+};
+export const getBestSaleMen = () => {
+    return {
+        url: `${ep.enpoint}/api/products/sale-men`,
+        method: 'get',
+        onSuccess: types.GET_TOP_SALE_MEN_SUCCESS,
+        onError: types.GET_TOP_SALE_MEN_ERROR,
+    };
+};
+export const getBestSaleWomen = () => {
+    return {
+        url: `${ep.enpoint}/api/products/sale-women`,
+        method: 'get',
+        onSuccess: types.GET_TOP_SALE_WOMEN_SUCCESS,
+        onError: types.GET_TOP_SALE_WOMEN_ERROR,
+    };
+};
+export const comment = (data) => {
+    return {
+        url: `${ep.enpoint}/api/products/comment`,
+        method: 'post',
+        data: data,
+        onSuccess: types.COMMENT_SUCCESS,
+        onError: types.COMMENT_FAILE,
     };
 }; 

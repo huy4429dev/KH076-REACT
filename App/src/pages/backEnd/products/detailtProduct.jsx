@@ -77,7 +77,7 @@ class Detail extends Component {
         return (
 
             <Fragment>
-                <Breadcrumb title="Product Detail" parent="Physical" />
+                <Breadcrumb title="CHI TIẾT SẢN PHẨM" parent="SẢN PHẨM" />
 
                 <div className="container-fluid">
                     <div className="card">
@@ -129,7 +129,7 @@ class Detail extends Component {
                             </div>
                             <div className="col-xl-8">
                                 <div className="product-page-details product-right mb-0">
-                                    <h2>WOMEN PINK SHIRT</h2>
+                                    <h2>SẢN PHẨM X</h2>
                                     <div style={{ fontSize: 27, height: 31 }}>
                                         <StarRatingComponent
                                             name="rate1"
@@ -141,7 +141,7 @@ class Detail extends Component {
                                         />
                                     </div>
                                     <hr />
-                                    <h6 className="product-title">product details</h6>
+                                    <h6 className="product-title">Mô tả</h6>
                                     <p>Sed ut perspiciatis, unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, totam rem aperiam eaque ipsa, quae ab illo inventore veritatis et quasi architecto beatae vitae dicta sunt, explicabo. Nemo enim ipsam voluptatem,</p>
                                     <div className="product-price digits mt-2">
                                         <h3>$26.00 <del>$350.00</del></h3>
@@ -152,7 +152,7 @@ class Detail extends Component {
                                         <li className="bg-light2"></li>
                                     </ul>
                                     <hr />
-                                    <h6 className="product-title size-text">select size
+                                    <h6 className="product-title size-text">Kích cỡ
                                         <span className="pull-right">
                                             <a data-toggle="modal" data-target="#sizemodal" onClick={this.onOpenModal}>size chart</a>
                                         </span>
@@ -171,7 +171,7 @@ class Detail extends Component {
                                         </ul>
                                     </div>
                                     <div className="add-product-form">
-                                        <h6 className="product-title">quantity</h6>
+                                        <h6 className="product-title">Số lượng</h6>
                                         <fieldset className="qty-box mt-2 ml-0">
                                             <div className="input-group bootstrap-touchspin">
                                                 <div className="input-group-prepend">
@@ -201,8 +201,7 @@ class Detail extends Component {
                                         </p>
                                     </div>
                                     <div className="m-t-15">
-                                        <button className="btn btn-primary m-r-10" type="button">Add To Cart</button>
-                                        <button className="btn btn-secondary" type="button">Buy Now</button>
+                                        <button className="btn btn-primary m-r-10" type="button">Sửa</button>
                                     </div>
                                 </div>
                             </div>
