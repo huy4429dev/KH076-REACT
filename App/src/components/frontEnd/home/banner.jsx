@@ -7,7 +7,9 @@ import * as actions from './../../../actions/frontEnd/product';
 
 class Banner extends Component {
     componentDidMount() {
-        this.props.actions.getBestSaleMen();
+        const shopId = 1;
+        this.props.actions.getBestSaleMen(shopId);
+        this.props.actions.getBestSaleWomen(shopId);
     }
 
     render() {
@@ -115,7 +117,7 @@ class Banner extends Component {
                                 })
                             }
                             {
-                                saleMen.map((item, index) => {
+                                saleWomen.map((item, index) => {
                                     return (
                                         <div className="col-md-6">
                                             <Link to={`/product/${item.id}`}>

@@ -7,7 +7,8 @@ import * as actions from './../../../actions/frontEnd/product';
 class TopCollection extends Component {
 
     componentDidMount() {
-        this.props.actions.getTopProducts();
+        const shopId = 1;
+        this.props.actions.getTopProducts(shopId);
     }
 
     render() {

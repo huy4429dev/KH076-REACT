@@ -1,20 +1,11 @@
 import React, { Component, Fragment } from 'react';
-// import ReactTable from 'react-table';
-// import 'react-table/react-table.css';
 import "react-table-6/react-table.css"
 import 'react-toastify/dist/ReactToastify.css';
-import Modal from 'react-responsive-modal';
 import 'react-responsive-modal/styles.css';
-import {
-    Link,
-} from "react-router-dom";
 import moment from 'moment';
 import connect from '../../../lib/connect';
 import $ from 'jquery';
-import * as actions from '../../../actions/backEnd/category';
-import Loading from '../loading';
-import { LogIn } from 'react-feather';
-import ModalEdit from './editCategory';
+import * as actions from '../../../actions/backEnd/order';
 import ModalDelete from './../../../components/backEnd/modalDelete';
 import Pagination from "react-bootstrap-4-pagination";
 
@@ -35,7 +26,6 @@ class List extends Component {
             pageSize: 25,
             filter: {
             }
-
         }
     }
 
@@ -43,17 +33,6 @@ class List extends Component {
 
         this.setState({ loading: false });
         $('.page-link').on('click', (e) => e.preventDefault());
-    }
-
-    componentWillReceiveProps(nextProps) {
-
-        if (nextProps?.myData && nextProps?.myData != this.props.myData) {
-
-            this.setState({
-                myData: nextProps.myData
-            })
-        }
-
     }
 
     onOpenModalEdit = () => {
@@ -100,12 +79,12 @@ class List extends Component {
 
     handleEditItem = (item) => {
 
-        const { updateCategory } = this.props.actions;
+        const { updateOrder } = this.props.actions;
         this.setState({
             loading: true
         });
 
-        updateCategory({
+        updateOrder({
             ...item
         }).then((data) => {
 
@@ -129,6 +108,7 @@ class List extends Component {
             })
             .catch((err) => {
                 this.setState({ loading: false });
+                window.notify("Lỗi: " + err.message, "danger");
             });
 
 
@@ -136,12 +116,12 @@ class List extends Component {
 
     handleDeleteItem = (id) => {
 
-        const { deleteCategory } = this.props.actions;
+        const { deleteOrder } = this.props.actions;
         this.setState({
             loading: true
         });
 
-        deleteCategory(id)
+        deleteOrder(id)
             .then((data) => {
 
                 if (data.success) {
@@ -206,55 +186,51 @@ class List extends Component {
     render() {
 
         const { myData, total, loading, openModalEdit, openModalDelete, page, pageSize, filter } = this.state;
-
-        console.log(myData, 'MYDATA');
         return (
 
             <Fragment>
                 {
-                    loading
-                        ?
-                        <div className='d-flex justify-content-center align-items-center'>
-                            <Loading type='box' />
-                        </div>
+                    loading ? 'LOADING'
                         : <table className="table">
                             <tr>
                                 <th style={{ width: '5%' }}>#</th>
-                                <th style={{ width: '20%' }}>Tên danh mục</th>
-                                <th style={{ width: '20%' }}>Mô tả</th>
+                                <th style={{ width: '15%' }}>Khách hàng</th>
+                                <th style={{ width: '15%' }}>Địa chỉ</th>
+                                <th style={{ width: '10%' }}>Tổng tiền</th>
+                                <th style={{ width: '5%' }}>Trạng thái</th>
                                 <th style={{ width: '15%' }}>Ngày tạo</th>
                                 <th style={{ width: '15%' }}>Ngày cập nhật</th>
-                                <th style={{ width: '10%' }} className='text-center' colSpan='2'>Action</th>
+                                <th style={{ width: '15%' }} className='text-center' colSpan='2'>Action</th>
                             </tr>
-                            {
 
+                            {
                                 myData.map((item, index) => {
                                     return (
                                         <tr >
                                             <td>{++index}</td>
-                                            <td><Link to={`/admin/products/category/${item.id}`}>{item.name}</Link></td>
-                                            <td>{item.description}</td>
+                                            <td>{item.user.username}</td>
+                                            <td>{item.ship_address}</td>
+                                            <td>{item.total.toLocaleString()} đ</td>
+                                            <td>{item.status ? <span class="badge badge-secondary text-center" style={{ width: '100px' }}>Thành công</span> : <span class="badge badge-danger text-center" style={{ width: '100px' }}>Chờ xác nhận</span>}</td>
                                             <td>{moment(item.created_at).format("DD/MM/YYYY")}</td>
                                             <td>{moment(item.updated_at).format("DD/MM/YYYY")}</td>
-                                            <td>
+                                            <td className='text-center'>
                                                 <button style={{ padding: '5px 10px' }} type='button' className='btn btn-warning btn-sm mr-1' onClick={() => this.handleEdit(item)}>Sửa</button>
                                                 <button style={{ padding: '5px 10px' }} type='button' className='btn btn-primary btn-sm' onClick={() => this.handleDelete(item.id)}>Xóa</button>
                                             </td>
                                         </tr>
                                     )
                                 })
+                            
                             }
 
-
-                        </table>
-
+                        </table>                    
                 }
                 {
-                    myData?.length <= 0 &&
-                    <p className="text-center alert alert-warning">Chưa có danh mục</p>
+                        myData?.length == 0 &&  <div className="alert alert-warning text-center">Chưa có đơn hàng </div>
                 }
-                <div className='d-flex justify-content-end'>
 
+                <div className='d-flex justify-content-end'>
                     <Pagination
                         totalPages={total / pageSize + 1}
                         currentPage={page}
@@ -263,22 +239,24 @@ class List extends Component {
                         prevNext={true}
                         onClick={this.handlePageChange}
                     />
-
                 </div>
-                <ModalEdit
+
+                {/* <ModalEdit
                     open={this.state.showEdit}
                     data={this.state.itemEdit}
                     onHandleEditItem={(item) => this.handleEditItem(item)}
                     onCloseModal={() => this.setState({ showEdit: false })}
-                />
+                /> */}
 
                 <ModalDelete
                     open={openModalDelete}
                     data={this.state.itemId}
-                    title={'Xóa danh mục'}
+                    title={'Xóa đơn hàng'}
                     onHandleDelete={(id) => this.handleDeleteItem(id)}
                     onCloseModal={(id) => this.onCloseModalDelete(id)}
                 />
+
+
 
 
             </Fragment>

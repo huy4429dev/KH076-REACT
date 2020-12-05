@@ -7,6 +7,7 @@ use App\Http\Controllers\BaseController as BaseController;
 use App\Models\Color;
 use App\Models\Role;
 use App\Models\Profile;
+use App\Models\Shop;
 use Validator;
 use Illuminate\Support\Facades\Auth;
 
@@ -14,13 +15,31 @@ class ColorController extends BaseController
 {
     public function index(Request $request){
 
+        $user = $request->user();
         $page = $request->query('page') ?? 1;
         $pageSize = $request->query('pageSize') ?? 25;
 
-        $colors = Color::orderBy('id','desc')
-        ->skip( ($page - 1) * $pageSize )
-        ->take($pageSize)
-        ->get();
+        if($user->roles->contains('name', 'admin')){
+
+            $colors = Color::orderBy('id','desc')
+            ->skip( ($page - 1) * $pageSize )
+            ->take($pageSize)
+            ->get();
+    
+        }
+
+        else if($user->roles->contains('name', 'shop')){
+
+            $shopId = $user->shops()->first()->id; 
+            $userIdsOfShop = Shop::find($shopId)->users->pluck('id');
+
+            $colors = Color::whereIn('user_id',$userIdsOfShop)
+            ->orderBy('id','desc')
+            ->skip( ($page - 1) * $pageSize )
+            ->take($pageSize)
+            ->get();
+    
+        }
 
         return $this->sendResponse(
             $data = [
@@ -29,6 +48,8 @@ class ColorController extends BaseController
                     ]
           );
     }
+
+
     public function search(Request $request){
 
         $page = $request->query('page') ?? 1;
