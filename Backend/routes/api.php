@@ -171,7 +171,7 @@ Route::prefix('products')->group(function(){
     Route::get('/shops/{shopid}', [ShopController::class,'index'] );
     Route::get('/top-product/{shopid}', [ShopController::class,'topProduct'] );
     Route::post('/comment', [ShopController::class,'comment'] );
-    // Route::get('/{shopid}/{id}', [ShopController::class,'show'] );
+    Route::get('/{id}', [ShopController::class,'show'] );
 
 
     Route::middleware(['auth:api', 'role'])->group(function() {
