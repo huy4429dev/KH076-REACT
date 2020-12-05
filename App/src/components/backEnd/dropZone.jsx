@@ -16,7 +16,7 @@ const MyUploader = () => {
     }
 
     return (
-        <div className="dropzone">
+        <div className="dropzone d-flex justify-content-center">
             <Dropzone
                 getUploadParams={getUploadParams}
                 onChangeStatus={handleChangeStatus}

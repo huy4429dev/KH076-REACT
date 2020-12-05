@@ -140,10 +140,16 @@ class Product extends Component {
 
     render() {
         const { open, product } = this.state;
-        const { products, categories } = this.props;
+        let { products, categories } = this.props;
+        categories = categories ?? null;
         const items = products.items ? products.items : [];
         const total = products.total ?? 0;
-        console.log(categories, 'PRODUCTS');
+        console.log(categories, 'DATA');
+        // if (categories?.items?.length > 0) {
+
+        //     categories.items = categories.items.filter(item => item.children.length > 0);
+        // }
+
         return (
             <Fragment>
                 <Breadcrumb title="Sản phẩm" parent="Sản phẩm" />
@@ -209,12 +215,24 @@ class Product extends Component {
                                                                 <div className="form-group">
                                                                     <label className="col-form-label"><span>*</span> Danh mục</label>
                                                                     <select className="custom-select" required="">
-                                                                        <option value="">--Select--</option>
-                                                                        <option value="1">eBooks</option>
-                                                                        <option value="2">Graphic Design</option>
-                                                                        <option value="3">3D Impact</option>
-                                                                        <option value="4">Application</option>
-                                                                        <option value="5">Websites</option>
+                                                                        <option value="">Danh mục</option>
+                                                                        {
+                                                                            categories && categories.items.map((item, index) => {
+
+                                                                                if (item.children.length == 0) {
+                                                                                    return <option value={item.id} style={{fontWeight:'bold'}} >{item.name}</option>
+                                                                                } 
+                                                                                else {
+                                                                                    let optionParent = <option disabled style={{fontWeight:'bold'}}>{item.name}</option>;
+                                                                                    let optionChilds = item.children.map((child, childIndex) => {
+                                                                                        return <option value={child.id}>{child.name}</option>;
+                                                                                    })
+
+                                                                                    return [optionParent, optionChilds]
+                                                                                }
+                                                                            })
+
+                                                                        }
                                                                     </select>
                                                                 </div>
                                                                 <div className="form-group">
@@ -224,14 +242,14 @@ class Product extends Component {
                                                                 <div className="form-group">
                                                                     <label className="col-form-label"><span>*</span> Trạng thái</label>
                                                                     <div className="m-checkbox-inline mb-0 custom-radio-ml d-flex radio-animated">
-                                                                        <label className="d-block">
+                                                                        <label className="d-block mr-2">
                                                                             <input className="radio_animated" id="edo-ani" type="radio" name="rdo-ani" />
-                                                    Đang kinh doanh
-                                            </label>
-                                                                        <label className="d-block" >
+                                                                           <span style={{color:'green'}}>Đang kinh doanh</span>
+                                                                    </label>
+                                                                        <label className="d-block mr-0" >
                                                                             <input className="radio_animated" id="edo-ani1" type="radio" name="rdo-ani" />
-                                                    Ngừng kinh doanh
-                                            </label>
+                                                                           <span>Ngừng kinh doanh</span>
+                                                                </label>
                                                                     </div>
                                                                 </div>
                                                                 <label className="col-form-label pt-0"> Thêm hình ảnh</label>
@@ -302,35 +320,40 @@ class Product extends Component {
                                                     </thead>
                                                     <tbody>
                                                         {
-                                                            items.length > 0 ?
-                                                                items.map((item, index) => {
-                                                                    return (
-                                                                        <tr>
-                                                                            <td>{index++}</td>
-                                                                            <td>Anh</td>
-                                                                            <td>{item.name}</td>
-                                                                            <td>Danh mục</td>
-                                                                            <td>{item.name.toLocaleString()} đ</td>
-                                                                            <td>{item.quantity}</td>
-                                                                            <td>Trạng tdái</td>
-                                                                            <td className='text-center'>
-                                                                                <button style={{ padding: '5px 10px' }} type='button' className='btn btn-warning btn-sm mr-1' onClick={() => this.handleEdit()}>Sửa</button>
-                                                                                <button style={{ padding: '5px 10px' }} type='button' className='btn btn-primary btn-sm' onClick={() => this.handleDelete()}>Xóa</button>
-                                                                            </td>
-                                                                        </tr>
+                                                            items.length > 0 &&
+                                                            items.map((item, index) => {
+                                                                return (
+                                                                    <tr>
+                                                                        <td>{index++}</td>
+                                                                        <td>Anh</td>
+                                                                        <td>{item.name}</td>
+                                                                        <td>Danh mục</td>
+                                                                        <td>{item.name.toLocaleString()} đ</td>
+                                                                        <td>{item.quantity}</td>
+                                                                        <td>Trạng tdái</td>
+                                                                        <td className='text-center'>
+                                                                            <button style={{ padding: '5px 10px' }} type='button' className='btn btn-warning btn-sm mr-1' onClick={() => this.handleEdit()}>Sửa</button>
+                                                                            <button style={{ padding: '5px 10px' }} type='button' className='btn btn-primary btn-sm' onClick={() => this.handleDelete()}>Xóa</button>
+                                                                        </td>
+                                                                    </tr>
 
-                                                                    )
-                                                                })
+                                                                )
+                                                            })
 
 
-                                                                :
-                                                                <div className="alert alert-warning">
-                                                                    Chưa có sản phẩm nào
-                                                            </div>
+
+
                                                         }
 
                                                     </tbody>
                                                 </table>
+
+                                        }
+                                        {
+                                            items.length === 0 &&
+                                            <div className="alert alert-warning text-center">
+                                                Chưa có sản phẩm nào
+                                            </div>
                                         }
 
                                     </div>
@@ -339,7 +362,6 @@ class Product extends Component {
                         </div>
                     </div>
                 </div>
-                {/* <!-- Container-fluid Ends--> */}
 
             </Fragment>
         )
