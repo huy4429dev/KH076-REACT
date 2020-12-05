@@ -85,6 +85,7 @@ class Login extends Component {
                                         <div>
                                             <a className="btn btn-solid" onClick={(e) => this.login(e)}>Đăng nhập</a>
                                         </div>
+                                        <div>Facebook</div>
                                     </form>
                                 </div>
                             </div>

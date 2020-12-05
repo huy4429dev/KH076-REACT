@@ -111,51 +111,7 @@ class ShopController extends BaseController
         return 'init data test success';
     }
 
-      public function index(Request $request,$shopid){
-
-        $user = $request->user();
-        $page = $request->query('page') ?? 1;
-        $pageSize = $request->query('pageSize') ?? 25;
-
-        if($user->roles->contains('name', 'admin')){
-             $shopId = $user->shops()->first()->id; 
-            $userIdsOfShop = Shop::find($shopId)->users->pluck('id');
-
-            $Products = Product::whereIn('user_id',$userIdsOfShop)
-            ->orderBy('id','desc')
-            ->with('user')
-            ->with('images')
-            ->with('colors')
-            ->with('sizes')
-            ->skip( ($page - 1) * $pageSize )
-            ->take($pageSize)
-            ->get();
-
-        }
-
-        else if($user->roles->contains('name', 'shop')){
-            $shopId = $user->shops()->first()->id; 
-            $userIdsOfShop = Shop::find($shopId)->users->pluck('id');
-
-            $Products = Product::whereIn('user_id',$userIdsOfShop)
-            ->orderBy('id','desc')
-            ->with('user')
-            ->with('images')
-            ->with('colors')
-            ->with('sizes')
-            ->skip( ($page - 1) * $pageSize )
-            ->take($pageSize)
-            ->get();
-
-        }
-
-        return $this->sendResponse(
-            $data = [
-                     'items' => $Products , 
-                     'total' => $Products->count()
-                    ]
-          );
-    }
+     
 
   public function newProducts(Request $request, $shopId){
 
@@ -273,7 +229,23 @@ class ShopController extends BaseController
                 ]
         );
     }
+    public function index(Request $request, $shopId){
+                $shopId = $shopId;
+            $userIdsOfShop = Shop::find($shopId)->users->pluck('id');
+            
+            $Products = Product::whereIn('user_id',$userIdsOfShop)
+            ->with('user')
+            ->with('images')
+            ->with('colors')
+            ->with('sizes')
+            ->get();
 
+        return $this->sendResponse(
+            $data = [
+                        'items' => $Products , 
+                    ]
+            );
+        }
 
     
     // public function index(Request $request){
@@ -293,6 +265,27 @@ class ShopController extends BaseController
     //                 ]
     //       );
     // }
+
+    public function show($id){
+        $found = Product::where('id', $id)
+                        ->with('user')
+                        ->with('images')
+                        ->with('colors')
+                        ->with('sizes')
+                        ->first();
+
+        if($found == null){
+            
+            return $this->sendError('Product Errors.',['error' => 'Product not found !']);
+        }
+
+        return $this->sendResponse(
+            $data = $found
+        );
+
+    }
+
+
     public function search(Request $request){
 
         $page = $request->query('page') ?? 1;
@@ -324,20 +317,20 @@ class ShopController extends BaseController
     }
 
     
-    public function show($id){
+    // public function show($id){
 
-        $found = Shop::find($id);
+    //     $found = Shop::find($id);
 
-        if($found == null){
+    //     if($found == null){
             
-            return $this->sendError('Shop Errors.',['error' => 'Shop not found !']);
-        }
+    //         return $this->sendError('Shop Errors.',['error' => 'Shop not found !']);
+    //     }
 
-        return $this->sendResponse(
-            $data = $found
-        );
+    //     return $this->sendResponse(
+    //         $data = $found
+    //     );
 
-    }
+    // }
 
     public function update($id,Request $request){
 

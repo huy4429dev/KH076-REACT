@@ -48,7 +48,17 @@ class Register extends Component {
                 .then(() => {
                     this.setState({ loading: false });
                     window.notify('Đăng ký thành công', 'success');
-                    this.props.history.push("/login");
+                    const dataLogin = {
+                        email: this.state.email,
+                        password: this.state.password
+                    }
+                    this.props.actions.login(dataLogin)
+                        .then((data) => {
+                            this.setState({ loading: false });
+                            if (data.token) {
+                                this.props.history.push('/');
+                            }
+                        })
                 }).catch((err) => {
                     this.setState({ loading: false });
                     window.notify('Đăng ký không thành công', 'danger');
