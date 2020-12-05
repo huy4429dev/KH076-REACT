@@ -35,14 +35,6 @@ class List extends Component {
         this.setState({ loading: false });
     }
 
-    UNSAFE_componentWillMount(nextProps) {
-        // if(nextProps?.myData && nextProps?.myData != this.props.myData){
-        //     this.setState({
-        //         myData:  nextProps.myData
-        //     })
-        // }
-
-    }
 
     onOpenModalEdit = () => {
         this.setState({

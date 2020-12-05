@@ -7,6 +7,7 @@ use App\Http\Controllers\BaseController as BaseController;
 use App\Models\Size;
 use App\Models\Role;
 use App\Models\Profile;
+use App\Models\Shop;
 use Validator;
 use Illuminate\Support\Facades\Auth;
 
@@ -14,13 +15,32 @@ class SizeController extends BaseController
 {
     public function index(Request $request){
 
+        $user = $request->user();
         $page = $request->query('page') ?? 1;
         $pageSize = $request->query('pageSize') ?? 25;
 
+        if($user->roles->contains('name', 'admin')){
+
         $Sizes = Size::orderBy('id','desc')
-        ->skip( ($page - 1) * $pageSize )
-        ->take($pageSize)
-        ->get();
+            ->skip( ($page - 1) * $pageSize )
+            ->take($pageSize)
+            ->get();
+        }
+
+        
+
+        else if($user->roles->contains('name', 'shop')){
+
+            $shopId = $user->shops()->first()->id; 
+            $userIdsOfShop = Shop::find($shopId)->users->pluck('id');
+            $Sizes = Size::whereIn('user_id',$userIdsOfShop)
+            ->orderBy('id','desc')
+            ->skip( ($page - 1) * $pageSize )
+            ->take($pageSize)
+            ->get();
+    
+        }
+
 
         return $this->sendResponse(
             $data = [

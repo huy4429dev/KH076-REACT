@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use App\Http\Controllers\BaseController as BaseController;
 use App\Models\Shop;
 use App\Models\Role;
+use App\Models\Product;
 use App\Models\Us;
 use App\Models\Profile;
 use App\Models\User;
@@ -109,24 +110,189 @@ class ShopController extends BaseController
       
         return 'init data test success';
     }
-    
-    public function index(Request $request){
 
+      public function index(Request $request,$shopid){
+
+        $user = $request->user();
         $page = $request->query('page') ?? 1;
-        $pageShop = $request->query('pageShop') ?? 25;
+        $pageSize = $request->query('pageSize') ?? 25;
 
-        $Shops = Shop::ShopBy('id','desc')
-        ->skip( ($page - 1) * $pageShop )
-        ->take($pageShop)
+        if($user->roles->contains('name', 'admin')){
+             $shopId = $user->shops()->first()->id; 
+            $userIdsOfShop = Shop::find($shopId)->users->pluck('id');
+
+            $Products = Product::whereIn('user_id',$userIdsOfShop)
+            ->orderBy('id','desc')
+            ->with('user')
+            ->with('images')
+            ->with('colors')
+            ->with('sizes')
+            ->skip( ($page - 1) * $pageSize )
+            ->take($pageSize)
+            ->get();
+
+        }
+
+        else if($user->roles->contains('name', 'shop')){
+            $shopId = $user->shops()->first()->id; 
+            $userIdsOfShop = Shop::find($shopId)->users->pluck('id');
+
+            $Products = Product::whereIn('user_id',$userIdsOfShop)
+            ->orderBy('id','desc')
+            ->with('user')
+            ->with('images')
+            ->with('colors')
+            ->with('sizes')
+            ->skip( ($page - 1) * $pageSize )
+            ->take($pageSize)
+            ->get();
+
+        }
+
+        return $this->sendResponse(
+            $data = [
+                     'items' => $Products , 
+                     'total' => $Products->count()
+                    ]
+          );
+    }
+
+  public function newProducts(Request $request, $shopId){
+
+
+         $shopId = $shopId;
+        $userIdsOfShop = Shop::find($shopId)->users->pluck('id');
+        
+        $Products = Product::whereIn('user_id',$userIdsOfShop)
+        ->orderBy('created_at','desc')
+        ->with('user')
+        ->with('images')
+        ->with('colors')
+        ->with('sizes')
+        ->take(6)
         ->get();
 
         return $this->sendResponse(
             $data = [
-                     'items' => $Shops , 
-                     'total' => $Shops->count()
+                     'items' => $Products , 
                     ]
           );
     }
+
+
+
+     public function manProducts(Request $request, $shopId){
+        
+        // $shopId = $request->query('shopid');
+        $shopId = $shopId;
+        $userIdsOfShop = Shop::find($shopId)->users->pluck('id');
+        
+        $Products = Product::whereIn('user_id',$userIdsOfShop)
+        ->with('user')
+        ->with('images')
+        ->with('colors')
+        ->with('sizes')
+        ->take(6)
+        ->get();
+
+        return $this->sendResponse(
+            $data = [
+                     'items' => $Products , 
+                    ]
+          );
+    }
+     public function womanProducts(Request $request, $shopId){
+        $shopId = $shopId;
+        $userIdsOfShop = Shop::find($shopId)->users->pluck('id');
+        
+        $Products = Product::whereIn('user_id',$userIdsOfShop)
+        ->with('user')
+        ->with('images')
+        ->with('colors')
+        ->with('sizes')
+        ->take(6)
+        ->get();
+
+        return $this->sendResponse(
+            $data = [
+                     'items' => $Products , 
+                    ]
+          );
+    }
+    public function topProduct(Request $request, $shopId){
+        $shopId = $shopId;
+        $userIdsOfShop = Shop::find($shopId)->users->pluck('id');
+        
+        $Products = Product::whereIn('user_id',$userIdsOfShop)
+    ->with('user')
+    ->with('images')
+    ->with('colors')
+    ->with('sizes')
+    ->take(8)
+    ->get();
+
+    return $this->sendResponse(
+        $data = [
+                    'items' => $Products , 
+                ]
+        );
+    }
+    public function saleMen(Request $request, $shopId){
+             $shopId = $shopId;
+        $userIdsOfShop = Shop::find($shopId)->users->pluck('id');
+        
+        $Products = Product::whereIn('user_id',$userIdsOfShop)
+        ->with('user')
+        ->with('images')
+        ->with('colors')
+        ->with('sizes')
+        ->take(1)
+        ->get();
+
+    return $this->sendResponse(
+        $data = [
+                    'items' => $Products , 
+                ]
+        );
+    }
+    public function saleWomen(Request $request, $shopId){
+            $shopId = $shopId;
+        $userIdsOfShop = Shop::find($shopId)->users->pluck('id');
+        
+        $Products = Product::whereIn('user_id',$userIdsOfShop)
+        ->with('user')
+        ->with('images')
+        ->with('colors')
+        ->with('sizes')
+        ->take(1)
+        ->get();
+
+    return $this->sendResponse(
+        $data = [
+                    'items' => $Products , 
+                ]
+        );
+    }
+
+
+    
+    // public function index(Request $request){
+
+    //     $page = $request->query('page') ?? 1;
+    //     $pageShop = $request->query('pageShop') ?? 25;
+
+    //     $Shops = Shop::ShopBy('id','desc')
+    //     ->skip( ($page - 1) * $pageShop )
+    //     ->take($pageShop)
+    //     ->get();
+
+    //     return $this->sendResponse(
+    //         $data = [
+    //                  'items' => $Shops , 
+    //                  'total' => $Shops->count()
+    //                 ]
+    //       );
+    // }
     public function search(Request $request){
 
         $page = $request->query('page') ?? 1;

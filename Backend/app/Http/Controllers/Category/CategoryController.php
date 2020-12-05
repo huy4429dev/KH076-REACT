@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use App\Http\Controllers\BaseController as BaseController;
 use App\Models\Category;
 use App\Models\Role;
+use App\Models\Shop;
 use App\Models\Profile;
 use Validator;
 use Illuminate\Support\Facades\Auth;
@@ -13,16 +14,48 @@ use Illuminate\Support\Facades\Auth;
 class CategoryController extends BaseController
 {
     public function index(Request $request){
-
+        
+        $user = $request->user();
         $page = $request->query('page') ?? 1;
         $pageSize = $request->query('pageSize') ?? 25;
+        $hasChild = $request->query('children') ?? false;
 
-    $categories = Category::has('children')
-        ->orderBy('id','desc')
-        ->skip( ($page - 1) * $pageSize )
-        ->take($pageSize)
-        ->get();
+        if($user->roles->contains('name', 'admin')){
 
+            $categories = Category::has('children')
+            ->orderBy('id','desc')
+            ->skip( ($page - 1) * $pageSize )
+            ->take($pageSize)
+            ->get();
+           
+        }
+
+        else if($user->roles->contains('name', 'shop')){
+
+            $shopId = $user->shops()->first()->id; 
+            $userIdsOfShop = Shop::find($shopId)->users->pluck('id');
+
+            if($hasChild){
+
+                $categories = Category::whereIn('user_id',$userIdsOfShop)
+                ->with('children')
+                ->orderBy('id','desc')
+                ->skip( ($page - 1) * $pageSize )
+                ->take($pageSize)
+                ->get();
+            } 
+            else{
+
+                $categories = Category::whereIn('user_id',$userIdsOfShop)
+                ->has('children')
+                ->orderBy('id','desc')
+                ->skip( ($page - 1) * $pageSize )
+                ->take($pageSize)
+                ->get();
+
+            }
+           
+        }
         return $this->sendResponse(
             $data = [
                      'items' => $categories , 
@@ -30,6 +63,9 @@ class CategoryController extends BaseController
                     ]
           );
     }
+
+
+
     public function search(Request $request){
 
         $page = $request->query('page') ?? 1;
@@ -111,7 +147,7 @@ class CategoryController extends BaseController
         if($validator->fails()){
             return $this->sendError('Validation Error.', $validator->errors());       
         }
-
+        $user = $request->user();
 
         $parentId = $request->parentId;
         $parentCategory = Category::find($parentId);
@@ -119,6 +155,7 @@ class CategoryController extends BaseController
         if($parentCategory == null ){
                 $category->name = $request->name;
                 $category->description = $request->description;
+                $category->user_id = $user->id;
                 $category->save();
         }
 
@@ -126,6 +163,8 @@ class CategoryController extends BaseController
                 $category->name = $request->name;
                 $category->description = $request->description;
                 $category->parent_id = $parentId;
+                $category->user_id = $user->id;
+
                 $category->save();
         }
 

@@ -6,6 +6,8 @@ import SimpleReactValidator from 'simple-react-validator';
 import connect from './../../lib/connect';
 import * as actions from './../../actions/frontEnd/cart';
 import Breadcrumb from "./../../components/frontEnd/home/breadcrumb";
+import Loading from './../../components/loadding2';
+import Modal from './order';
 
 class CheckOut extends Component {
 
@@ -23,11 +25,28 @@ class CheckOut extends Component {
             city: '',
             state: '',
             pincode: '',
-            create_account: ''
+            create_account: '',
+            loading: false,
+            dataOrder: null,
+            showOrder: false
         }
         this.validator = new SimpleReactValidator();
     }
-
+    componentDidMount() {
+        const { user, login } = this.props.login;
+        const { items } = this.props.cart;
+        if (user && login) {
+            this.setState({
+                username: user.username,
+                email: user.email,
+                phone: user.phone,
+                address: user.address,
+            })
+        }
+        if (items.length == 0) {
+            window.notify('Bạn chưa thêm sản phẩm nào vào giỏ hàng', 'warning');
+        }
+    }
     setStateFromInput = (event) => {
         var obj = {};
         obj[event.target.name] = event.target.value;
@@ -95,6 +114,48 @@ class CheckOut extends Component {
             return 0;
         }
     }
+    addOrder = (e) => {
+        e.stopPropagation();
+        e.preventDefault();
+        const { items } = this.props.cart;
+        const { username, title, email, address, phone } = this.state;
+        if (this.validator.allValid()) {
+            this.setState({
+                loading: true
+            })
+            const data = {
+                username: username,
+                email: email,
+                phone: phone,
+                address: address,
+                user_id: this.props.login ? this.props.login.user.id : null,
+                detailt: items,
+                total: this.totalPrice(items),
+                status: 1,
+                ship_address: 'JNT'
+            }
+            this.props.actions.addOrder(data)
+                .then((data) => {
+                    this.setState({ loading: false });
+                    if (data.success) {
+                        window.notify('Thêm thành công', 'success');
+                        this.setState({
+                            showOrder: true,
+                            dataOrder: data.data
+                        })
+                        this.props.actions.removeAllCart();
+                    } else {
+                        window.notify('Thêm không thành công', 'danger');
+                    }
+                }).catch((err) => {
+                    this.setState({ loading: false });
+                    window.notify('Thêm không thành công', 'danger');
+                });
+        } else {
+            this.validator.showMessages();
+            window.notify('Vui lòng điền đầy đủ các trường', 'danger');
+        }
+    }
     render() {
         const { symbol } = this.props;
         const cartItems = [];
@@ -132,6 +193,16 @@ class CheckOut extends Component {
                 </Helmet>
                 {/*SEO Support End */}
                 <Breadcrumb title={'Thanh toán'} />
+                <Loading show={this.state.loading} />
+                {
+                    this.state.showOrder && (
+                        <Modal
+                            open={this.state.showOrder}
+                            dataOrder={this.state.dataOrder}
+                            onCloseModal={() => this.setState({ showOrder: false })}
+                        />
+                    )
+                }
                 <section className="section-b-space">
                     <div className="container padding-cls">
                         <div className="checkout-page">
@@ -148,6 +219,7 @@ class CheckOut extends Component {
                                                     <input type="text" name="username" value={this.state.username}
                                                         value={this.state.username}
                                                         onChange={(e) => this.setState({ [e.target.name]: e.target.value })}
+                                                        onBlur={() => this.validator.showMessageFor('username')}
                                                     />
                                                     {this.validator.message('username', this.state.username, 'required')}
                                                 </div>
@@ -156,6 +228,7 @@ class CheckOut extends Component {
                                                     <input type="text" name="phone" value={this.state.phone}
                                                         value={this.state.phone}
                                                         onChange={(e) => this.setState({ [e.target.name]: e.target.value })}
+                                                        onBlur={() => this.validator.showMessageFor('phone')}
                                                     />
                                                     {this.validator.message('phone', this.state.phone, 'required|phone')}
                                                 </div>
@@ -164,6 +237,7 @@ class CheckOut extends Component {
                                                     <input type="text" name="email" value={this.state.email}
                                                         value={this.state.email}
                                                         onChange={(e) => this.setState({ [e.target.name]: e.target.value })}
+                                                        onBlur={() => this.validator.showMessageFor('email')}
                                                     />
                                                     {this.validator.message('email', this.state.email, 'required|email')}
                                                 </div>
@@ -172,8 +246,9 @@ class CheckOut extends Component {
                                                     <input type="text" name="address" value={this.state.address}
                                                         value={this.state.address}
                                                         onChange={(e) => this.setState({ [e.target.name]: e.target.value })}
+                                                        onBlur={() => this.validator.showMessageFor('address')}
                                                         placeholder="Địa chỉ..." />
-                                                    {this.validator.message('address', this.state.address, 'required|min:20|max:120')}
+                                                    {this.validator.message('address', this.state.address, 'required')}
                                                 </div>
                                             </div>
                                         </div>
@@ -233,7 +308,7 @@ class CheckOut extends Component {
                                                             </ul>
                                                         </div>
                                                     </div>
-                                                    <button type="button" className="btn-solid btn" onClick={() => this.addOrder()} >Đặt hàng</button>
+                                                    <button type="button" className="btn-solid btn" onClick={(e) => this.addOrder(e)} >Đặt hàng</button>
                                                 </div>
                                             </div>
                                         </div>
@@ -300,5 +375,6 @@ class CheckOut extends Component {
 
 
 export default connect(CheckOut, state => ({
+    login: state.loginHome,
     cart: state.cart
 }), actions);

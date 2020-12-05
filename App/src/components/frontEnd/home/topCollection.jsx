@@ -1,19 +1,20 @@
 import React, { Component } from 'react';
 import Slider from 'react-slick';
 import ProductItem from './productItems';
+import connect from './../../../lib/connect';
+import * as actions from './../../../actions/frontEnd/product';
 
 class TopCollection extends Component {
 
-    render() {
+    componentDidMount() {
+        const shopId = 1;
+        this.props.actions.getTopProducts(shopId);
+    }
 
-        // const { items, symbol, addToCart, addToWishlist, addToCompare, type } = this.props;
-        const items = []
+    render() {
+        const items = [];
+        const { topProduct } = this.props.productHome;
         var properties;
-        // if (type === 'kids') {
-        //     properties = Product5
-        // } else {
-        //     properties = Product4
-        // }
 
         return (
             <div>
@@ -28,7 +29,7 @@ class TopCollection extends Component {
                         <div className="row">
                             <div className="col">
                                 <Slider className="product-4 product-m no-arrow">
-                                    {items.map((product, index) =>
+                                    {topProduct.map((product, index) =>
                                         <div key={index}>
                                             <ProductItem product={product}
                                             // onAddToCompareClicked={() => addToCompare(product)}
@@ -48,4 +49,6 @@ class TopCollection extends Component {
 }
 
 
-export default TopCollection;
+export default connect(TopCollection, state => ({
+    productHome: state.productHome
+}), actions);

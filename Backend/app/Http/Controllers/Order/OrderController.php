@@ -7,6 +7,8 @@ use App\Http\Controllers\BaseController as BaseController;
 use App\Models\Order;
 use App\Models\Role;
 use App\Models\Profile;
+use App\Models\OrderItem;
+use App\Models\User;
 use Validator;
 use Illuminate\Support\Facades\Auth;
 
@@ -14,10 +16,13 @@ class OrderController extends BaseController
 {
     public function index(Request $request){
 
+        $user = $request->user();
         $page = $request->query('page') ?? 1;
         $pageOrder = $request->query('pageOrder') ?? 25;
 
         $Orders = Order::orderBy('id','desc')
+        ->where('creator_id', $user->id)
+        ->with('user')
         ->skip( ($page - 1) * $pageOrder )
         ->take($pageOrder)
         ->get();
@@ -62,12 +67,16 @@ class OrderController extends BaseController
     
     public function show($id){
 
-        $found = Order::find($id);
+      
+        $user = $request->user();
+
+        $found = Order::where('creator_id',$user->id)->where('id', $request->id)->first(); 
 
         if($found == null){
             
             return $this->sendError('Order Errors.',['error' => 'Order not found !']);
         }
+
 
         return $this->sendResponse(
             $data = $found
@@ -109,7 +118,14 @@ class OrderController extends BaseController
 
         $validator = Validator::make($request->all(), [
 
-            'total' => 'required'
+            'total' => 'required',
+            'username' => 'required',
+            'email' => 'email|email',
+            'phone' => 'required',
+            'username' => 'required',
+            'address' => 'required',
+            'detailt' => 'required',
+            'status' => 'required'
         ]);
 
         if($validator->fails()){
@@ -121,20 +137,40 @@ class OrderController extends BaseController
         $Order->status = $request->status;
         $Order->ship_address = $request->ship_address;
         $Order->total = $request->total;
-        $Order->user_id = $request->user()->id;
+        if($request->user_id != null){
+            $user = User::where('id',$request->user_id)->first();
+            $user->email = $request->email;
+            $user->phone = $request->phone;
+            $user->address = $request->address;
+            $user->save();
+            $Order->user_id = $user->id;
+        }else{
+            $user = new User();
+            $user->username = $request->username;
+            $user->email = $request->email;
+            $user->phone = $request->phone;
+            $user->address = $request->address;
+            $user->password = "123456";
+            $user->save();
+            $Order->user_id  = $user->id;
+        }
         $Order->save();
-        $Order->orderItems()->createMany($request->orderItems);
 
-
-
-        // $OrderItem->product_id = $request->product_id;
-        // $OrderItem->quantity = $request->quantity;
-        // $OrderItem->total = $request->total;
-        // $OrderItem->user_id = $request->user()->id;
-        // $OrderItem->save();
+        foreach ($request->detailt as $key => $value) {
+            $OrderItem = new OrderItem();
+            $OrderItem->product_id = $value['product']['id'];
+            $OrderItem->quantity = $value['quantity'];
+            $OrderItem->total = $request->total;
+            $OrderItem->order_id = $Order->id;
+            $OrderItem->save();
+        }
+        $data['order'] = $Order;
+        $data['user'] = $user;
+        $data['orderDetail'] = $OrderItem;
+        $data['products'] = $request->detailt;
 
         return $this->sendResponse(
-            $data = $Order,
+            $data,
             'Create Order successfully.'
         );
 
@@ -142,7 +178,9 @@ class OrderController extends BaseController
 
     public function delete($id,Request $request){
 
-        $found = Order::find($id); 
+        $user = $request->user();
+
+        $found = Order::where('creator_id',$user->id)->where('id', $request->id)->first(); 
 
         if($found == null){
             

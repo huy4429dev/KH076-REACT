@@ -7,6 +7,9 @@ use App\Http\Controllers\BaseController as BaseController;
 use App\Models\Product;
 use App\Models\Role;
 use App\Models\Profile;
+use App\Models\Comment;
+use App\Models\User;
+use App\Models\Shop;
 use Validator;
 use Illuminate\Support\Facades\Auth;
 
@@ -14,22 +17,43 @@ class ProductController extends BaseController
 {
     public function index(Request $request){
 
+        $user = $request->user();
         $page = $request->query('page') ?? 1;
-        $pageOrder = $request->query('pageOrder') ?? 25;
+        $pageSize = $request->query('pageSize') ?? 25;
 
-        $Orders = Product::orderBy('id','asc')
-        ->with('user')
-        ->with('images')
-        ->with('colors')
-        ->with('sizes')
-        ->skip( ($page - 1) * $pageOrder )
-        ->take($pageOrder)
-        ->get();
+        if($user->roles->contains('name', 'admin')){
+
+            $Products = Product::orderBy('id','desc')
+            ->with('user')
+            ->with('images')
+            ->with('colors')
+            ->with('sizes')
+            ->skip( ($page - 1) * $pageSize )
+            ->take($pageSize)
+            ->get();
+
+        }
+
+        else if($user->roles->contains('name', 'shop')){
+            $shopId = $user->shops()->first()->id; 
+            $userIdsOfShop = Shop::find($shopId)->users->pluck('id');
+
+            $Products = Product::whereIn('user_id',$userIdsOfShop)
+            ->orderBy('id','desc')
+            ->with('user')
+            ->with('images')
+            ->with('colors')
+            ->with('sizes')
+            ->skip( ($page - 1) * $pageSize )
+            ->take($pageSize)
+            ->get();
+
+        }
 
         return $this->sendResponse(
             $data = [
-                     'items' => $Orders , 
-                     'total' => $Orders->count()
+                     'items' => $Products , 
+                     'total' => $Products->count()
                     ]
           );
     }
@@ -38,7 +62,7 @@ class ProductController extends BaseController
     public function search(Request $request){
 
         $page = $request->query('page') ?? 1;
-        $pageOrder = $request->query('pageOrder') ?? 25;
+        $pageSize = $request->query('pageSize') ?? 25;
 
         $query = Product::query();
 
@@ -51,16 +75,16 @@ class ProductController extends BaseController
                            
         }
 
-        $Orders = $query
+        $Products = $query
         ->orderBy('id','desc')
-        ->skip( ($page - 1) * $pageOrder )
-        ->take($pageOrder)
+        ->skip( ($page - 1) * $pageSize )
+        ->take($pageSize)
         ->get();
 
         return $this->sendResponse(
             $data = [
-                     'items' => $Orders , 
-                     'total' => $Orders->count()
+                     'items' => $Products , 
+                     'total' => $Products->count()
                     ]
           );
     }
@@ -175,50 +199,135 @@ class ProductController extends BaseController
           );
     }
 
-    public function newProducts(Request $request){
-        $Orders = Product::orderBy('id','asc')
-        ->with('user')
-        ->with('images')
-        ->with('colors')
-        ->with('sizes')
-        ->take(6)
-        ->get();
+    // public function newProducts(Request $request){
+    //     $Products = Product::orderBy('created_at','desc')
+    //     ->with('user')
+    //     ->with('images')
+    //     ->with('colors')
+    //     ->with('sizes')
+    //     ->take(6)
+    //     ->get();
 
-        return $this->sendResponse(
-            $data = [
-                     'items' => $Orders , 
-                    ]
-          );
-    }
-     public function manProducts(Request $request){
-        $Orders = Product::orderBy('id','asc')
-        ->with('user')
-        ->with('images')
-        ->with('colors')
-        ->with('sizes')
-        ->take(6)
-        ->get();
+    //     return $this->sendResponse(
+    //         $data = [
+    //                  'items' => $Products , 
+    //                 ]
+    //       );
+    // }
+    //  public function manProducts(Request $request){
+    //     $Products = Product::orderBy('created_at','desc')
+    //     ->with('user')
+    //     ->with('images')
+    //     ->with('colors')
+    //     ->with('sizes')
+    //     ->take(6)
+    //     ->get();
 
-        return $this->sendResponse(
-            $data = [
-                     'items' => $Orders , 
-                    ]
-          );
-    }
-     public function womanProducts(Request $request){
-        $Orders = Product::orderBy('id','asc')
-        ->with('user')
-        ->with('images')
-        ->with('colors')
-        ->with('sizes')
-        ->take(6)
-        ->get();
+    //     return $this->sendResponse(
+    //         $data = [
+    //                  'items' => $Products , 
+    //                 ]
+    //       );
+    // }
+    //  public function womanProducts(Request $request){
+    //     $Products = Product::orderBy('created_at','desc')
+    //     ->with('user')
+    //     ->with('images')
+    //     ->with('colors')
+    //     ->with('sizes')
+    //     ->take(6)
+    //     ->get();
 
+    //     return $this->sendResponse(
+    //         $data = [
+    //                  'items' => $Products , 
+    //                 ]
+    //       );
+    // }
+    // public function topProduct(Request $request){
+    // $Orders = Product::orderBy('created_at','desc')
+    // ->with('user')
+    // ->with('images')
+    // ->with('colors')
+    // ->with('sizes')
+    // ->take(8)
+    // ->get();
+
+    // return $this->sendResponse(
+    //     $data = [
+    //                 'items' => $Orders , 
+    //             ]
+    //     );
+    // }
+    // public function saleMen(Request $request){
+    //     $Orders = Product::orderBy('created_at','desc')
+    //     ->with('user')
+    //     ->with('images')
+    //     ->with('colors')
+    //     ->with('sizes')
+    //     ->take(1)
+    //     ->get();
+
+    // return $this->sendResponse(
+    //     $data = [
+    //                 'items' => $Orders , 
+    //             ]
+    //     );
+    // }
+    // public function saleWomen(Request $request){
+    //     $Orders = Product::orderBy('created_at','desc')
+    //     ->with('user')
+    //     ->with('images')
+    //     ->with('colors')
+    //     ->with('sizes')
+    //     ->take(1)
+    //     ->get();
+
+    // return $this->sendResponse(
+    //     $data = [
+    //                 'items' => $Orders , 
+    //             ]
+    //     );
+    // }
+     public function comment(Request $request){
+
+        $validator = Validator::make($request->all(), [
+
+            'username' => 'required',
+            'email' => 'required|email',
+            'title' => 'required',
+            'content' => 'required',
+            'productId' => 'required',
+        ]);
+
+        if($validator->fails()){
+            return $this->sendError('Validation Error.', $validator->errors());       
+        }
+
+        $comment = new Comment();
+
+        $comment->title = $request->title;
+        $comment->content = $request->content;
+        $comment->product_id = $request->productId;
+        if($request->userId != null){
+            $user = User::where('id',$request->userId)->first();
+            $user->username = $request->username;
+            $user->email = $request->email;
+            $user->save();
+            $comment->user_id = $request->userId;
+        }else{
+            $user = new User();
+            $user->username = $request->username;
+            $user->email = $request->email;
+            $user->password = "123456";
+            $user->save();
+            $comment->user_id = $user->id;
+        }
+        $comment->save();
         return $this->sendResponse(
-            $data = [
-                     'items' => $Orders , 
-                    ]
-          );
+            $data = $comment,
+            'Create contact successfully.'
+        );
+
     }
-  
 }

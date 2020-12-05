@@ -4,10 +4,10 @@ import Modal from 'react-responsive-modal';
 import 'react-responsive-modal/styles.css';
 import connect from '../../../lib/connect';
 import SimpleReactValidator from 'simple-react-validator';
-import * as actions from '../../../actions/backEnd/category';
+import * as actions from '../../../actions/backEnd/productColor';
 import Loading from '../../../components/backEnd/loading';
-import $ from 'jquery';
-
+import { SketchPicker } from 'react-color';
+const customButton = { borderRadius: '50%', paddingTop: '6px', paddingBottom: '6px', paddingLeft: '10px', paddingRight: '10px', fontSize: '13px' };
 class ColorProduct extends Component {
     constructor(props) {
         super(props);
@@ -15,7 +15,8 @@ class ColorProduct extends Component {
             open: false,
             loading: true,
             name: '',
-            description: '',
+            color: '#2980b9',
+            showPickColor: false
         };
         this.validator = new SimpleReactValidator({ autoForceUpdate: this });
     }
@@ -25,14 +26,15 @@ class ColorProduct extends Component {
         this.setState({
             loading: true
         })
-        const { getCategories } = this.props.actions;
-        getCategories()
+        const { getColors } = this.props.actions;
+        console.log(getColors);
+        getColors()
             .then(() => {
                 this.setState({ loading: false });
             })
             .catch((err) => {
                 this.setState({ loading: false });
-                $.notify({ message: 'Tải xuống danh mục sản phẩm không thành công' }, { type: 'danger' });
+                window.notify('Tải xuống danh sách mẫu màu sản phẩm không thành công', 'danger');
             });
 
     }
@@ -61,12 +63,12 @@ class ColorProduct extends Component {
                 loading: true
             });
 
-            const { name, description } = this.state;
-            const { createCategory } = this.props.actions;
+            const { name,color } = this.state;
+            const { createColor } = this.props.actions;
             if (name === '' || name === null) return;
-            createCategory({
+            createColor({
                 name: name,
-                description: description
+                color: color
             })
                 .then((data) => {
                     if (data.success) {
@@ -108,11 +110,38 @@ class ColorProduct extends Component {
         });
     };
 
+    handleChangeComplete = (color) => {
+        this.setState({ color: color.hex });
+    };
+
+    handlePickColor = () => {
+        const { showPickColor } = this.state;
+        this.setState({ showPickColor: !showPickColor })
+    }
+
+    handlelRefresh = () => {
+        
+        this.setState({
+            loading: true
+        })
+        const { getColors } = this.props.actions;
+        console.log(getColors);
+        getColors()
+            .then(() => {
+                this.setState({ loading: false });
+            })
+            .catch((err) => {
+                this.setState({ loading: false });
+                window.notify('Tải xuống danh sách mẫu màu sản phẩm không thành công', 'danger');
+            });
+
+    }
+
     render() {
-        const { open, category } = this.state;
-        const { categories } = this.props;
-        const items = categories.items ? categories.items : [];
-        const total = categories.total ?? 0;
+        const { open, Color, showPickColor, color } = this.state;
+        const { colors } = this.props;
+        const items = colors.items ? colors.items : [];
+        const total = colors.total ?? 0;
         return (
             <Fragment>
                 <Breadcrumb title="MẪU MÀU" parent="Sản phẩm" />
@@ -124,46 +153,8 @@ class ColorProduct extends Component {
                             <div className="card">
                                 <div className="card-header d-flex justify-content-between">
                                     <h5>MẪU MÀU</h5>
-                                    <button type="button" className="btn btn-secondary" onClick={this.onOpenModal} data-toggle="modal" data-original-title="test" data-target="#exampleModal">Thêm mới</button>
                                 </div>
                                 <div className="card-body">
-                                    <div className="btn-popup pull-right">
-                                        <Modal open={open} onClose={this.onCloseModal} >
-                                            <div className="modal-header">
-                                                <h5 className="modal-title f-w-600" id="exampleModalLabel2">Thêm mẫu màu</h5>
-                                            </div>
-                                            <form onSubmit={this.handleSubmit}>
-                                                <div className="modal-body">
-                                                    <div className="form-group">
-                                                        <label htmlFor="recipient-name" className="col-form-label" >{this.props.name} Tên :</label>
-                                                        <input
-                                                            name="name"
-                                                            type="text"
-                                                            value={this.state.name}
-                                                            className="form-control"
-                                                            onChange={this.handleInputOnchange}
-                                                        // onBlur={() => this.validator.showMessageFor('name')}
-                                                        />
-                                                        {this.validator.message('name', this.state.name, 'required', { className: 'text-danger' })}
-
-                                                    </div>
-                                                    <div className="form-group">
-                                                        <label htmlFor="message-text" className="col-form-label">Mô tả :</label>
-                                                        <textarea
-                                                            name="description"
-                                                            className="form-control"
-                                                            onChange={this.handleInputOnchange}
-
-                                                        />
-                                                    </div>
-                                                </div>
-                                                <div className="modal-footer">
-                                                    <button type="submit" className="btn btn-secondary" onClick={() => this.handleSubmit}>Lưu</button>
-                                                    <button type="button" className="btn btn-primary" onClick={() => this.onCloseModal('VaryingMdo')}>Hủy</button>
-                                                </div>
-                                            </form>
-                                        </Modal>
-                                    </div>
                                     <div className="clearfix"></div>
                                     <div id="basicScenario" className="product-physical">
                                         {
@@ -173,12 +164,73 @@ class ColorProduct extends Component {
                                                     <Loading type='box' />
                                                 </div>
                                                 :
-                                                <div className="alert alert-warning text-center">
-                                                    Chức năng đang bảo trì 
-                                                </div>
-                                                // <table>
+                                                <div className="row">
+                                                    <div className="col-4">
+                                                        <div class="card">
+                                                            <div className="d-flex justify-content-between align-items-center">
+                                                                <h5 class="card-header" style={{ color: 'gray' }}>DANH SÁCH MẪU MÀU</h5>
+                                                                <div>
+                                                                    <button
+                                                                        type="button"
+                                                                        className="btn btn-secondary mr-1"
+                                                                        style={customButton}
+                                                                        data-toggle="modal"
+                                                                        data-original-title="test"
+                                                                        onClick={this.onOpenModal}
+                                                                        data-target="#exampleModal"
+                                                                    >
+                                                                        <i className="fa fa-plus"></i>
+                                                                    </button>
+                                                                    <button
+                                                                        type="button"
+                                                                        className="btn btn-primary mr-4"
+                                                                        style={customButton}
+                                                                        onClick={this.handlelRefresh}
+                                                                    >
+                                                                        <i className="fa fa-refresh" aria-hidden="true"></i>
+                                                                    </button>
+                                                                </div>
+                                                            </div>
+                                                            <div class="card-body">
 
-                                                // </table>
+                                                                {
+                                                                    items.length > 0 ?
+                                                                        items.map(item => (
+                                                                            <div key={item.id} className="template-color-item d-flex justify-content-between"
+                                                                                style={{
+                                                                                    border: '1px solid gray',
+                                                                                    paddingLeft: '8px',
+                                                                                    cursor: 'pointer',
+                                                                                }}
+                                                                            >
+                                                                                <h5 class="card-title mb-0 py-1"
+                                                                                    style={{ color: 'gray', fontSize: '14px' }}
+                                                                                >
+                                                                                    {item.name}
+                                                                                </h5>
+                                                                                <div className="color-item"
+                                                                                    style={{
+                                                                                        background: item.color,
+                                                                                        width: '100px'
+                                                                                    }}
+                                                                                >
+                                                                                </div>
+                                                                            </div>
+                                                                        ))
+
+                                                                        :
+                                                                        <div className="alert alert-warning text-center">
+                                                                            Chưa có mẫu màu
+                                                                     </div>
+
+                                                                }
+
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+
+
                                         }
 
                                     </div>
@@ -187,7 +239,48 @@ class ColorProduct extends Component {
                         </div>
                     </div>
                 </div>
+
                 {/* <!-- Container-fluid Ends--> */}
+                <Modal open={open} onClose={this.onCloseModal} >
+                    <div className="modal-header">
+                        <h5 className="modal-title f-w-600" id="exampleModalLabel2">Thêm mẫu màu</h5>
+                    </div>
+                    <form onSubmit={this.handleSubmit}>
+                        <div className="modal-body">
+                            <div className="form-group">
+                                <label htmlFor="recipient-name" className="col-form-label" >{this.props.name} Tên :</label>
+                                <input
+                                    name="name"
+                                    type="text"
+                                    value={this.state.name}
+                                    className="form-control"
+                                    onChange={this.handleInputOnchange}
+                                />
+                                {this.validator.message('name', this.state.name, 'required', { className: 'text-danger' })}
+                            </div>
+                            <div className="form-group">
+                                <div
+                                    onClick={this.handlePickColor}
+                                    style={{ height: '35px', background: color, cursor: 'pointer' }}
+                                >
+
+                                </div>
+                                {
+                                    showPickColor && <SketchPicker
+                                        color={this.state.color}
+                                        onChangeComplete={this.handleChangeComplete}
+                                    />
+
+                                }
+                            </div>
+                        </div>
+                        <div className="modal-footer">
+                            <button type="submit" className="btn btn-secondary" onClick={() => this.handleSubmit}>Lưu</button>
+                            <button type="button" className="btn btn-primary" onClick={() => this.onCloseModal('VaryingMdo')}>Hủy</button>
+                        </div>
+                    </form>
+                </Modal>
+
 
             </Fragment>
         )
@@ -196,6 +289,6 @@ class ColorProduct extends Component {
 
 export default connect(ColorProduct, state => (
     {
-        categories: state.category
+        colors: state.productColor
     }
 ), actions);

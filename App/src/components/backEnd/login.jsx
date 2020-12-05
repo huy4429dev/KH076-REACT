@@ -5,7 +5,7 @@ import { toast } from 'react-toastify';
 import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import SimpleReactValidator from 'simple-react-validator';
-import Loading from './../../components/backEnd/loading';
+import Loading from './../../components/loadding2';
 import connect from './../../lib/connect';
 import * as actions from './../../actions/backEnd/login';
 // import $ from 'jquery';
@@ -26,10 +26,6 @@ class LoginTabset extends Component {
         this.handleChange = this.handleChange.bind(this);
         this.validator = new SimpleReactValidator({ autoForceUpdate: this });
     }
-    componentDidMount() {
-
-    }
-
     clickActive = (event) => {
         this.setState({
             username: '',
@@ -63,9 +59,15 @@ class LoginTabset extends Component {
                 c_password: this.state.confilm
             }
             this.props.actions.register(data)
-                .then(() => {
-                    this.setState({ loading: false });
-                    window.notify('Đăng ký thành công', 'success');
+                .then((data) => {
+                    if (data.success) {
+                        window.notify('Đăng ký thành công', 'success');
+                        if (this.props.redirect) {
+                            this.props.redirect();
+                        }
+                    } else {
+                        window.notify('Đăng ký không thành công', 'danger');
+                    }
                 }).catch((err) => {
                     this.setState({ loading: false });
                     window.notify('Đăng ký không thành công', 'danger');
@@ -88,11 +90,16 @@ class LoginTabset extends Component {
                 password: this.state.password
             }
             this.props.actions.login(data)
-                .then(() => {
+                .then((data) => {
                     this.setState({ loading: false });
-                    window.notify('Đăng nhập thành công', 'success');
-                    if (this.props.redirect) {
-                        this.props.redirect();
+                    if (data.token) {
+                        window.notify('Đăng nhập thành công', 'success');
+                        if (this.props.redirect) {
+                            this.props.redirect();
+                        }
+                    }
+                    else {
+                        window.notify('Đăng nhập không thành công', 'danger');
                     }
                 }).catch((err) => {
                     this.setState({ loading: false });
@@ -108,11 +115,11 @@ class LoginTabset extends Component {
         return (
             <div>
                 <React.Fragment>
-                    <Loading show={this.state.loading} />
+                    <Loading show={this.state.loading} type="full" />
                     <Tabs>
                         <TabList className="nav nav-tabs tab-coupon" >
                             <Tab className="nav-link" onClick={(e) => this.clickActive(e)}><User />Đăng nhập</Tab>
-                            {<Tab className="nav-link" onClick={(e) => this.clickActive(e)}><Unlock />Đăng ký</Tab>}
+                            {/* {<Tab className="nav-link" onClick={(e) => this.clickActive(e)}><Unlock />Đăng ký</Tab>} */}
                         </TabList>
 
                         <TabPanel>

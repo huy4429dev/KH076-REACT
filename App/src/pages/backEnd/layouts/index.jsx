@@ -22,12 +22,19 @@ class App extends Component {
         }
     }
     componentDidMount() {
-        // const { login, user, token } = this.props.loginAdmin;
-        // if (login && user && token) {
-        //     this.props.actions.account(user.id);
-        // } else {
-        //     this.props.history.push('/admin/login');
-        // }
+        const { login, user, token } = this.props.loginAdmin;
+        if (login && user && token) {
+            this.props.actions.account(user.id)
+                .then(data => {
+                    if (data.success) {
+
+                    } else {
+                        this.props.history.push('/admin/login');
+                    }
+                });
+        } else {
+            this.props.history.push('/admin/login');
+        }
     }
     redirect = () => {
         this.props.history.push('/admin/login');

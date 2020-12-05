@@ -1,4 +1,4 @@
-import { types } from "./../../actions/backEnd/product";
+import { types } from "./../../actions/backEnd/productSize";
 
 const initState = {
   items: [],
@@ -10,20 +10,20 @@ export default (state = initState, action) => {
   let index = -1;
 
   switch (action.type) {
-    case types.GET_PRODUCTS_SUCCESS:
+    case types.GET_SIZES_SUCCESS:
       return {
         ...state,
         items: [...action.data.data.items],
         total: action.data.data.total,
       };
 
-    case types.CREATE_PRODUCT_SUCCESS:
+    case types.CREATE_SIZE_SUCCESS:
       return {
         ...state,
         items: [{ ...action.data.data }, ...state.items],
       };
 
-    case types.UPDATE_PRODUCT_SUCCESS:
+    case types.UPDATE_SIZE_SUCCESS:
       index = items.findIndex((item) => item.id === action.data.data.id);
       items[index] = action.data.data;
       return {
@@ -31,7 +31,7 @@ export default (state = initState, action) => {
         items,
       };
 
-    case types.DELETE_PRODUCT_SUCCESS:
+    case types.DELETE_SIZE_SUCCESS:
       index = items.findIndex((item) => item.id === action.data.data.id);
       items.splice(index, 1);
       return {
