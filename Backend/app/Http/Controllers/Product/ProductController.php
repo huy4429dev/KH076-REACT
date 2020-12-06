@@ -130,14 +130,14 @@ class ProductController extends BaseController
             $Product->price = $request->price;
             $Product->bought = $request->bought;
             $Product->quantity = $request->quantity;
-            $Product->trend_count = $request->trend_count;
-            $Product->category_id = $request->category_id;
+            $Product->trend_count = $request->trend_count ?? 0;
+            $Product->category_id = $request->categoryId;
+            $Product->discount = $request->discount;
             $Product->user_id = $request->user()->id;
             $Product->save();
-
             $Product->images()->createMany($request->images);
             $Product->colors()->attach($request->colors);
-            $Product->sizes()->attach($request->sizes); 
+            $Product->sizes()->attach($request->sizes);
 
             return $this->sendResponse(
                 $data = $Product,
@@ -150,30 +150,40 @@ class ProductController extends BaseController
 
     public function create(Request $request){
 
+
         $validator = Validator::make($request->all(), [
 
             // 'total' => 'required'
         ]);
-
         if($validator->fails()){
             return $this->sendError('Validation Error.', $validator->errors());       
         }
+        $colors = [];
+        foreach($request->colors as $item)
+        {
+            $colors['color_id'] = $item['id'];
+        }
+
+        $sizes = [];
+        foreach($request->sizes as $item)
+        {
+            $sizes['color_id'] = $item['id'];
+        }
 
         $Product = new Product();
-
         $Product->name = $request->name;
         $Product->description = $request->description;
         $Product->price = $request->price;
         $Product->bought = $request->bought;
         $Product->quantity = $request->quantity;
-        $Product->trend_count = $request->trend_count;
-        $Product->category_id = $request->category_id;
+        $Product->trend_count = $request->trend_count ?? 0;
+        $Product->category_id = $request->categoryId;
+        $Product->discount = $request->discount;
         $Product->user_id = $request->user()->id;
         $Product->save();
-
         $Product->images()->createMany($request->images);
-        $Product->colors()->attach($request->colors);
-        $Product->sizes()->attach($request->sizes);
+        $Product->colors()->attach($colors);
+        $Product->sizes()->attach($sizes);
 
         return $this->sendResponse(
             $data = $Product,
