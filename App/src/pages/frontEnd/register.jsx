@@ -29,6 +29,9 @@ class Register extends Component {
             default: 'Validation has failed!'
         });
     }
+    componentDidMount() {
+        window.scrollTo(0, 0);
+    }
     register = (e) => {
         e.stopPropagation();
         e.preventDefault();

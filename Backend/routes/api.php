@@ -82,10 +82,12 @@ Route::prefix('users')->group(function(){
     Route::get('/test',function(){
        return 'testtttttt'; 
     });
-    
     Route::post('/register', [UserController::class,'register'] );
+    Route::put('/profile/{id}', [UserController::class,'profile'] );
     Route::post('/login', [UserController::class,'login'] );
+    Route::post('/facebook', [UserController::class,'loginFacebook'] );
     Route::get('/{id}', [UserController::class,'show'] );
+    Route::put('/avatar/{id}', [UserController::class,'updateAvatar'] );
     Route::middleware(['auth:api', 'role'])->group(function() {
          
         Route::middleware(['scope:admin,shop'])->get('/', [UserController::class,'index'] );

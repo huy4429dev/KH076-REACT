@@ -11,6 +11,7 @@ import Contact from './pages/frontEnd/contact';
 import About from './pages/frontEnd/about';
 
 
+
 const routes = [
 
     {
