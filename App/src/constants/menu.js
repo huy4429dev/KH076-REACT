@@ -40,7 +40,6 @@ export const MENUITEMS = [
             title: "Danh sách",
             type: "link",
           },
-          { path: "/admin/products/add", title: "Thêm mới", type: "link" },
           {
             path: "/admin/products/detailt",
             title: "Chi tiết",

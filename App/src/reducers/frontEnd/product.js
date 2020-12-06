@@ -7,7 +7,10 @@ const initState = {
     manProduct: [],
     womenProduct: [],
     detailt: null,
-    listProduct: null
+    listProduct: null,
+    topProduct: [],
+    saleMen: [],
+    saleWomen: []
 }
 
 export default (state = initState, action) => {
@@ -35,6 +38,21 @@ export default (state = initState, action) => {
             }
         case types.GET_DETAILT_PRODUCTS_SUCCESS:
             state.detailt = action.data.data;
+            return {
+                ...state
+            }
+        case types.GET_TOP_PRODUCTS_SUCCESS:
+            state.topProduct = action.data.data.items;
+            return {
+                ...state
+            }
+        case types.GET_TOP_SALE_MEN_SUCCESS:
+            state.saleMen = action.data.data.items;
+            return {
+                ...state
+            }
+        case types.GET_TOP_SALE_WOMEN_SUCCESS:
+            state.saleWomen = action.data.data.items;
             return {
                 ...state
             }

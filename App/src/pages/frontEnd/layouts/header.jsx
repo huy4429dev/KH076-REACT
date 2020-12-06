@@ -66,6 +66,12 @@ class Header extends Component {
             event.target.parentNode.nextElementSibling.classList.add('opensubmegamenu')
         }
     }
+    openNav = () => {
+        var openmyslide = document.getElementById("mySidenav");
+        if (openmyslide) {
+            openmyslide.classList.add('open-side')
+        }
+    }
     render() {
         return (
             <div>
@@ -81,14 +87,14 @@ class Header extends Component {
                                 <div className="main-menu">
                                     <div className="menu-left">
                                         <div className="navbar">
-                                            <SiderBar />
-
-
+                                            <a href="javascript:void(0)" onClick={this.openNav}>
+                                                <div className="bar-style"> <i className="fa fa-bars sidebar-bar" aria-hidden="true"></i></div>
+                                            </a>
                                             {/*SideBar Navigation Component*/}
                                             <SideBar />
                                         </div>
                                         <div className="brand-logo">
-                                            <LogoImage logo={this.props.logoName} />
+                                            <LogoImage />
                                         </div>
                                     </div>
                                     <div className="menu-right pull-right">

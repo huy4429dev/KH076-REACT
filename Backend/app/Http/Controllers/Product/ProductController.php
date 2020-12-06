@@ -7,6 +7,8 @@ use App\Http\Controllers\BaseController as BaseController;
 use App\Models\Product;
 use App\Models\Role;
 use App\Models\Profile;
+use App\Models\Comment;
+use App\Models\User;
 use App\Models\Shop;
 use Validator;
 use Illuminate\Support\Facades\Auth;
@@ -128,14 +130,14 @@ class ProductController extends BaseController
             $Product->price = $request->price;
             $Product->bought = $request->bought;
             $Product->quantity = $request->quantity;
-            $Product->trend_count = $request->trend_count;
-            $Product->category_id = $request->category_id;
+            $Product->trend_count = $request->trend_count ?? 0;
+            $Product->category_id = $request->categoryId;
+            $Product->discount = $request->discount;
             $Product->user_id = $request->user()->id;
             $Product->save();
-
             $Product->images()->createMany($request->images);
             $Product->colors()->attach($request->colors);
-            $Product->sizes()->attach($request->sizes); 
+            $Product->sizes()->attach($request->sizes);
 
             return $this->sendResponse(
                 $data = $Product,
@@ -148,30 +150,40 @@ class ProductController extends BaseController
 
     public function create(Request $request){
 
+
         $validator = Validator::make($request->all(), [
 
             // 'total' => 'required'
         ]);
-
         if($validator->fails()){
             return $this->sendError('Validation Error.', $validator->errors());       
         }
+        $colors = [];
+        foreach($request->colors as $item)
+        {
+            $colors['color_id'] = $item['id'];
+        }
+
+        $sizes = [];
+        foreach($request->sizes as $item)
+        {
+            $sizes['color_id'] = $item['id'];
+        }
 
         $Product = new Product();
-
         $Product->name = $request->name;
         $Product->description = $request->description;
         $Product->price = $request->price;
         $Product->bought = $request->bought;
         $Product->quantity = $request->quantity;
-        $Product->trend_count = $request->trend_count;
-        $Product->category_id = $request->category_id;
+        $Product->trend_count = $request->trend_count ?? 0;
+        $Product->category_id = $request->categoryId;
+        $Product->discount = $request->discount;
         $Product->user_id = $request->user()->id;
         $Product->save();
-
         $Product->images()->createMany($request->images);
-        $Product->colors()->attach($request->colors);
-        $Product->sizes()->attach($request->sizes);
+        $Product->colors()->attach($colors);
+        $Product->sizes()->attach($sizes);
 
         return $this->sendResponse(
             $data = $Product,
@@ -197,50 +209,135 @@ class ProductController extends BaseController
           );
     }
 
-    public function newProducts(Request $request){
-        $Products = Product::orderBy('created_at','desc')
-        ->with('user')
-        ->with('images')
-        ->with('colors')
-        ->with('sizes')
-        ->take(6)
-        ->get();
+    // public function newProducts(Request $request){
+    //     $Products = Product::orderBy('created_at','desc')
+    //     ->with('user')
+    //     ->with('images')
+    //     ->with('colors')
+    //     ->with('sizes')
+    //     ->take(6)
+    //     ->get();
 
-        return $this->sendResponse(
-            $data = [
-                     'items' => $Products , 
-                    ]
-          );
-    }
-     public function manProducts(Request $request){
-        $Products = Product::orderBy('created_at','desc')
-        ->with('user')
-        ->with('images')
-        ->with('colors')
-        ->with('sizes')
-        ->take(6)
-        ->get();
+    //     return $this->sendResponse(
+    //         $data = [
+    //                  'items' => $Products , 
+    //                 ]
+    //       );
+    // }
+    //  public function manProducts(Request $request){
+    //     $Products = Product::orderBy('created_at','desc')
+    //     ->with('user')
+    //     ->with('images')
+    //     ->with('colors')
+    //     ->with('sizes')
+    //     ->take(6)
+    //     ->get();
 
-        return $this->sendResponse(
-            $data = [
-                     'items' => $Products , 
-                    ]
-          );
-    }
-     public function womanProducts(Request $request){
-        $Products = Product::orderBy('created_at','desc')
-        ->with('user')
-        ->with('images')
-        ->with('colors')
-        ->with('sizes')
-        ->take(6)
-        ->get();
+    //     return $this->sendResponse(
+    //         $data = [
+    //                  'items' => $Products , 
+    //                 ]
+    //       );
+    // }
+    //  public function womanProducts(Request $request){
+    //     $Products = Product::orderBy('created_at','desc')
+    //     ->with('user')
+    //     ->with('images')
+    //     ->with('colors')
+    //     ->with('sizes')
+    //     ->take(6)
+    //     ->get();
 
+    //     return $this->sendResponse(
+    //         $data = [
+    //                  'items' => $Products , 
+    //                 ]
+    //       );
+    // }
+    // public function topProduct(Request $request){
+    // $Orders = Product::orderBy('created_at','desc')
+    // ->with('user')
+    // ->with('images')
+    // ->with('colors')
+    // ->with('sizes')
+    // ->take(8)
+    // ->get();
+
+    // return $this->sendResponse(
+    //     $data = [
+    //                 'items' => $Orders , 
+    //             ]
+    //     );
+    // }
+    // public function saleMen(Request $request){
+    //     $Orders = Product::orderBy('created_at','desc')
+    //     ->with('user')
+    //     ->with('images')
+    //     ->with('colors')
+    //     ->with('sizes')
+    //     ->take(1)
+    //     ->get();
+
+    // return $this->sendResponse(
+    //     $data = [
+    //                 'items' => $Orders , 
+    //             ]
+    //     );
+    // }
+    // public function saleWomen(Request $request){
+    //     $Orders = Product::orderBy('created_at','desc')
+    //     ->with('user')
+    //     ->with('images')
+    //     ->with('colors')
+    //     ->with('sizes')
+    //     ->take(1)
+    //     ->get();
+
+    // return $this->sendResponse(
+    //     $data = [
+    //                 'items' => $Orders , 
+    //             ]
+    //     );
+    // }
+     public function comment(Request $request){
+
+        $validator = Validator::make($request->all(), [
+
+            'username' => 'required',
+            'email' => 'required|email',
+            'title' => 'required',
+            'content' => 'required',
+            'productId' => 'required',
+        ]);
+
+        if($validator->fails()){
+            return $this->sendError('Validation Error.', $validator->errors());       
+        }
+
+        $comment = new Comment();
+
+        $comment->title = $request->title;
+        $comment->content = $request->content;
+        $comment->product_id = $request->productId;
+        if($request->userId != null){
+            $user = User::where('id',$request->userId)->first();
+            $user->username = $request->username;
+            $user->email = $request->email;
+            $user->save();
+            $comment->user_id = $request->userId;
+        }else{
+            $user = new User();
+            $user->username = $request->username;
+            $user->email = $request->email;
+            $user->password = "123456";
+            $user->save();
+            $comment->user_id = $user->id;
+        }
+        $comment->save();
         return $this->sendResponse(
-            $data = [
-                     'items' => $Products , 
-                    ]
-          );
+            $data = $comment,
+            'Create contact successfully.'
+        );
+
     }
-  
 }

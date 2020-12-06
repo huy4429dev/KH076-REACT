@@ -30,10 +30,14 @@ class Login extends Component {
                 password: this.state.password
             }
             this.props.actions.login(data)
-                .then(() => {
+                .then((data) => {
                     this.setState({ loading: false });
-                    window.notify('Đăng nhập thành công', 'success');
-                    this.props.history.push('/');
+                    if (data.token) {
+                        window.notify('Đăng nhập thành công', 'success');
+                        // this.props.history.push('/');
+                    } else {
+                        window.notify('Đăng nhập không thành công', 'danger');
+                    }
                 }).catch((err) => {
                     this.setState({ loading: false });
                     window.notify('Đăng nhập không thành công', 'danger');

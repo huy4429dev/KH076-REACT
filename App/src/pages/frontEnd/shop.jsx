@@ -16,8 +16,9 @@ class Shop extends Component {
         loading: false
     }
     componentDidMount() {
-        this.setState({ loading: true })
-        this.props.actions.getListProducts()
+        this.setState({ loading: true });
+        const shopId = 1;
+        this.props.actions.getListProducts(shopId)
             .then(() => this.setState({ loading: false }))
             .catch(() => this.setState({ loading: false }));
     }

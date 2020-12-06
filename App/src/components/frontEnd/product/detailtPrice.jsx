@@ -12,7 +12,7 @@ class DetailsWithPrice extends Component {
         this.state = {
             open: false,
             quantity: 1,
-            stock: 'InStock',
+            stock: '',
             nav3: null
         }
     }
@@ -32,7 +32,7 @@ class DetailsWithPrice extends Component {
     }
     minusQty = () => {
         if (this.state.quantity > 1) {
-            this.setState({ stock: 'InStock' })
+            this.setState({ stock: '' })
             this.setState({ quantity: this.state.quantity - 1 })
         }
     }
@@ -41,7 +41,7 @@ class DetailsWithPrice extends Component {
         if (this.props.item.quantity >= this.state.quantity) {
             this.setState({ quantity: this.state.quantity + 1 })
         } else {
-            this.setState({ stock: 'Out of Stock !' })
+            this.setState({ stock: 'Hết hàng !' })
         }
     }
     changeQty = (e) => {
@@ -89,9 +89,9 @@ class DetailsWithPrice extends Component {
                     <div className="product-description border-product">
                         {item.size ?
                             <div>
-                                <h6 className="product-title size-text">select size
+                                <h6 className="product-title size-text">Chọn size
                                     <span><a href="#" data-toggle="modal"
-                                        data-target="#sizemodal" onClick={this.onOpenModal}>size chart</a></span></h6>
+                                        data-target="#sizemodal" onClick={this.onOpenModal}>size</a></span></h6>
                                 <div className="modal fade" id="sizemodal" tabIndex="-1"
                                     role="dialog" aria-labelledby="exampleModalLabel"
                                     aria-hidden="true">
@@ -122,7 +122,7 @@ class DetailsWithPrice extends Component {
                                 </div>
                             </div> : ''}
                         <span className="instock-cls">{this.state.stock}</span>
-                        <h6 className="product-title">quantity</h6>
+                        <h6 className="product-title">Số lượng</h6>
                         <div className="qty-box">
                             <div className="input-group">
                                 <span className="input-group-prepend">
@@ -144,7 +144,7 @@ class DetailsWithPrice extends Component {
                         <Link to={`/checkout`} className="btn btn-solid" onClick={() => this.addCart(item, this.state.quantity)} >Thanh toán</Link>
                     </div>
                     <div className="border-product">
-                        <h6 className="product-title">product details</h6>
+                        <h6 className="product-title">Chi tiết sản phẩm</h6>
                         <p>{item.description}</p>
                     </div>
                     <div className="border-product">
@@ -156,13 +156,13 @@ class DetailsWithPrice extends Component {
                                 <li><a href="https://twitter.com/" target="_blank"><i className="fa fa-twitter"></i></a></li>
                                 <li><a href="https://www.instagram.com/" target="_blank"><i className="fa fa-instagram"></i></a></li>
                             </ul>
-                            <button className="wishlist-btn" onClick={() => addToWishlistClicked(item)}><i
+                            {/* <button className="wishlist-btn" onClick={() => addToWishlistClicked(item)}><i
                                 className="fa fa-heart"></i><span
                                     className="title-font">Add To WishList</span>
-                            </button>
+                            </button> */}
                         </div>
                     </div>
-                    <div className="border-product">
+                    {/* <div className="border-product">
                         <h6 className="product-title">Time Reminder</h6>
                         <div className="timer">
                             <p id="demo">
@@ -183,7 +183,7 @@ class DetailsWithPrice extends Component {
                                 </span>
                             </p>
                         </div>
-                    </div>
+                    </div> */}
                 </div>
                 <Modal open={this.state.open} onClose={this.onCloseModal} center>
                     <div className="modal-dialog modal-dialog-centered" role="document">
