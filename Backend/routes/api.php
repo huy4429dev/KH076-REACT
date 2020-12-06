@@ -83,6 +83,7 @@ Route::prefix('users')->group(function(){
        return 'testtttttt'; 
     });
     Route::post('/register', [UserController::class,'register'] );
+    Route::put('/profile/{id}', [UserController::class,'profile'] );
     Route::post('/login', [UserController::class,'login'] );
     Route::post('/facebook', [UserController::class,'loginFacebook'] );
     Route::get('/{id}', [UserController::class,'show'] );

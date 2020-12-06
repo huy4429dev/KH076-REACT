@@ -66,7 +66,11 @@ export class Profile extends Component {
                                             <div className="profile-details text-center">
                                                 {
                                                     user.profile ?
-                                                        <img onClick={this.avatar} src={`${EP.endpoint}${user.profile.avatar}`} alt="" className="img-fluid img-90 rounded-circle blur-up lazyloaded" />
+                                                        <div className="d-flex justify-content-center">
+                                                            <img style={{ width: 50, height: 50 }} onClick={this.avatar} src={`${EP.endpoint}${user.profile.avatar}`}
+                                                                alt="" className="img-fluid m-0 rounded-circle blur-up lazyloaded" />
+                                                        </div>
+
                                                         :
                                                         <div className="d-flex justify-content-center text-uppercase">
                                                             <div onClick={this.avatar}
@@ -76,8 +80,7 @@ export class Profile extends Component {
                                                             </div>
                                                         </div>
                                                 }
-                                                {/* <input type="file" ref={this.refUpload} onChange={(e) => this.onFileChange(e)} style={{ visibility: "hidden" }} /> */}
-                                                <input type="file" ref={this.refUpload} onChange={(e) => this.onFileChange(e)} />
+                                                <input type="file" ref={this.refUpload} onChange={(e) => this.onFileChange(e)} style={{ visibility: "hidden" }} />
                                                 <h5 className="f-w-600 f-16 mb-0">{user.username}</h5>
                                                 <span>{user.email}</span>
                                                 <div className="social">

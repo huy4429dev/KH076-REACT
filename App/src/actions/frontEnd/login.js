@@ -12,7 +12,9 @@ export const types = {
     GET_PROFILE_SUCCESS: "GET_PROFILE_SUCCESS",
     GET_PROFILE_ERROR: "GET_PROFILE_ERROR",
     UPDATE_AVATAR_SUCCESS: "UPDATE_AVATAR_SUCCESS",
-    UPDATE_AVATAR_ERROR: "UPDATE_AVATAR_ERROR"
+    UPDATE_AVATAR_ERROR: "UPDATE_AVATAR_ERROR",
+    UPDATE_PROFILE_SUCCESS: "UPDATE_PROFILE_SUCCESS",
+    UPDATE_PROFILE_ERROR: "UPDATE_PROFILE_ERROR"
 }
 
 
@@ -72,5 +74,14 @@ export const updateAvatar = (url, id) => {
         data: url,
         onSuccess: types.UPDATE_AVATAR_SUCCESS,
         onError: types.UPDATE_AVATAR_ERROR,
+    };
+};
+export const updateProfile = (data, id) => {
+    return {
+        url: `${ep.enpoint}/api/users/profile/${id}`,
+        method: 'PUT',
+        data: data,
+        onSuccess: types.UPDATE_PROFILE_SUCCESS,
+        onError: types.UPDATE_PROFILE_ERROR,
     };
 };

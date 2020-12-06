@@ -48,6 +48,11 @@ export default (state = initState, action) => {
             return {
                 ...state,
             }
+        case types.UPDATE_AVATAR_SUCCESS:
+            state.user = action.data.data;
+            return {
+                ...state,
+            }
         default:
             return state;
     }

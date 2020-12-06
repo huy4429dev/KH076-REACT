@@ -367,4 +367,47 @@ class UserController extends BaseController
             $newProfile = User::where('id',$id)->with('profile')->first();
             return $this->sendResponse($newProfile, 'Update user successfully.');
     }
+
+     public function profile($id, Request $request){
+
+            // Shop update user
+
+            $validator = Validator::make($request->all(), [
+                'username' => 'required',
+                'email' => 'required|email',
+                'birthday' => 'required',
+                'phone' => 'required',
+                'address' => 'required',
+                'gender'=>'required'
+            ]);
+    
+            if($validator->fails()){
+                return $this->sendError('Validation Error.', $validator->errors());       
+            }
+
+            $user = User::where('id',$id)->with('profile')->first();
+            $profile = Profile::where('user_id',$id)->first();
+            if($profile  != null){
+                $profile->name = $request->username; 
+                $profile->birthday = date("Y-m-d H:i:s", strtotime(request('birthday'))); 
+                $profile->gender = $request->gender; 
+                $profile->address = $request->address; 
+                $profile->phone = $request->phone; 
+                $profile->save();
+            }
+            if($user != null ){
+                $user->address = $request->address; 
+                $user->username = $request->username;
+                $user->email = $request->email;
+                $user->phone = $request->phone; 
+                $user->save();
+    
+            }
+            else 
+            {
+                return $this->sendError('Account Errors.',['error' => 'User not found !']);
+            }
+            $newUser = User::where('id',$id)->with('profile')->first();
+            return $this->sendResponse($newUser , 'Update user successfully.');
+    }
 }
