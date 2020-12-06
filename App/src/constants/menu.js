@@ -32,20 +32,10 @@ export const MENUITEMS = [
     children: [
       {
         title: "Sản phẩm",
-        type: "sub",
+        type: "link",
         active: false,
-        children: [
-          {
-            path: "/admin/products/list",
-            title: "Danh sách",
-            type: "link",
-          },
-          {
-            path: "/admin/products/detailt",
-            title: "Chi tiết",
-            type: "link",
-          },
-        ],
+        path: "/admin/products/list",
+        title: "Sản phẩm",
       },
       { path: "/admin/products/category", title: "Danh mục", type: "link" },
       { path: "/admin/products/color", title: "Mẫu màu", type: "link" },
@@ -67,19 +57,14 @@ export const MENUITEMS = [
     icon: DollarSign,
     type: "sub",
     active: false,
-    children: [
-      { path: "/admin/orders", title: "Danh sách", type: "link" },
-    ],
+    children: [{ path: "/admin/orders", title: "Danh sách", type: "link" }],
   },
   {
     title: "Khách hàng",
     icon: UserPlus,
-    type: "sub",
+    type: "link",
+    path: "/admin/customers",
     active: false,
-    children: [
-      { path: "/admin/customer", title: "Danh sách ", type: "link" },
-      { path: "/admin/customer/add", title: "Thêm mới", type: "link" },
-    ],
   },
   // {
   //     title: 'Sales', icon: DollarSign, type: 'sub', active: false, children: [
@@ -126,9 +111,9 @@ export const MENUITEMS = [
     type: "sub",
     active: false,
     children: [
-      { path: "/admin/products/category", title: "Danh mục", type: "link" },
-      { path: "/admin/products/color", title: "Mẫu màu", type: "link" },
-      { path: "/admin/products/size", title: "Kích cỡ", type: "link" },
+      { path: "/admin/report/revenue", title: "Doanh thu", type: "link" },
+      { path: "/admin/report/product", title: "Khách hàng", type: "link" },
+      { path: "/admin/report/employee", title: "Nhân viên", type: "link" }
     ],
   },
   {

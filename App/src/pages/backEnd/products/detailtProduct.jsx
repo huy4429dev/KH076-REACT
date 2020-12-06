@@ -5,7 +5,10 @@ import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
 import Modal from 'react-responsive-modal';
 import StarRatingComponent from 'react-star-rating-component';
-
+import * as actions from '../../../actions/backEnd/product';
+import connect from '../../../lib/connect';
+import Loading from '../../../components/backEnd/loading';
+import ReactTooltip from 'react-tooltip';
 
 // image import
 import two from '../../../assets/images/pro3/2.jpg';
@@ -13,17 +16,49 @@ import twentySeven from './../../../assets/images/pro3/27.jpg';
 import one from '../../../assets/images/pro3/1.jpg';
 import size_chart from '../../../assets/images/size-chart.jpg'
 
+
 class Detail extends Component {
     constructor(props) {
         super(props)
         this.state = {
             quantity: 1,
-            rating: 1,
+            rating: 5,
             open: false,
             nav1: null,
             nav2: null,
+            product: null,
+            id: 0
         }
     }
+
+
+
+    componentDidMount() {
+
+        const { id } = this.props.match.params;
+        console.log(id, 'PRODUCT ID');
+        const { getProduct } = this.props.actions;
+        console.log(this.props, 'PROPS');
+        this.setState({
+            loading: true,
+            id
+        });
+
+        getProduct(id)
+            .then(data => {
+                this.setState({ loading: false, product: data.data });
+            })
+            .catch(err => {
+                this.setState({ loading: false });
+                window.notify("Xảy ra lỗi: " + err.message);
+            });
+
+        this.setState({
+            nav1: this.slider1,
+            nav2: this.slider2
+        });
+    }
+
     onOpenModal = () => {
         this.setState({ open: true });
     };
@@ -65,15 +100,12 @@ class Detail extends Component {
     handleChange = (event) => {
         this.setState({ quantity: event.target.value });
     }
-    componentDidMount() {
-        this.setState({
-            nav1: this.slider1,
-            nav2: this.slider2
-        });
-    }
+
     render() {
-        const { open } = this.state;
+        const { open, product } = this.state;
         const { rating } = this.state;
+        console.log(product, 'PRODUCT DETAIL');;
+
         return (
 
             <Fragment>
@@ -85,51 +117,53 @@ class Detail extends Component {
                             <div className="col-xl-4">
                                 <Slider asNavFor={this.state.nav2} ref={slider => (this.slider1 = slider)}
                                     className="product-slider">
-                                    <div className="item">
-                                        <img className="img-fluid" src={one} alt="" />
-                                    </div>
-                                    <div className="item">
-                                        <img className="img-fluid" src={twentySeven} alt="" />
-                                    </div>
-                                    <div className="item">
-                                        <img className="img-fluid" src={two} alt="" />
-                                    </div>
-                                    <div className="item">
-                                        <img className="img-fluid" src={one} alt="" />
-                                    </div>
-                                    <div className="item">
-                                        <img className="img-fluid" src={twentySeven} alt="" />
-                                    </div>
+                                    {
+
+                                        product?.images != null ?
+                                            product.images.length > 0 ?
+                                                product.images.map(item => (
+                                                    <div className="item">
+                                                        <img className="img-fluid" src={item.url} alt="" />
+                                                    </div>
+
+                                                ))
+                                                :
+                                                <div className="item">
+                                                    <img className="img-fluid" src={product?.images?.length > 0 ? product.images[0].url : one} alt="" />
+                                                </div>
+                                            : <Loading />
+                                    }
                                 </Slider>
 
                                 <Slider
                                     asNavFor={this.state.nav1}
                                     ref={slider => (this.slider2 = slider)}
-                                    slidesToShow={4}
+                                    slidesToShow={product?.images ? product.images.length : 1}
                                     swipeToSlide={true}
                                     focusOnSelect={true}
                                     className="small-slick"
                                 >
-                                    <div className="item">
-                                        <img className="img-fluid" src={one} alt="" />
-                                    </div>
-                                    <div className="item">
-                                        <img className="img-fluid" src={twentySeven} alt="" />
-                                    </div>
-                                    <div className="item">
-                                        <img className="img-fluid" src={two} alt="" />
-                                    </div>
-                                    <div className="item">
-                                        <img className="img-fluid" src={twentySeven} alt="" />
-                                    </div>
-                                    <div className="item">
-                                        <img className="img-fluid" src={one} alt="" />
-                                    </div>
+                                    {
+
+                                        product?.images != null ?
+                                            product.images.length > 0 ?
+                                                product.images.map(item => (
+                                                    <div className="item">
+                                                        <img className="img-fluid" src={item.url} alt="" />
+                                                    </div>
+
+                                                ))
+                                                :
+                                                <div className="item">
+                                                    <img className="img-fluid" src={product?.images?.length > 0 ? product.images[0].url : one} alt="" />
+                                                </div>
+                                            : <Loading />
+                                    }
                                 </Slider>
                             </div>
                             <div className="col-xl-8">
                                 <div className="product-page-details product-right mb-0">
-                                    <h2>SẢN PHẨM X</h2>
+                                    <h2>{product?.name}</h2>
                                     <div style={{ fontSize: 27, height: 31 }}>
                                         <StarRatingComponent
                                             name="rate1"
@@ -142,15 +176,36 @@ class Detail extends Component {
                                     </div>
                                     <hr />
                                     <h6 className="product-title">Mô tả</h6>
-                                    <p>Sed ut perspiciatis, unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, totam rem aperiam eaque ipsa, quae ab illo inventore veritatis et quasi architecto beatae vitae dicta sunt, explicabo. Nemo enim ipsam voluptatem,</p>
-                                    <div className="product-price digits mt-2">
-                                        <h3>$26.00 <del>$350.00</del></h3>
+                                    <div dangerouslySetInnerHTML={{ __html: product?.description }}>
                                     </div>
-                                    <ul className="color-variant">
-                                        <li className="bg-light0"></li>
-                                        <li className="bg-light1"></li>
-                                        <li className="bg-light2"></li>
-                                    </ul>
+                                    <div className="product-price digits mt-2">
+                                        <h3>{product?.price != null ? product?.price.toLocaleString() : 0} đ</h3>
+                                    </div>
+                                    <label className="d-block mr-2 d-flex">
+                                        {
+                                            product?.colors != null &&
+                                                product.colors.length > 0 ?
+
+                                                product.colors.map(item => (
+                                                    <span
+                                                        data-tip={item.name}
+                                                        className='d-block mr-1'
+                                                        style={{
+                                                            width: '30px',
+                                                            height: '30px',
+                                                            background: item.color,
+                                                            opacity: 1,
+                                                            cursor: 'pointer',
+                                                            borderRadius: '100%',
+                                                            marginRight: '5px',
+                                                        }}>
+                                                    </span>
+                                                ))
+                                                : <span>none</span>
+
+
+                                        }
+                                    </label>
                                     <hr />
                                     <h6 className="product-title size-text">Kích cỡ
                                         <span className="pull-right">
@@ -164,54 +219,44 @@ class Detail extends Component {
                                     </Modal>
                                     <div className="size-box">
                                         <ul>
-                                            <li className="active"><a href="#">s</a></li>
-                                            <li><a href="#">m</a></li>
-                                            <li><a href="#">l</a></li>
-                                            <li><a href="#">xl</a></li>
+                                            {
+                                                product?.size != null &&
+                                                product.sizes.length > 0 && 
+                                                product.sizes.map(item => (
+                                                    <li className="active" style={{lineHeight:'30px', fontSize: '18px'}}>s</li>
+                                                ))
+
+                                            }
                                         </ul>
                                     </div>
                                     <div className="add-product-form">
-                                        <h6 className="product-title">Số lượng</h6>
-                                        <fieldset className="qty-box mt-2 ml-0">
-                                            <div className="input-group bootstrap-touchspin">
-                                                <div className="input-group-prepend">
-                                                    <button className="btn btn-primary btn-square bootstrap-touchspin-down" type="button" onClick={this.DecreaseItem} >
-                                                        <i className="fa fa-minus"></i>
-                                                    </button>
-                                                </div>
-                                                <div className="input-group-prepend">
-                                                    <span className="input-group-text bootstrap-touchspin-prefix" ></span>
-                                                </div>
-                                                <input className="touchspin form-control" type="text" value={this.state.quantity} onChange={this.handleChange} />
-                                                <div className="input-group-append">
-                                                    <span className="input-group-text bootstrap-touchspin-postfix"></span>
-                                                </div>
-                                                <div className="input-group-append ml-0">
-                                                    <button className="btn btn-primary btn-square bootstrap-touchspin-up" type="button" onClick={this.IncrementItem}>
-                                                        <i className="fa fa-plus"></i>
-                                                    </button>
-                                                </div>
-                                            </div>
-                                        </fieldset>
+                                        <h6 className="product-title mt-2">Số lượng tồn</h6>
+                                         <span>
+                                            {product?.quantity}
+                                         </span>
                                     </div>
                                     <hr />
-                                    <h6 className="product-title">Time Reminder</h6>
+                                    {/* <h6 className="product-title">Time Reminder</h6>
                                     <div className="timer">
                                         <p id="demo"><span>25 <span className="padding-l">:</span> <span className="timer-cal">Days</span> </span><span>22 <span className="padding-l">:</span> <span className="timer-cal">Hrs</span> </span><span>13 <span className="padding-l">:</span> <span className="timer-cal">Min</span> </span><span>57 <span className="timer-cal">Sec</span></span>
                                         </p>
                                     </div>
                                     <div className="m-t-15">
                                         <button className="btn btn-primary m-r-10" type="button">Sửa</button>
-                                    </div>
+                                    </div> */}
                                 </div>
                             </div>
                         </div>
                     </div>
 
                 </div>
-            </Fragment>
+            </Fragment >
         )
     }
 }
 
-export default Detail
+export default connect(Detail, state => (
+    {
+    }
+), actions);
+

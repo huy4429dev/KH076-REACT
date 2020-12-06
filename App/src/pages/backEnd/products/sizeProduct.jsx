@@ -192,15 +192,17 @@ class SizeProduct extends Component {
                                                                         items.map((item, index) => (
                                                                             <div key={item.id} className="template-size-item d-flex align-items-center  px-3"
                                                                                 style={{
-                                                                                    border: '1px solid gray',
-                                                                                    paddingLeft: '8px',
+                                                                                    border: '1px solid #c5c5c5',
+                                                                                    paddingLeft:' 8px',
                                                                                     cursor: 'pointer',
+                                                                                    borderRadius: '4px',
+                                                                                    marginBottom: '4px',
                                                                                 }}
                                                                             >
-                                                                                <span style={{width:'30px'}}>{index + 1}.</span>
+                                                                                <span style={{width:'30px', color:'gray'}}>#</span>
                                                                                 <div className='flex-1'>
                                                                                     <h5 class="card-title mb-0 py-1"
-                                                                                        style={{ size: 'gray', fontSize: '14px' }}
+                                                                                        style={{ color: 'gray', fontSize: '14px' }}
                                                                                     >
                                                                                         {item.name}
                                                                                     </h5>
