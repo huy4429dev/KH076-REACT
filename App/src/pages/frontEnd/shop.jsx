@@ -16,6 +16,7 @@ class Shop extends Component {
         loading: false
     }
     componentDidMount() {
+        window.scrollTo(0, 0);
         this.setState({ loading: true });
         const shopId = 1;
         this.props.actions.getListProducts(shopId)

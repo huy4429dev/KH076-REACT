@@ -213,5 +213,5 @@ class DetailsTopTabs extends Component {
 }
 
 export default connect(DetailsTopTabs, state => ({
-    login: state.loginHome
+    login: state.login
 }), actions);

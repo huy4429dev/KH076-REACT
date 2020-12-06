@@ -1,6 +1,5 @@
 import React, { Component, Fragment } from 'react';
 import { Link } from 'react-router-dom'
-//images import
 import man from './../../assets/images/dashboard/man.png';
 import connect from './../../lib/connect';
 import * as actions from './../../actions/frontEnd/login';
@@ -12,7 +11,7 @@ export class UserMenu extends Component {
         const { user } = this.props;
         return (
             <Fragment>
-                <li className="onhover-dropdown">
+                <li className="onhover-dropdown d-flex justify-content-end" style={{ minWidth: "200px" }}>
                     <div className="media align-items-center">
                         <div className="border text-uppercase border-secondary rounded-circle d-flex justify-content-center align-items-center"
                             style={{ width: "25px", height: "25px" }}>
@@ -22,7 +21,8 @@ export class UserMenu extends Component {
                         <div className="dotted-animation"><span className="animate-circle"></span><span className="main-circle"></span></div>
                     </div>
                     <ul className="profile-dropdown onhover-show-div p-20 profile-dropdown-hover">
-                        <li onClick={() => this.logout()}>Đăng xuất</li>
+                        <li onClick={() => this.logout()} className="text-dark">Đăng xuất</li>
+                        <li><Link to={'/admin'}>Trang quản lý</Link></li>
                     </ul>
                 </li>
             </Fragment>

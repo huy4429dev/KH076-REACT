@@ -5,6 +5,7 @@ const initState = {
     login: false,
     user: null,
     token: null,
+    profile: null
 }
 
 export default (state = initState, action) => {
@@ -15,10 +16,6 @@ export default (state = initState, action) => {
             state.token = action.data.token;
             state.user = action.data.user;
             localStorage.setItem('access_token', action.data.token);
-            return {
-                ...state,
-            }
-        case types.GET_USER_HOME_SUCCESS:
             return {
                 ...state,
             }
@@ -43,8 +40,11 @@ export default (state = initState, action) => {
             return {
                 ...state,
             }
-        case types.GET_USER_HOME_ERROR:
-            state.user = null;
+        case types.LOGIN_FACEBOOK_SUCCESS:
+            state.login = true;
+            state.token = action.data.token;
+            state.user = action.data.user;
+            localStorage.setItem('access_token', action.data.token);
             return {
                 ...state,
             }

@@ -7,7 +7,7 @@ import 'react-toastify/dist/ReactToastify.css';
 import SimpleReactValidator from 'simple-react-validator';
 import Loading from './../../components/loadding2';
 import connect from './../../lib/connect';
-import * as actions from './../../actions/backEnd/login';
+import * as actions from './../../actions/frontEnd/login';
 // import $ from 'jquery';
 // import "bootstrap-notify";
 

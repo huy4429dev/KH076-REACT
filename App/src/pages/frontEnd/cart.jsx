@@ -14,6 +14,10 @@ class Cart extends Component {
     constructor(props) {
         super(props)
     }
+    componentDidMount() {
+        window.scrollTo(0, 0);
+    }
+
     removeFromCart = () => {
 
     }

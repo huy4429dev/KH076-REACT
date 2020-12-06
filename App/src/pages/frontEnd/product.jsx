@@ -28,6 +28,7 @@ class Product extends Component {
     }
 
     componentDidMount() {
+        window.scrollTo(0, 0);
         const { id } = this.props.match.params;
         this.setState({ loading: true })
         this.props.actions.getDetailtProduct(id)

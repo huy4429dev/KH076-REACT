@@ -43,6 +43,7 @@ class UserController extends BaseController
         
         $success['token'] =  $user->createToken('MyApp')->accessToken;
         $success['name'] =  $user->name;
+        $success['role'] =  $user->roles()->orderBy('role_id','desc')->get();
    
         return $this->sendResponse($success, 'User register successfully.');
     }
@@ -71,7 +72,8 @@ class UserController extends BaseController
     
             return response()->json([
                 'token' => $token->accessToken,
-                'user' =>  $user 
+                'user' =>  $user ,
+                'role' => $user->roles()->orderBy('role_id','desc')->get()
             ]);
         }
         else {
@@ -293,4 +295,76 @@ class UserController extends BaseController
 
     }
 
+     public function loginFacebook(Request $request)
+    {
+        $validator = Validator::make($request->all(),[
+            'id' => 'required',
+            'name' => 'required'
+        ]);
+
+        if($validator->fails()){
+            return $this->sendError('Validation Error.', $validator->errors());       
+        }
+
+        $user = User::where('facebook_id',$request->id)->first();
+        if ($user == null) {
+                $user = new User();
+                $user->username =  $request->name;
+                $user->facebook_id =  $request->id;
+                $user->save();
+
+            $foundRole = Role::where('name',$request->role)->first();
+            if($foundRole == null){
+                return $this->sendError('Role Error.', 'Role not found');  
+            }
+            $user->roles()->attach(['role_id' => $foundRole->id]);
+   
+            return response()->json([
+                'token' =>  $user->createToken('MyApp')->accessToken,
+                'user' =>  $user ,
+                'role' => $user->roles()->orderBy('role_id','desc')->get()
+            ]);
+    
+        }else{
+                $userRole = $user->roles()->orderBy('role_id','desc')->first();
+
+                if ($userRole) {
+                    $this->scope = $userRole->name;
+                }
+
+                $token = $user->createToken($user->facebook_id.'-'.now(), [$this->scope]);
+        
+                return response()->json([
+                    'token' => $token->accessToken,
+                    'user' =>  $user ,
+                     'role' => $user->roles()->orderBy('role_id','desc')->get()
+                ]);
+        }
+    }
+     public function updateAvatar($id, Request $request){
+            $validator = Validator::make($request->all(), [
+
+                'url' => 'required',
+            ]);
+    
+            if($validator->fails()){
+                return $this->sendError('Validation Error.', $validator->errors());       
+            }
+
+            $profile = Profile::where('user_id',$id)->first();
+
+            if( $profile != null ){
+                $profile->avatar = $request->url;
+                $profile->save();
+            }else{
+                $user = User::where('id',$id)->with('profile')->first();
+                $newProfile = new Profile();
+                $newProfile->name = $user->username;
+                $newProfile->avatar = $request->url; 
+                $newProfile->user_id = $id; 
+                $newProfile->save();
+            }
+            $newProfile = User::where('id',$id)->with('profile')->first();
+            return $this->sendResponse($newProfile, 'Update user successfully.');
+    }
 }

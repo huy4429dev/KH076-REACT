@@ -1,9 +1,9 @@
 import React, { Component } from 'react'
 import connect from './../../../lib/connect';
-import * as actions from './../../../actions/backEnd/login';
+import * as actions from './../../../actions/frontEnd/login';
 export class UserPanel extends Component {
     render() {
-        const { user } = this.props.loginAdmin;
+        const { user } = this.props.login;
         return (
             <div>
                 <div className="sidebar-user text-center">
@@ -20,5 +20,5 @@ export class UserPanel extends Component {
 }
 
 export default connect(UserPanel, state => ({
-    loginAdmin: state.loginAdmin
+    login: state.login
 }), actions);

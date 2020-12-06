@@ -7,13 +7,20 @@ import stats from './../../assets/images/dashboard/stats.png';
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
 import connect from './../../lib/connect';
-import * as actions from './../../actions/backEnd/login';
+import * as actions from './../../actions/frontEnd/login';
 
 
 export class Login extends Component {
+    constructor(props) {
+        super(props);
+        this.state = {
+            token: localStorage.getItem("access_token") ? localStorage.getItem("access_token") : null
+        }
+
+    }
     componentDidMount() {
-        const { login } = this.props.loginAdmin;
-        if (login) {
+        const { login, user, token } = this.props.login;
+        if (login && user && token && this.state.token) {
             this.props.history.push("/admin/dashboard");
         }
     }
@@ -81,7 +88,6 @@ export class Login extends Component {
 
 export default connect(Login, state => (
     {
-        loginAdmin: state.loginAdmin,
-        a: state
+        login: state.login
     }
 ), actions);

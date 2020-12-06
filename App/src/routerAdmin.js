@@ -24,11 +24,6 @@ const routesAdmin = [
         main: () => <Dashboard />
     },
     {
-        path: '/admin/dashboard',
-        exact: true,
-        main: () => <Dashboard />
-    },
-    {
         path: '/admin/user',
         exact: true,
         main: () => <User />
@@ -96,7 +91,7 @@ const routesAdmin = [
     {
         path: '/admin/orders',
         exact: true,
-        main: () => <Order/>
+        main: () => <Order />
     },
 ];
 

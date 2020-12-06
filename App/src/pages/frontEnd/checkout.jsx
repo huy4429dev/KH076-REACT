@@ -33,6 +33,7 @@ class CheckOut extends Component {
         this.validator = new SimpleReactValidator();
     }
     componentDidMount() {
+        window.scrollTo(0, 0);
         const { user, login } = this.props.login;
         const { items } = this.props.cart;
         if (user && login) {
@@ -47,6 +48,8 @@ class CheckOut extends Component {
             window.notify('Bạn chưa thêm sản phẩm nào vào giỏ hàng', 'warning');
         }
     }
+
+
     setStateFromInput = (event) => {
         var obj = {};
         obj[event.target.name] = event.target.value;
@@ -375,6 +378,6 @@ class CheckOut extends Component {
 
 
 export default connect(CheckOut, state => ({
-    login: state.loginHome,
+    login: state.login,
     cart: state.cart
 }), actions);

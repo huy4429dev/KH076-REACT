@@ -6,7 +6,8 @@ import Footer from './footer';
 import Sidebar from './siderBar';
 import routesAdmin from './../../../routerAdmin';
 import connect from './../../../lib/connect';
-import * as actions from './../../../actions/backEnd/login';
+// import * as actions from './../../../actions/backEnd/login';
+import * as actions from './../../../actions/frontEnd/login';
 // import Footer from './footer';
 import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
@@ -19,11 +20,12 @@ class App extends Component {
         this.state = {
             ltr: true,
             divName: 'RTL',
+            token: localStorage.getItem("access_token") ? localStorage.getItem("access_token") : null
         }
     }
     componentDidMount() {
-        const { login, user, token } = this.props.loginAdmin;
-        if (login && user && token) {
+        const { login, user, token } = this.props.login;
+        if (login && user && token && this.state.token) {
             this.props.actions.account(user.id)
                 .then(data => {
                     if (data.success) {
@@ -92,6 +94,6 @@ class App extends Component {
 
 export default connect(App, state => (
     {
-        loginAdmin: state.loginAdmin
+        login: state.login
     }
 ), actions);
