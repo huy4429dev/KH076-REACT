@@ -6,9 +6,13 @@ import connect from '../../../lib/connect';
 import SimpleReactValidator from 'simple-react-validator';
 import * as actionProduct from '../../../actions/backEnd/product';
 import * as actionCategory from '../../../actions/backEnd/category';
+import * as actionColor from '../../../actions/backEnd/productColor';
+import * as actionSize from '../../../actions/backEnd/productSize';
 import Loading from '../../../components/backEnd/loading';
 import CKEditors from "react-ckeditor-component";
 import MyDropzone from '../../../components/backEnd/dropZone';
+import ReactTooltip from 'react-tooltip';
+import productColor from '../../../reducers/backEnd/productColor';
 
 const customButton = { borderRadius: 0, paddingTop: '6px', paddingBottom: '6px', paddingLeft: '10px', paddingRight: '10px' };
 class Product extends Component {
@@ -18,9 +22,23 @@ class Product extends Component {
             open: false,
             loading: true,
             name: '',
-            description: '',
+            quantity: 0,
+            price: 0,
+            status: 1,
+            categoryId: 0,
+            description: null,
+            images: [],
+            colors: [],
+            sizes: [],
+            discount: 0,
+            bought: 0
         };
-        this.validator = new SimpleReactValidator({ autoForceUpdate: this });
+        this.validator = new SimpleReactValidator({
+            autoForceUpdate: this,
+            messages: {
+                required: 'Dữ liệu không hợp lệ ',
+            }
+        });
     }
 
     componentDidMount = () => {
@@ -28,26 +46,21 @@ class Product extends Component {
         this.setState({
             loading: true
         })
-        const { getProducts, getCategories } = this.props.actions;
+        const { getProducts, getCategories, getColors, getSizes } = this.props.actions;
 
-        getProducts()
+        Promise.all([
+            getProducts(),
+            getCategories('children=1'),
+            getColors(),
+            getSizes()
+        ])
             .then(() => {
                 this.setState({ loading: false });
             })
             .catch((err) => {
                 this.setState({ loading: false });
-                window.notify('Tải xuống danh sách sản phẩm không thành công', 'danger');
-            });
-
-        getCategories('children=1')
-            .then(() => {
-                this.setState({ loading: false });
+                window.notify('Lỗi: ' + err.message, 'danger');
             })
-            .catch((err) => {
-                this.setState({ loading: false });
-                window.notify('Tải xuống danh sách sản phẩm không thành công', 'danger');
-            });
-
 
     }
 
@@ -57,30 +70,25 @@ class Product extends Component {
         const target = event.target;
         const value = target.value;
         const tagName = target.name;
-        const { name, description } = this.state;
         this.setState({
             [tagName]: value
-        });
+        }, () => { console.log(this.state, 'DATA CHANGE'); });
 
     }
 
     handleSubmit = (event) => {
 
         event.preventDefault();
-
-
         if (this.validator.allValid()) {
 
             this.setState({
                 loading: true
             });
 
-            const { name, description } = this.state;
-            const { createProduct } = this.props.actionProduct;
-            if (name === '' || name === null) return;
+            const { name, quantity, price, status, categoryId, description, images, colors, sizes, discount, bought } = this.state;
+            const { createProduct } = this.props.actions;
             createProduct({
-                name: name,
-                description: description
+                name, description, quantity, price, status, categoryId, description, images, colors, sizes, discount, bought
             })
                 .then((data) => {
                     if (data.success) {
@@ -90,11 +98,29 @@ class Product extends Component {
                     }
                 })
                 .then((data) => {
-                    this.setState({ loading: false });
-                    window.notify("Thêm mới danh mục thành công");
+                    this.setState(
+                        {
+                            open: false,
+                            loading: false,
+                            name: '',
+                            quantity: 0,
+                            price: 0,
+                            status: 1,
+                            categoryId: 0,
+                            description: null,
+                            images: [],
+                            colors: [],
+                            sizes: [],
+                            discount: 0,
+                            bought: 0
+                        }
+                    );
+                    window.notify("Thêm mới sản phẩm thành công");
+
                 })
                 .catch((err) => {
                     this.setState({ loading: false });
+                    window.notify("Lỗi " + err.message, "danger");
                 });
 
             this.onCloseModal();
@@ -126,7 +152,8 @@ class Product extends Component {
 
         this.setState({
             loading: true
-        })
+        });
+
         const { getProducts } = this.props.actionProduct;
         getProducts()
             .then(() => {
@@ -138,12 +165,90 @@ class Product extends Component {
             });
     }
 
+    handeUploadImage = (url) => {
+        this.setState({
+            images: [...this.state.images, { url }]
+        });
+    }
+
+
+    handlePickColor = (id) => {
+
+        let { colors } = this.state;
+        let color = colors.filter(item => item.id === id)[0];
+        if (color == null) {
+            color = {
+                id: id
+            };
+            colors = [...colors, color];
+        }
+        else {
+            colors = colors.filter(item => item.id != id)
+            colors = [...colors];
+        }
+
+        this.setState({
+            colors
+        });
+
+    }
+
+    handleCkEditorOnchange = (evt) => {
+
+        this.setState({
+            description: evt.editor.getData()
+        });
+    }
+
+    filterActiveColors = (colorLists, colorPicks) => {
+
+
+        colorLists = colorLists.map(item => {
+            let any = colorPicks.some(pick => pick.id == item.id);
+            if (any) {
+                return { id: item.id, name: item.name, color: item.color, active: true };
+            }
+            return { id: item.id, name: item.name, color: item.color }
+        })
+
+
+
+        return colorLists;
+
+    }
+
+
+    handlePickSize = (id) => {
+
+        let { sizes } = this.state;
+        let size = sizes.filter(item => item.id === id)[0];
+        if (size == null) {
+            size = {
+                id: id
+            };
+            sizes = [...sizes, size];
+        }
+        else {
+            sizes = sizes.filter(item => item.id != id)
+            sizes = [...sizes];
+        }
+
+        this.setState({
+            sizes
+        }, () => console.log(this.state.sizes, 'STATE SIZES'));
+
+    }
+
     render() {
-        const { open, product } = this.state;
-        const { products, categories } = this.props;
+        const { open, colors } = this.state;
+        let { products, categories, productColors, productSizes } = this.props;
+        categories = categories ?? null;
+        productColors = productColors ?? null;
+        productSizes = productSizes ?? null;
         const items = products.items ? products.items : [];
         const total = products.total ?? 0;
-        console.log(categories, 'PRODUCTS');
+        productColors.items = this.filterActiveColors(productColors.items, colors);
+
         return (
             <Fragment>
                 <Breadcrumb title="Sản phẩm" parent="Sản phẩm" />
@@ -200,42 +305,116 @@ class Product extends Component {
                                                             <div className="digital-add needs-validation">
                                                                 <div className="form-group">
                                                                     <label className="col-form-label pt-0"><span>*</span>Tên sản phẩm</label>
-                                                                    <input className="form-control" id="validationCustom01" type="text" required="" />
+                                                                    <input onChange={this.handleInputOnchange} name="name" className="form-control" id="validationCustom01" type="text" required="" />
+                                                                    {this.validator.message('name', this.state.name, 'required', { className: 'text-danger mt-1' })}
                                                                 </div>
                                                                 <div className="form-group">
                                                                     <label className="col-form-label pt-0"><span>*</span> Số lượng</label>
-                                                                    <input className="form-control" id="validationCustom02" type="text" required="" />
+                                                                    <input onChange={this.handleInputOnchange} name='quantity' className="form-control" id="validationCustom02" type="text" required="" />
+                                                                    {this.validator.message('quantity', this.state.name, 'required|number', { className: 'text-danger mt-1' })}
                                                                 </div>
                                                                 <div className="form-group">
                                                                     <label className="col-form-label"><span>*</span> Danh mục</label>
-                                                                    <select className="custom-select" required="">
-                                                                        <option value="">--Select--</option>
-                                                                        <option value="1">eBooks</option>
-                                                                        <option value="2">Graphic Design</option>
-                                                                        <option value="3">3D Impact</option>
-                                                                        <option value="4">Application</option>
-                                                                        <option value="5">Websites</option>
+                                                                    <select name='categoryId' onChange={this.handleInputOnchange} className="custom-select" required="">
+                                                                        <option value="">Danh mục</option>
+                                                                        {
+                                                                            categories != null && categories.items.map((item, index) => {
+
+                                                                                if (item.children?.length && item.children?.length == 0) {
+                                                                                    return <option value={item.id} style={{ color: 'blue' }} >{item.name}</option>
+                                                                                }
+                                                                                else {
+                                                                                    let optionParent = <option value={item.id} style={{ color: 'blue', fontWeight: 'bold' }}>{item.name}</option>;
+                                                                                    if (item.children?.length > 0) {
+                                                                                        let optionChilds = item.children.map((child, childIndex) => {
+                                                                                            return <option value={child.id}>{child.name}</option>;
+                                                                                        })
+
+                                                                                        return [optionParent, optionChilds]
+                                                                                    }
+                                                                                    else {
+                                                                                        return optionParent
+                                                                                    }
+                                                                                }
+                                                                            })
+
+                                                                        }
                                                                     </select>
                                                                 </div>
                                                                 <div className="form-group">
                                                                     <label className="col-form-label"><span>*</span> Giá bán</label>
-                                                                    <input className="form-control" id="validationCustom02" type="text" required="" />
+                                                                    <input name='price' onChange={this.handleInputOnchange} className="form-control" id="validationCustom02" type="text" required="" />
+                                                                </div>
+                                                                <div className="form-group">
+                                                                    <label className="col-form-label">Giảm giá (%)</label>
+                                                                    <input name='discount' onChange={this.handleInputOnchange} className="form-control" id="validationCustom02" type="text" required="" />
                                                                 </div>
                                                                 <div className="form-group">
                                                                     <label className="col-form-label"><span>*</span> Trạng thái</label>
                                                                     <div className="m-checkbox-inline mb-0 custom-radio-ml d-flex radio-animated">
-                                                                        <label className="d-block">
-                                                                            <input className="radio_animated" id="edo-ani" type="radio" name="rdo-ani" />
-                                                    Đang kinh doanh
-                                            </label>
-                                                                        <label className="d-block" >
-                                                                            <input className="radio_animated" id="edo-ani1" type="radio" name="rdo-ani" />
-                                                    Ngừng kinh doanh
-                                            </label>
+                                                                        <label className="d-block mr-2">
+                                                                            <input onChange={this.handleInputOnchange} valye={1} checked className="radio_animated" id="edo-ani" type="radio" name="status" />
+                                                                            <span style={{ color: 'green' }}>Đang kinh doanh</span>
+                                                                        </label>
+                                                                        <label className="d-block mr-0" >
+                                                                            <input onChange={this.handleInputOnchange} valye={0} className="radio_animated" id="edo-ani1" type="radio" name="status" />
+                                                                            <span>Ngừng kinh doanh</span>
+                                                                        </label>
                                                                     </div>
                                                                 </div>
                                                                 <label className="col-form-label pt-0"> Thêm hình ảnh</label>
-                                                                <MyDropzone />
+                                                                <MyDropzone
+                                                                    onUpload={this.handeUploadImage}
+                                                                />
+                                                                <div className="form-group">
+                                                                    <label className="col-form-label">Mẫu màu</label>
+                                                                    <div className="m-checkbox-inline mb-0 custom-radio-ml d-flex radio-animated">
+                                                                        <label className="d-block mr-2 d-flex">
+                                                                            {
+                                                                                productColors != null &&
+                                                                                    productColors.items.length > 0 ?
+
+                                                                                    productColors.items.map(item => (
+                                                                                        <span
+                                                                                            onClick={() => this.handlePickColor(item.id)}
+                                                                                            data-tip={item.name}
+                                                                                            className='d-block mr-1'
+                                                                                            style={{ width: '20px', height: '20px', background: item.color, opacity: item.active ? 1 : 0.5 }}>
+                                                                                        </span>
+                                                                                    ))
+                                                                                    : <span>Chưa có mẫu màu</span>
+
+
+                                                                            }
+
+                                                                            <ReactTooltip />
+                                                                        </label>
+                                                                    </div>
+                                                                </div>
+
+                                                                <div className="form-group">
+                                                                    <label className="col-form-label">Mẫu size</label>
+                                                                    <div className="m-checkbox-inline mb-0 custom-radio-ml d-flex radio-animated">
+                                                                        {
+                                                                            productSizes != null &&
+                                                                                productSizes.items.length > 0 ?
+
+                                                                                productSizes.items.map(item => (
+                                                                                    <label className="d-block mr-2">
+                                                                                        <input onChange={() => this.handlePickSize(item.id)}
+                                                                                            type="checkbox"
+                                                                                            name="size"
+                                                                                            className="mr-2"
+                                                                                        />
+                                                                                        <span style={{ color: 'green' }}>{item.name}</span>
+                                                                                    </label>
+                                                                                ))
+                                                                                : <span>Chưa có mẫu size</span>
+                                                                        }
+
+                                                                    </div>
+                                                                </div>
+
                                                             </div>
                                                         </div>
                                                     </div>
@@ -251,13 +430,12 @@ class Product extends Component {
                                                                     <div className="description-sm">
                                                                         <CKEditors
                                                                             activeclassName="p10"
-                                                                            content={this.state.content}
+                                                                            content={this.state.description}
                                                                             events={{
-                                                                                "blur": this.onBlur,
-                                                                                "afterPaste": this.afterPaste,
-                                                                                "change": this.onChange
+                                                                                "change": this.handleCkEditorOnchange
                                                                             }}
                                                                         />
+
                                                                     </div>
                                                                 </div>
                                                             </div>
@@ -267,7 +445,7 @@ class Product extends Component {
                                                         <div className="card-body">
                                                             <div className="form-group mb-0">
                                                                 <div className="product-buttons text-center">
-                                                                    <button type="button" className="btn btn-primary">Lưu</button>
+                                                                    <button onClick={this.handleSubmit} type="button" className="btn btn-primary">Lưu</button>
                                                                     <button type="button" className="btn btn-light">Hủy</button>
                                                                 </div>
                                                             </div>
@@ -302,35 +480,35 @@ class Product extends Component {
                                                     </thead>
                                                     <tbody>
                                                         {
-                                                            items.length > 0 ?
-                                                                items.map((item, index) => {
-                                                                    return (
-                                                                        <tr>
-                                                                            <td>{index++}</td>
-                                                                            <td>Anh</td>
-                                                                            <td>{item.name}</td>
-                                                                            <td>Danh mục</td>
-                                                                            <td>{item.name.toLocaleString()} đ</td>
-                                                                            <td>{item.quantity}</td>
-                                                                            <td>Trạng tdái</td>
-                                                                            <td className='text-center'>
-                                                                                <button style={{ padding: '5px 10px' }} type='button' className='btn btn-warning btn-sm mr-1' onClick={() => this.handleEdit()}>Sửa</button>
-                                                                                <button style={{ padding: '5px 10px' }} type='button' className='btn btn-primary btn-sm' onClick={() => this.handleDelete()}>Xóa</button>
-                                                                            </td>
-                                                                        </tr>
+                                                            items.length > 0 &&
+                                                            items.map((item, index) => {
+                                                                return (
+                                                                    <tr>
+                                                                        <td>{index++}</td>
+                                                                        <td>Anh</td>
+                                                                        <td>{item.name}</td>
+                                                                        <td>Danh mục</td>
+                                                                        <td>{item.name.toLocaleString()} đ</td>
+                                                                        <td>{item.quantity}</td>
+                                                                        <td>Trạng tdái</td>
+                                                                        <td className='text-center'>
+                                                                            <button style={{ padding: '5px 10px' }} type='button' className='btn btn-warning btn-sm mr-1' onClick={() => this.handleEdit()}>Sửa</button>
+                                                                            <button style={{ padding: '5px 10px' }} type='button' className='btn btn-primary btn-sm' onClick={() => this.handleDelete()}>Xóa</button>
+                                                                        </td>
+                                                                    </tr>
+                                                                )
+                                                            })
 
-                                                                    )
-                                                                })
-
-
-                                                                :
-                                                                <div className="alert alert-warning">
-                                                                    Chưa có sản phẩm nào
-                                                            </div>
                                                         }
 
                                                     </tbody>
                                                 </table>
+                                        }
+                                        {
+                                            items.length === 0 &&
+                                            <div className="alert alert-warning text-center">
+                                                Chưa có sản phẩm nào
+                                            </div>
                                         }
 
                                     </div>
@@ -339,7 +517,6 @@ class Product extends Component {
                         </div>
                     </div>
                 </div>
-                {/* <!-- Container-fluid Ends--> */}
 
             </Fragment>
         )
@@ -350,5 +527,7 @@ export default connect(Product, state => (
     {
         products: state.product,
         categories: state.category,
+        productColors: state.productColor,
+        productSizes: state.productSize,
     }
-), { ...actionProduct, ...actionCategory });
+), { ...actionProduct, ...actionCategory, ...actionColor, ...actionSize });
