@@ -6,7 +6,7 @@ import 'react-responsive-modal/styles.css';
 import connect from '../../../lib/connect';
 import SimpleReactValidator from 'simple-react-validator';
 import * as actions from '../../../actions/backEnd/customer';
-import Loading from './../../../components/loadding2';
+import Loading from '../../../components/backEnd/loading';
 import $ from 'jquery';
 
 class Customer extends Component {
@@ -26,8 +26,8 @@ class Customer extends Component {
         this.setState({
             loading: true
         })
-        const { getList } = this.props.actions;
-        getList()
+        const { getCustomers } = this.props.actions;
+        getCustomers()
             .then(() => {
                 this.setState({ loading: false });
             })
@@ -76,7 +76,7 @@ class Customer extends Component {
                 })
                 .then((data) => {
                     this.setState({ loading: false });
-                    window.notify("Thêm mới danh mục thành công");
+                    window.notify("Thêm mới khách hàng thành công");
                 })
                 .catch((err) => {
                     this.setState({ loading: false });
@@ -108,13 +108,15 @@ class Customer extends Component {
     };
 
     render() {
-        const { open, category } = this.state;
-        const { categories } = this.props;
-        const items = categories.items ? categories.items : [];
+        const { open, customer } = this.state;
+        const { customers } = this.props;
+        const items = customers.items ? customers.items : [];
+
+        console.log(customers,'CUSTOMERS');
 
         return (
             <Fragment>
-                <Breadcrumb title="Danh sách khách hàng" />
+                <Breadcrumb title="Danh sách khách hàng" parent="Khách hàng"  />
 
                 {/* <!-- Container-fluid starts--> */}
                 <div className="container-fluid">
@@ -190,6 +192,6 @@ class Customer extends Component {
 
 export default connect(Customer, state => (
     {
-        categories: state.category
+        customers: state.customer
     }
 ), actions);

@@ -7,7 +7,7 @@ import connect from '../../../lib/connect';
 import SimpleReactValidator from 'simple-react-validator';
 import * as actions from '../../../actions/backEnd/category';
 import Loading from '../../../components/backEnd/loading';
-import $ from 'jquery';
+
 class CategoryDetailt extends Component {
 
     constructor(props) {
@@ -117,7 +117,6 @@ class CategoryDetailt extends Component {
     render() {
         const { open, category } = this.state;
         const items = category?.children;
-        console.log(items, 'DATA');
         return (
             <Fragment>
                 <Breadcrumb title="Chi tiết" parent="Danh mục" />

@@ -1,7 +1,7 @@
 import React, { Component, Fragment } from 'react';
 import { Link } from 'react-router-dom'
 import connect from './../../lib/connect';
-import * as actions from './../../actions/backEnd/login';
+import * as actions from './../../actions/frontEnd/login';
 export class UserMenu extends Component {
     logout = () => {
         this.props.actions.logout();
@@ -10,7 +10,7 @@ export class UserMenu extends Component {
         }
     }
     render() {
-        const { user } = this.props.loginAdmin;
+        const { user } = this.props.login;
         return (
             <Fragment>
                 <li className="onhover-dropdown">
@@ -34,5 +34,5 @@ export class UserMenu extends Component {
 }
 
 export default connect(UserMenu, state => ({
-    loginAdmin: state.loginAdmin
+    login: state.login
 }), actions);

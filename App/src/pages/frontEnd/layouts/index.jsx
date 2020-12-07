@@ -7,11 +7,18 @@ import connect from '../../../lib/connect';
 import * as actions from './../../../actions/frontEnd/login';
 
 class App extends Component {
+    constructor(props) {
+        super(props);
+        this.state = {
+            token: localStorage.getItem("access_token") ? localStorage.getItem("access_token") : null
+        }
+    }
     componentDidMount() {
         const { login, user, token } = this.props.account;
-        if (login && user && token) {
+        if (login && user && token && this.state.token) {
             this.props.actions.account(user.id);
         }
+
     }
     render() {
         return (
@@ -44,5 +51,5 @@ class App extends Component {
     }
 }
 export default connect(App, state => ({
-    account: state.loginHome
+    account: state.login
 }), actions);

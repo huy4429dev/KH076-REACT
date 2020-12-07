@@ -198,9 +198,11 @@ class ColorProduct extends Component {
                                                                         items.map(item => (
                                                                             <div key={item.id} className="template-color-item d-flex justify-content-between"
                                                                                 style={{
-                                                                                    border: '1px solid gray',
-                                                                                    paddingLeft: '8px',
+                                                                                    border: '1px solid #c5c5c5',
+                                                                                    paddingLeft:' 8px',
                                                                                     cursor: 'pointer',
+                                                                                    borderRadius: '4px',
+                                                                                    marginBottom: '4px',
                                                                                 }}
                                                                             >
                                                                                 <h5 class="card-title mb-0 py-1"

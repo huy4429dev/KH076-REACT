@@ -24,11 +24,6 @@ const routesAdmin = [
         main: () => <Dashboard />
     },
     {
-        path: '/admin/dashboard',
-        exact: true,
-        main: () => <Dashboard />
-    },
-    {
         path: '/admin/user',
         exact: true,
         main: () => <User />
@@ -44,9 +39,9 @@ const routesAdmin = [
         main: () => <ProductList />
     },
     {
-        path: '/admin/products/detailt',
+        path: '/admin/products/detail/:id',
         exact: true,
-        main: () => <Detailt />
+        main: ({match}) => <Detailt match={match} />  
     },
     {
         path: '/admin/products/add',
@@ -89,14 +84,14 @@ const routesAdmin = [
         main: () => <Contact />
     },
     {
-        path: '/admin/customer',
+        path: '/admin/customers',
         exact: true,
         main: () => <Customer />
     },
     {
         path: '/admin/orders',
         exact: true,
-        main: () => <Order/>
+        main: () => <Order />
     },
 ];
 

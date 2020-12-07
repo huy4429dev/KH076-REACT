@@ -7,7 +7,7 @@ import UserMenu from './../frontEnd/userMenu';
 
 class TopBar extends Component {
     render() {
-        const { user } = this.props.loginHome;
+        const { user } = this.props.login;
         return (
             <div className="top-header" style={{ maxHeight: "30px" }}>
                 <div className="container"  >
@@ -49,5 +49,5 @@ class TopBar extends Component {
 }
 
 export default connect(TopBar, state => ({
-    loginHome: state.loginHome
+    login: state.login
 }), actions);

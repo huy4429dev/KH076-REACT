@@ -157,10 +157,10 @@ class List extends Component {
                         : <table className="table">
                             <tr>
                                 <th style={{ width: '5%' }}>#</th>
-                                <th style={{ width: '20%' }}>Tên danh mục</th>
-                                <th style={{ width: '20%' }}>Mô tả</th>
-                                <th style={{ width: '15%' }}>Ngày tạo</th>
-                                <th style={{ width: '15%' }}>Ngày cập nhật</th>
+                                <th style={{ width: '20%' }}>Khách hàng</th>
+                                <th style={{ width: '20%' }}>Điện thoại</th>
+                                <th style={{ width: '15%' }}>Địa chỉ</th>
+                                <th style={{ width: '15%' }}>Ngày thêm</th>
                                 <th style={{ width: '10%' }} className='text-center' colSpan='2'>Action</th>
                             </tr>
 

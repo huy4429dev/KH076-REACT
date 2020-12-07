@@ -13,7 +13,6 @@ import connect from '../../../lib/connect';
 import $ from 'jquery';
 import * as actions from '../../../actions/backEnd/category';
 import Loading from '../loading';
-import { LogIn } from 'react-feather';
 import ModalEdit from './editCategory';
 import ModalDelete from './../../../components/backEnd/modalDelete';
 import Pagination from "react-bootstrap-4-pagination";
@@ -194,7 +193,6 @@ class List extends Component {
         getCategories(page)
             .then(() => {
                 this.setState({ loading: false, page: page }, () => { console.log(this.state) });
-                console.log("runnn");
 
             })
             .catch(err => {
@@ -207,7 +205,6 @@ class List extends Component {
 
         const { myData, total, loading, openModalEdit, openModalDelete, page, pageSize, filter } = this.state;
 
-        console.log(myData, 'MYDATA');
         return (
 
             <Fragment>
@@ -265,6 +262,7 @@ class List extends Component {
                     />
 
                 </div>
+
                 <ModalEdit
                     open={this.state.showEdit}
                     data={this.state.itemEdit}

@@ -5,6 +5,9 @@ import Breadcrumb from "./../../components/frontEnd/home/breadcrumb";
 import { Slider2, Team4 } from "./../../services/script"
 
 class aboutUs extends Component {
+    componentDidMount() {
+        window.scrollTo(0, 0);
+    }
 
     constructor(props) {
         super(props)

@@ -18,6 +18,10 @@ class Contact extends Component {
         }
         this.validator = new SimpleReactValidator({ autoForceUpdate: this });
     }
+    componentDidMount() {
+        window.scrollTo(0, 0);
+    }
+
     addContact = (e) => {
         e.stopPropagation();
         e.preventDefault();
@@ -196,5 +200,5 @@ class Contact extends Component {
 }
 
 export default connect(Contact, state => ({
-    login: state.loginHome,
+    login: state.login,
 }), actions);

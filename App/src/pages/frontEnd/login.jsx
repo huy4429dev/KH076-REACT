@@ -5,7 +5,7 @@ import connect from './../../lib/connect';
 import * as actions from './../../actions/frontEnd/login';
 import { Link, Redirect } from 'react-router-dom';
 import Loading from './../../components/loadding2';
-
+import Facebook from "./facebook";
 class Login extends Component {
 
     constructor(props) {
@@ -16,6 +16,9 @@ class Login extends Component {
             loading: false
         }
         this.validator = new SimpleReactValidator({ autoForceUpdate: this });
+    }
+    componentDidMount() {
+        window.scrollTo(0, 0);
     }
     login = (e) => {
         e.stopPropagation();
@@ -47,6 +50,7 @@ class Login extends Component {
             window.notify('Vui lòng điền đầy đủ các trường', 'danger');
         }
     }
+
     render() {
         return (
             <div>
@@ -82,10 +86,12 @@ class Login extends Component {
                                             />
                                             {this.validator.message('email', this.state.password, 'required', { className: 'text-danger' })}
                                         </div>
-                                        <div>
-                                            <a className="btn btn-solid" onClick={(e) => this.login(e)}>Đăng nhập</a>
+                                        <div className="d-flex">
+                                            <div>
+                                                <a className="btn btn-solid" onClick={(e) => this.login(e)}>Đăng nhập</a>
+                                            </div>
+                                            <Facebook />
                                         </div>
-                                        <div>Facebook</div>
                                     </form>
                                 </div>
                             </div>
