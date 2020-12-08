@@ -88,8 +88,8 @@ class Contact extends Component {
                                                 <h6>Liên hệ</h6>
                                             </div>
                                             <div className="media-body">
-                                                <p>0966756104</p>
-                                                <p>0966789654</p>
+                                                <p>0123-456-789</p>
+                                                <p>0123-456-987</p>
                                             </div>
                                         </li>
                                         <li>

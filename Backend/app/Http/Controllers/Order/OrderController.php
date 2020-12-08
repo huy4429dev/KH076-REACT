@@ -29,7 +29,7 @@ class OrderController extends BaseController
 
         return $this->sendResponse(
             $data = [
-                     'items' => $Orders , 
+                     'items' => $Orders ,
                      'total' => $Orders->count()
                     ]
           );
@@ -44,10 +44,10 @@ class OrderController extends BaseController
         $searchKey = $request->query('q');
 
         if($searchKey != null){
-            
+
             $query = $query
                            ->where('name','like','%'.$searchKey.'%');
-                           
+
         }
 
         $Orders = $query
@@ -58,22 +58,22 @@ class OrderController extends BaseController
 
         return $this->sendResponse(
             $data = [
-                     'items' => $Orders , 
+                     'items' => $Orders ,
                      'total' => $Orders->count()
                     ]
           );
     }
 
-    
+
     public function show($id){
 
-      
+
         $user = $request->user();
 
-        $found = Order::where('creator_id',$user->id)->where('id', $request->id)->first(); 
+        $found = Order::where('creator_id',$user->id)->where('id', $request->id)->first();
 
         if($found == null){
-            
+
             return $this->sendError('Order Errors.',['error' => 'Order not found !']);
         }
 
@@ -92,11 +92,11 @@ class OrderController extends BaseController
         ]);
 
         if($validator->fails()){
-            return $this->sendError('Validation Error.', $validator->errors());       
+            return $this->sendError('Validation Error.', $validator->errors());
         }
 
         $Order = Order::where('id',$id)->first();
-        
+
         if($Order != null){
 
             $Order->status = $request->status;
@@ -124,12 +124,12 @@ class OrderController extends BaseController
             'phone' => 'required',
             'username' => 'required',
             'address' => 'required',
-            'detailt' => 'required',
+//            'detail' => 'required',
             'status' => 'required'
         ]);
 
         if($validator->fails()){
-            return $this->sendError('Validation Error.', $validator->errors());       
+            return $this->sendError('Validation Error.', $validator->errors());
         }
 
         $Order = new Order();
@@ -180,19 +180,19 @@ class OrderController extends BaseController
 
         $user = $request->user();
 
-        $found = Order::where('creator_id',$user->id)->where('id', $request->id)->first(); 
+        $found = Order::where('creator_id',$user->id)->where('id', $request->id)->first();
 
         if($found == null){
-            
+
             return $this->sendError('Order Errors.',['error' => 'Order not found !']);
         }
 
         $found->delete();
 
         return $this->sendResponse(
-            $found, 
+            $found,
             'Delete Order successfully'
           );
     }
-  
+
 }

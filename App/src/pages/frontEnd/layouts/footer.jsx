@@ -124,7 +124,7 @@ class Footer extends Component {
                                         <ul className="contact-list">
                                             <li><i className="fa fa-map-marker"></i>Multikark shop, tp Đà Nẵng
                                             </li>
-                                            <li><i className="fa fa-phone"></i>0966756104</li>
+                                            <li><i className="fa fa-phone"></i>0123-456-789</li>
                                             <li><i className="fa fa-envelope-o"></i>Email:<a
                                                 href="#"> admin@gmail.com</a></li>
                                             <li><i className="fa fa-fax"></i>Fax: 123456</li>
