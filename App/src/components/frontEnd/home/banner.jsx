@@ -7,9 +7,8 @@ import * as actions from './../../../actions/frontEnd/product';
 
 class Banner extends Component {
     componentDidMount() {
-        const shopId = 1;
-        this.props.actions.getBestSaleMen(shopId);
-        this.props.actions.getBestSaleWomen(shopId);
+        this.props.actions.getBestSaleMen();
+        this.props.actions.getBestSaleWomen();
     }
 
     render() {

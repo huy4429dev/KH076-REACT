@@ -14,6 +14,7 @@ use App\Http\Controllers\Rating\RatingController as RatingController;
 use App\Http\Controllers\Contact\ContactController as ContactController;
 use App\Http\Controllers\Customer\CustomerController as CustomerController;
 use App\Http\Controllers\Report\ReportController as ReportController;
+use App\Http\Controllers\Blog\BlogController as BlogController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -163,15 +164,15 @@ Route::prefix('products')->group(function(){
     
 
    
-    Route::get('/sale-men/{shopid}', [ShopController::class,'saleMen'] );
-    Route::get('/sale-women/{shopid}', [ShopController::class,'saleWomen'] );
+    Route::get('/sale-men', [ShopController::class,'saleMen'] );
+    Route::get('/sale-women', [ShopController::class,'saleWomen'] );
     Route::get('/search', [ShopController::class,'search'] );
 
-    Route::get('/new-products/{shopid}', [ShopController::class,'newProducts'] );
-    Route::get('/man-products/{shopid}', [ShopController::class,'manProducts'] );
-    Route::get('/women-products/{shopid}', [ShopController::class,'womanProducts'] );
-    Route::get('/shops/{shopid}', [ShopController::class,'index'] );
-    Route::get('/top-product/{shopid}', [ShopController::class,'topProduct'] );
+    Route::get('/new-products', [ShopController::class,'newProducts'] );
+    Route::get('/man-products', [ShopController::class,'manProducts'] );
+    Route::get('/women-products', [ShopController::class,'womanProducts'] );
+    Route::get('/shops', [ShopController::class,'index'] );
+    Route::get('/top-product', [ShopController::class,'topProduct'] );
     Route::post('/comment', [ShopController::class,'comment'] );
     Route::get('/{id}', [ShopController::class,'show'] );
 
@@ -326,6 +327,24 @@ Route::prefix('report')->group(function(){
 
 });
 
+//================================== BLOGS 
+
+Route::prefix('blogs')->group(function(){
+        Route::get('/home', [BlogController::class,'home'] );
+        Route::get('/recent', [BlogController::class,'recent'] );
+        Route::get('/', [BlogController::class,'index'] );
+        Route::get('/{id}', [BlogController::class,'show'] );
+        Route::post('/', [BlogController::class,'create'] );
+        Route::put('/{id}', [BlogController::class,'update'] );
+        Route::delete('/{id}', [BlogController::class,'delete'] );
+    Route::middleware(['auth:api', 'role'])->group(function() {
+
+        // Route::middleware(['scope:shop'])->post('/', [BlogController::class,'create'] );
+        // Route::middleware(['scope:admin,shop'])->put('/{id}', [BlogController::class,'update'] );
+        // Route::middleware(['scope:admin,shop'])->delete('/{id}', [BlogController::class,'delete'] );
+    });
+
+});
 //=================
 
 Route::get('/test',function(){

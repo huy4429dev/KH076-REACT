@@ -113,14 +113,13 @@ class ShopController extends BaseController
 
      
 
-  public function newProducts(Request $request, $shopId){
+  public function newProducts(Request $request){
 
 
-         $shopId = $shopId;
-        $userIdsOfShop = Shop::find($shopId)->users->pluck('id');
+        //  $shopId = $shopId;
+        // $userIdsOfShop = Shop::find($shopId)->users->pluck('id');
         
-        $Products = Product::whereIn('user_id',$userIdsOfShop)
-        ->orderBy('created_at','desc')
+        $Products = Product::orderBy('created_at','desc')
         ->with('user')
         ->with('images')
         ->with('colors')
@@ -137,13 +136,13 @@ class ShopController extends BaseController
 
 
 
-     public function manProducts(Request $request, $shopId){
+     public function manProducts(Request $request){
         
         // $shopId = $request->query('shopid');
-        $shopId = $shopId;
-        $userIdsOfShop = Shop::find($shopId)->users->pluck('id');
+        // $shopId = $shopId;
+        // $userIdsOfShop = Shop::find($shopId)->users->pluck('id');
         
-        $Products = Product::whereIn('user_id',$userIdsOfShop)
+        $Products = Product::orderBy('created_at','desc')
         ->with('user')
         ->with('images')
         ->with('colors')
@@ -157,11 +156,11 @@ class ShopController extends BaseController
                     ]
           );
     }
-     public function womanProducts(Request $request, $shopId){
-        $shopId = $shopId;
-        $userIdsOfShop = Shop::find($shopId)->users->pluck('id');
+     public function womanProducts(Request $request){
+        // $shopId = $shopId;
+        // $userIdsOfShop = Shop::find($shopId)->users->pluck('id');
         
-        $Products = Product::whereIn('user_id',$userIdsOfShop)
+        $Products = Product::orderBy('created_at','desc')
         ->with('user')
         ->with('images')
         ->with('colors')
@@ -175,29 +174,47 @@ class ShopController extends BaseController
                     ]
           );
     }
-    public function topProduct(Request $request, $shopId){
-        $shopId = $shopId;
-        $userIdsOfShop = Shop::find($shopId)->users->pluck('id');
+    public function topProduct(Request $request){
+        // $shopId = $shopId;
+        // $userIdsOfShop = Shop::find($shopId)->users->pluck('id');
         
-        $Products = Product::whereIn('user_id',$userIdsOfShop)
-    ->with('user')
-    ->with('images')
-    ->with('colors')
-    ->with('sizes')
-    ->take(8)
-    ->get();
+        $Products = Product::orderBy('created_at','desc')
+        ->with('user')
+        ->with('images')
+        ->with('colors')
+        ->with('sizes')
+        ->take(8)
+        ->get();
 
-    return $this->sendResponse(
-        $data = [
-                    'items' => $Products , 
-                ]
-        );
+        return $this->sendResponse(
+            $data = [
+                        'items' => $Products , 
+                    ]
+            );
     }
-    public function saleMen(Request $request, $shopId){
-             $shopId = $shopId;
-        $userIdsOfShop = Shop::find($shopId)->users->pluck('id');
+    public function saleMen(Request $request){
+        //      $shopId = $shopId;
+        // $userIdsOfShop = Shop::find($shopId)->users->pluck('id');
         
-        $Products = Product::whereIn('user_id',$userIdsOfShop)
+        $Products = Product::orderBy('created_at','desc')
+            ->with('user')
+            ->with('images')
+            ->with('colors')
+            ->with('sizes')
+            ->take(1)
+            ->get();
+
+        return $this->sendResponse(
+            $data = [
+                        'items' => $Products , 
+                    ]
+            );
+    }
+    public function saleWomen(Request $request){
+        //     $shopId = $shopId;
+        // $userIdsOfShop = Shop::find($shopId)->users->pluck('id');
+        
+        $Products = Product::orderBy('created_at','desc')
         ->with('user')
         ->with('images')
         ->with('colors')
@@ -211,29 +228,11 @@ class ShopController extends BaseController
                 ]
         );
     }
-    public function saleWomen(Request $request, $shopId){
-            $shopId = $shopId;
-        $userIdsOfShop = Shop::find($shopId)->users->pluck('id');
-        
-        $Products = Product::whereIn('user_id',$userIdsOfShop)
-        ->with('user')
-        ->with('images')
-        ->with('colors')
-        ->with('sizes')
-        ->take(1)
-        ->get();
-
-    return $this->sendResponse(
-        $data = [
-                    'items' => $Products , 
-                ]
-        );
-    }
-    public function index(Request $request, $shopId){
-                $shopId = $shopId;
-            $userIdsOfShop = Shop::find($shopId)->users->pluck('id');
+    public function index(Request $request){
+            //$shopId = $shopId;
+            // $userIdsOfShop = Shop::find($shopId)->users->pluck('id');
             
-            $Products = Product::whereIn('user_id',$userIdsOfShop)
+            $Products = Product::orderBy('created_at','desc')
             ->with('user')
             ->with('images')
             ->with('colors')
@@ -246,7 +245,6 @@ class ShopController extends BaseController
                     ]
             );
         }
-
     
     // public function index(Request $request){
 

@@ -9,6 +9,7 @@ import Register from './pages/frontEnd/register';
 import Blog from './pages/frontEnd/blog';
 import Contact from './pages/frontEnd/contact';
 import About from './pages/frontEnd/about';
+import DetailBlog from './pages/frontEnd/detailBlog';
 
 
 
@@ -63,6 +64,11 @@ const routes = [
         path: '/about',
         exact: true,
         main: ({ history }) => <About history={history} />
+    },
+    {
+        path: '/blog/:id',
+        exact: true,
+        main: ({ history, match }) => <DetailBlog history={history} match={match} />
     },
 ];
 

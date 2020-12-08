@@ -1,127 +1,75 @@
 import React, { Component } from 'react';
 import Breadcrumb from "./../../components/frontEnd/home/breadcrumb";
 import { Link } from 'react-router-dom';
+import Loading from './../../components/loadding2';
+import connect from './../../lib/connect';
+import * as actions from './../../actions/frontEnd/blog';
+import moment from 'moment';
 
 class Blog extends Component {
 
     constructor(props) {
-        super(props)
+        super(props);
+        this.state = {
+            loading: false
+        }
     }
     componentDidMount() {
         window.scrollTo(0, 0);
+        this.setState({ laoding: true });
+        Promise.all([
+            this.props.actions.getList(),
+            this.props.actions.getRecent()
+        ]).then(ok => this.setState({ loading: false }))
+            .catch(er => this.setState({ loading: false }))
     }
 
-
     render() {
+        const { items, recent } = this.props.blog;
         return (
             <div>
                 <Breadcrumb title={'Bài viết'} />
+                <Loading show={this.state.loading} type="full" />
                 {/*Blog Right Sidebar section*/}
                 <section className="section-b-space  blog-page">
                     <div className="container">
                         <div className="row">
                             <div className="col-xl-9 col-lg-8 col-md-7 ">
-                                <div className="row blog-media">
-                                    <div className="col-xl-6">
-                                        <div className="blog-left">
-                                            <Link to={`${process.env.PUBLIC_URL}/blog/details`} >
-                                                <img src={`${process.env.PUBLIC_URL}/assets/images/blog/1.jpg`} className="img-fluid" alt="" /></Link>
-                                        </div>
-                                    </div>
-                                    <div className="col-xl-6">
-                                        <div className="blog-right">
-                                            <div>
-                                                <h6>25 January 2018</h6>
-                                                <Link to={`${process.env.PUBLIC_URL}/blog/details`} ><h4>you how all this mistaken idea of denouncing pleasure
-                                                    and praising pain was born.</h4></Link>
-                                                <ul className="post-social">
-                                                    <li>Posted By : Admin Admin</li>
-                                                    <li><i className="fa fa-heart"></i> 5 Hits</li>
-                                                    <li><i className="fa fa-comments"></i> 10 Comment</li>
-                                                </ul>
-                                                <p>Consequences that are extremely painful. Nor again is there anyone
-                                                who loves or pursues or desires to obtain pain of itself, because it
-                                                is pain, but because occasionally circumstances occur in which toil
-                                                    and pain can procure him some great pleasure.</p>
+                                {
+                                    items.length > 0 && items.map((item, index) => {
+                                        return (
+                                            <div className="row blog-media" key={index}>
+                                                <div className="col-xl-6">
+                                                    <div className="blog-left">
+                                                        <Link to={`/blog/${item.id}`} >
+                                                            <img src={item.image} className="img-fluid" alt=""
+                                                                style={{ width: "100%", maxHeight: "290px" }}
+                                                            />
+                                                        </Link>
+                                                    </div>
+                                                </div>
+                                                <div className="col-xl-6">
+                                                    <div className="blog-right">
+                                                        <div>
+                                                            <h6>Đăng ngày:{moment(item.created_at).format('d/MM/YYYY')}</h6>
+                                                            <Link to={`/blog/${item.id}`} >
+                                                                <h4>
+                                                                    {item.title}
+                                                                </h4>
+                                                            </Link>
+                                                            <ul className="post-social">
+                                                                <li>Đăng bởi : {item.user.username}</li>
+                                                                {/* <li><i className="fa fa-heart"></i> 5 Hits</li>
+                                                                <li><i className="fa fa-comments"></i> 10 Comment</li> */}
+                                                            </ul>
+                                                            <p>{item.disception}</p>
+                                                        </div>
+                                                    </div>
+                                                </div>
                                             </div>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div className="row blog-media">
-                                    <div className="col-xl-6">
-                                        <div className="blog-left">
-                                            <Link to={`${process.env.PUBLIC_URL}/blog/details`} ><img src={`${process.env.PUBLIC_URL}/assets/images/blog/2.jpg`} className="img-fluid" alt="" /></Link>
-                                        </div>
-                                    </div>
-                                    <div className="col-xl-6">
-                                        <div className="blog-right">
-                                            <div>
-                                                <h6>25 January 2018</h6>
-                                                <Link to={`${process.env.PUBLIC_URL}/blog/details`} ><h4>you how all this mistaken idea of denouncing pleasure
-                                                    and praising pain was born.</h4></Link>
-                                                <ul className="post-social">
-                                                    <li>Posted By : Admin Admin</li>
-                                                    <li><i className="fa fa-heart"></i> 5 Hits</li>
-                                                    <li><i className="fa fa-comments"></i> 10 Comment</li>
-                                                </ul>
-                                                <p>Consequences that are extremely painful. Nor again is there anyone
-                                                who loves or pursues or desires to obtain pain of itself, because it
-                                                is pain, but because occasionally circumstances occur in which toil
-                                                    and pain can procure him some great pleasure.</p>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div className="row blog-media">
-                                    <div className="col-xl-6">
-                                        <div className="blog-left">
-                                            <Link to={`${process.env.PUBLIC_URL}/blog/details`} ><img src={`${process.env.PUBLIC_URL}/assets/images/blog/3.jpg`} className="img-fluid" alt="" /></Link>
-                                        </div>
-                                    </div>
-                                    <div className="col-xl-6">
-                                        <div className="blog-right">
-                                            <div>
-                                                <h6>25 January 2018</h6>
-                                                <Link to={`${process.env.PUBLIC_URL}/blog/details`} ><h4>you how all this mistaken idea of denouncing pleasure
-                                                    and praising pain was born.</h4></Link>
-                                                <ul className="post-social">
-                                                    <li>Posted By : Admin Admin</li>
-                                                    <li><i className="fa fa-heart"></i> 5 Hits</li>
-                                                    <li><i className="fa fa-comments"></i> 10 Comment</li>
-                                                </ul>
-                                                <p>Consequences that are extremely painful. Nor again is there anyone
-                                                who loves or pursues or desires to obtain pain of itself, because it
-                                                is pain, but because occasionally circumstances occur in which toil
-                                                    and pain can procure him some great pleasure.</p>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div className="row blog-media">
-                                    <div className="col-xl-6">
-                                        <div className="blog-left">
-                                            <Link to={`${process.env.PUBLIC_URL}/blog/details`} ><img src={`${process.env.PUBLIC_URL}/assets/images/blog/4.jpg`} className="img-fluid" alt="" /></Link>
-                                        </div>
-                                    </div>
-                                    <div className="col-xl-6">
-                                        <div className="blog-right">
-                                            <div>
-                                                <h6>25 January 2018</h6>
-                                                <Link to={`${process.env.PUBLIC_URL}/blog/details`} ><h4>you how all this mistaken idea of denouncing pleasure
-                                                    and praising pain was born.</h4></Link>
-                                                <ul className="post-social">
-                                                    <li>Posted By : Admin Admin</li>
-                                                    <li><i className="fa fa-heart"></i> 5 Hits</li>
-                                                    <li><i className="fa fa-comments"></i> 10 Comment</li>
-                                                </ul>
-                                                <p>Consequences that are extremely painful. Nor again is there anyone
-                                                who loves or pursues or desires to obtain pain of itself, because it
-                                                is pain, but because occasionally circumstances occur in which toil
-                                                    and pain can procure him some great pleasure.</p>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
+                                        )
+                                    })
+                                }
                             </div>
 
 
@@ -131,51 +79,23 @@ class Blog extends Component {
                                     <div className="theme-card">
                                         <h4>Recent Blog</h4>
                                         <ul className="recent-blog">
-                                            <li>
-                                                <div className="media">
-                                                    <img className="img-fluid" src={`${process.env.PUBLIC_URL}/assets/images/blog/1.jpg`} alt="Generic placeholder image" />
-                                                    <div className="media-body align-self-center">
-                                                        <h6>25 Dec 2018</h6>
-                                                        <p>0 hits</p>
-                                                    </div>
-                                                </div>
-                                            </li>
-                                            <li>
-                                                <div className="media">
-                                                    <img className="img-fluid" src={`${process.env.PUBLIC_URL}/assets/images/blog/2.jpg`} alt="Generic placeholder image" />
-                                                    <div className="media-body align-self-center">
-                                                        <h6>25 Dec 2018</h6>
-                                                        <p>0 hits</p>
-                                                    </div>
-                                                </div>
-                                            </li>
-                                            <li>
-                                                <div className="media">
-                                                    <img className="img-fluid" src={`${process.env.PUBLIC_URL}/assets/images/blog/3.jpg`} alt="Generic placeholder image" />
-                                                    <div className="media-body align-self-center">
-                                                        <h6>25 Dec 2018</h6>
-                                                        <p>0 hits</p>
-                                                    </div>
-                                                </div>
-                                            </li>
-                                            <li>
-                                                <div className="media">
-                                                    <img className="img-fluid" src={`${process.env.PUBLIC_URL}/assets/images/blog/4.jpg`} alt="Generic placeholder image" />
-                                                    <div className="media-body align-self-center">
-                                                        <h6>25 Dec 2018</h6>
-                                                        <p>0 hits</p>
-                                                    </div>
-                                                </div>
-                                            </li>
-                                            <li>
-                                                <div className="media">
-                                                    <img className="img-fluid" src={`${process.env.PUBLIC_URL}/assets/images/blog/5.jpg`} alt="Generic placeholder image" />
-                                                    <div className="media-body align-self-center">
-                                                        <h6>25 Dec 2018</h6>
-                                                        <p>0 hits</p>
-                                                    </div>
-                                                </div>
-                                            </li>
+                                            {
+                                                recent.length > 0 && recent.map((item, index) => {
+                                                    return (
+                                                        <Link to={`/blog/${item.id}`} >
+                                                            <li key={index}>
+                                                                <div className="media">
+                                                                    <img className="img-fluid" src={item.image} alt="Generic placeholder image" />
+                                                                    <div className="media-body align-self-center">
+                                                                        <h6>{moment(item.created_at).format('d//MM/YYYY')}</h6>
+                                                                        <p className="text-truncate" style={{ maxWidth: "80px" }}>{item.title}</p>
+                                                                    </div>
+                                                                </div>
+                                                            </li>
+                                                        </Link>
+                                                    )
+                                                })
+                                            }
                                         </ul>
                                     </div>
                                     <div className="theme-card">
@@ -247,4 +167,6 @@ class Blog extends Component {
     }
 }
 
-export default Blog
+export default connect(Blog, state => ({
+    blog: state.blogHome
+}), actions)

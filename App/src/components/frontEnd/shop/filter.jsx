@@ -10,7 +10,8 @@ class Filter extends Component {
         super(props);
 
         this.state = {
-            openFilter: false
+            openFilter: false,
+            price: 0
         }
     }
 
@@ -41,7 +42,7 @@ class Filter extends Component {
     render() {
         // const filteredBrands = this.props.filters.brand;
         const filteredBrands = "xxx";
-        //console.log(this.props.brands);
+        console.log(this.state);
         const brands = [];
         const colors = [];
         return (
@@ -99,11 +100,13 @@ class Filter extends Component {
                                 <div className="collection-brand-filter">
                                     <div className="custom-control custom-checkbox collection-filter-checkbox">
                                         <InputRange
-                                            // maxValue={this.props.prices.max}
-                                            maxValue={10}
+                                            maxValue={1000000}
                                             minValue={0}
-                                            value={5}
-                                            onChange={value => this.props.filterPrice({ value })} />
+                                            value={this.state.price}
+                                            onChange={value => {
+                                                this.setState({ price: value })
+                                                this.props.filterPrice(value)
+                                            }} />
                                     </div>
                                 </div>
                             </div>
