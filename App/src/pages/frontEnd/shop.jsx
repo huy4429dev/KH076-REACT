@@ -18,8 +18,7 @@ class Shop extends Component {
     componentDidMount() {
         window.scrollTo(0, 0);
         this.setState({ loading: true });
-        const shopId = 1;
-        this.props.actions.getListProducts(shopId)
+        this.props.actions.getListProducts()
             .then(() => this.setState({ loading: false }))
             .catch(() => this.setState({ loading: false }));
     }

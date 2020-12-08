@@ -11,6 +11,7 @@ import productHome from './frontEnd/product';
 import login from './frontEnd/login';
 import cart from './frontEnd/cart';
 import blogAdmin from './backEnd/blog';
+import blogHome from './frontEnd/blog';
 import order from './backEnd/order';
 import productColor from './backEnd/productColor';
 import productSize from './backEnd/productSize';
@@ -30,6 +31,7 @@ const rootReducer = combineReducers({
     productHome,
     login,
     cart,
+    blogHome,
     blogAdmin,
     order,
     productColor,
