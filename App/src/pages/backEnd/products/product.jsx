@@ -12,8 +12,12 @@ import Loading from '../../../components/backEnd/loading';
 import CKEditors from "react-ckeditor-component";
 import MyDropzone from '../../../components/backEnd/dropZone';
 import ReactTooltip from 'react-tooltip';
-import productColor from '../../../reducers/backEnd/productColor';
-
+import ModalDelete from './../../../components/backEnd/modalDelete';
+import Pagination from "react-bootstrap-4-pagination";
+import $ from 'jquery';
+import {
+    Link,
+} from "react-router-dom";
 const customButton = { borderRadius: 0, paddingTop: '6px', paddingBottom: '6px', paddingLeft: '10px', paddingRight: '10px' };
 class Product extends Component {
     constructor(props) {
@@ -31,7 +35,17 @@ class Product extends Component {
             colors: [],
             sizes: [],
             discount: 0,
-            bought: 0
+            bought: 0,
+            total: props.total,
+            itemEdit: null,
+            showEdit: false,
+            openModalEdit: false,
+            itemId: null,
+            openModalDelete: false,
+            page: 1,
+            pageSize: 25,
+            filter: {
+            }
         };
         this.validator = new SimpleReactValidator({
             autoForceUpdate: this,
@@ -56,6 +70,7 @@ class Product extends Component {
         ])
             .then(() => {
                 this.setState({ loading: false });
+                $('.page-link').on('click', (e) => e.preventDefault());
             })
             .catch((err) => {
                 this.setState({ loading: false });
@@ -152,17 +167,23 @@ class Product extends Component {
 
         this.setState({
             loading: true
-        });
+        })
+        const { getProducts, getCategories, getColors, getSizes } = this.props.actions;
 
-        const { getProducts } = this.props.actionProduct;
-        getProducts()
+        Promise.all([
+            getProducts(),
+            getCategories('children=1'),
+            getColors(),
+            getSizes()
+        ])
             .then(() => {
                 this.setState({ loading: false });
             })
             .catch((err) => {
                 this.setState({ loading: false });
-                window.notify('Tải xuống danh sách sản phẩm không thành công', 'danger');
-            });
+                window.notify('Lỗi: ' + err.message, 'danger');
+            })
+
     }
 
     handeUploadImage = (url) => {
@@ -239,8 +260,138 @@ class Product extends Component {
 
     }
 
+    handleDelete = (id) => {
+        this.setState({
+            openModalDelete: true,
+            itemId: id
+        })
+    }
+
+    handleEdit = (item) => {
+
+        this.setState({
+            itemEdit: item,
+            showEdit: true
+        })
+
+    }
+
+    handlePageChange = (page) => {
+
+        console.log(page,'PAGE');
+
+        this.setState({
+            loading: true
+        })
+        const { getProducts, getCategories, getColors, getSizes } = this.props.actions;
+
+        Promise.all([
+            getProducts(page),
+            getCategories(),
+            getColors(),
+            getSizes()
+        ])
+            .then(() => {
+                this.setState({ loading: false, page:page });
+            })
+            .catch((err) => {
+                this.setState({ loading: false });
+                window.notify('Lỗi: ' + err.message, 'danger');
+            })
+
+    }
+
+
+    handleEditItem = (item) => {
+
+        const { updateCategory } = this.props.actions;
+        this.setState({
+            loading: true
+        });
+
+        updateCategory({
+            ...item
+        }).then((data) => {
+
+            if (data.success) {
+                return data;
+            } else {
+                throw new Error('Something went wrong');
+            }
+
+        })
+            .then((data) => {
+                this.setState({
+                    myData: this.props.myData,
+                    showEdit: false,
+                    itemEdit: null,
+                    loading: false
+                });
+
+                window.notify("Chỉnh sửa danh mục thành công");
+
+            })
+            .catch((err) => {
+                this.setState({ loading: false });
+            });
+
+
+    }
+
+    handleDeleteItem = (id) => {
+
+        const { deleteCategory } = this.props.actions;
+        this.setState({
+            loading: true
+        });
+
+        deleteCategory(id)
+            .then((data) => {
+
+                if (data.success) {
+                    return data;
+                } else {
+                    throw new Error('Something went wrong');
+                }
+
+            })
+            .then(() => {
+                this.setState({
+                    loading: false,
+                    myData: this.props.myData,
+                    itemId: null,
+                    openModalDelete: false
+                });
+
+                window.notify("Xóa danh mục thành công");
+            })
+            .catch((err) => {
+                this.setState({ loading: false });
+            });
+    }
+
+    applyFilter = (filter) => {
+
+        filter = { ...this.state.filter, ...filter };
+        this.setState({
+            filter,
+            loading: true
+        });
+
+        const { getCategories } = this.props.actions;
+        getCategories()
+            .then(() => {
+                this.setState({ loading: false });
+            })
+            .catch((err) => {
+                this.setState({ loading: false });
+                $.notify({ message: 'Tải xuống danh mục sản phẩm không thành công' }, { type: 'danger' });
+            });
+    }
+
+
     render() {
-        const { open, colors } = this.state;
+        const { open, colors, loading, openModalEdit, openModalDelete, page, pageSize, filter } = this.state;
         let { products, categories, productColors, productSizes } = this.props;
         categories = categories ?? null;
         productColors = productColors ?? null;
@@ -259,7 +410,7 @@ class Product extends Component {
                         <div className="col-sm-12">
                             <div className="card">
                                 <div className="card-header d-flex justify-content-between">
-                                    <h5>DANH SÁCH ĐƠN HÀNG</h5>
+                                    <h5>SẢN PHẨM</h5>
                                     <div>
                                         <button
                                             type="button"
@@ -485,12 +636,12 @@ class Product extends Component {
                                                                 return (
                                                                     <tr>
                                                                         <td>{index++}</td>
-                                                                        <td>Anh</td>
-                                                                        <td>{item.name}</td>
-                                                                        <td>Danh mục</td>
-                                                                        <td>{item.name.toLocaleString()} đ</td>
+                                                                        <td><img style={{ width: '50px' }} src={item.images[0]?.url} alt="" /></td>
+                                                                        <td><Link to={`/admin/products/detail/${item.id}`} >   {item.name} </Link></td>
+                                                                        <td>{"danh muc"}</td>
+                                                                        <td>{item.price.toLocaleString()} đ</td>
                                                                         <td>{item.quantity}</td>
-                                                                        <td>Trạng tdái</td>
+                                                                        <td>{item.status === 1 ? <span class="badge badge-success">Đang KD</span> : <span class="badge badge-warning">Dừng KD</span>}</td>
                                                                         <td className='text-center'>
                                                                             <button style={{ padding: '5px 10px' }} type='button' className='btn btn-warning btn-sm mr-1' onClick={() => this.handleEdit()}>Sửa</button>
                                                                             <button style={{ padding: '5px 10px' }} type='button' className='btn btn-primary btn-sm' onClick={() => this.handleDelete()}>Xóa</button>
@@ -517,7 +668,33 @@ class Product extends Component {
                         </div>
                     </div>
                 </div>
+                <div className='d-flex justify-content-end'>
 
+                    <Pagination
+                        totalPages={total / pageSize + 1}
+                        currentPage={page}
+                        showMax={total > pageSize ? total / pageSize + 1 : 0}
+                        size={"md"}
+                        prevNext={true}
+                        onClick={this.handlePageChange}
+                    />
+
+                </div>
+                {/* 
+                <ModalEdit
+                    open={this.state.showEdit}
+                    data={this.state.itemEdit}
+                    onHandleEditItem={(item) => this.handleEditItem(item)}
+                    onCloseModal={() => this.setState({ showEdit: false })}
+                /> */}
+
+                <ModalDelete
+                    open={openModalDelete}
+                    data={this.state.itemId}
+                    title={'Xóa danh mục'}
+                    onHandleDelete={(id) => this.handleDeleteItem(id)}
+                    onCloseModal={(id) => this.onCloseModalDelete(id)}
+                />
             </Fragment>
         )
     }

@@ -46,7 +46,7 @@ class FilterBar extends Component {
         return (
             <div className="product-filter-content">
                 <div className="search-count">
-                    <h5>Showing Products 1-{products.length} Result</h5>
+                    <h5>Hiển thị 1-{products.length} Kết quả</h5>
                 </div>
                 <div className="collection-view">
                     <ul>
@@ -62,25 +62,25 @@ class FilterBar extends Component {
                     <ul>
                         <li>
                             <img
-                                src={`${process.env.PUBLIC_URL}/assets/images/icon/2.png`}
+                                src={`/assets/images/icon/2.png`}
                                 alt=""
                                 className="product-2-layout-view" onClick={() => this.LayoutView(6)} />
                         </li>
                         <li>
                             <img
-                                src={`${process.env.PUBLIC_URL}/assets/images/icon/3.png`}
+                                src={`/assets/images/icon/3.png`}
                                 alt=""
                                 className="product-3-layout-view" onClick={() => this.LayoutView(4)} />
                         </li>
                         <li>
                             <img
-                                src={`${process.env.PUBLIC_URL}/assets/images/icon/4.png`}
+                                src={`/assets/images/icon/4.png`}
                                 alt=""
                                 className="product-4-layout-view" onClick={() => this.LayoutView(3)} />
                         </li>
                         <li>
                             <img
-                                src={`${process.env.PUBLIC_URL}/assets/images/icon/6.png`}
+                                src={`/assets/images/icon/6.png`}
                                 alt=""
                                 className="product-6-layout-view" onClick={() => this.LayoutView(2)} />
                         </li>
@@ -88,12 +88,12 @@ class FilterBar extends Component {
                 </div>
                 <div className="product-page-filter">
                     <select onChange={(e) => this.props.filterSort(e.target.value)}>
-                        <option value="">Sorting items</option>
-                        <option value="HighToLow">Price: High to Low</option>
-                        <option value="LowToHigh">Price: Low to High</option>
-                        <option value="Newest">Newest Items</option>
-                        <option value="AscOrder">Sort By Name: A To Z</option>
-                        <option value="DescOrder">Sort By Name: Z To A</option>
+                        <option value="">Sắp xếp sản phẩm</option>
+                        <option value="highToLow">Giá: cao tới thấp</option>
+                        <option value="lowToHigh">Giá: thấp tới cao</option>
+                        <option value="newest">Mới nhất</option>
+                        <option value="ascOrder">Theo tên từ A đến Z</option>
+                        <option value="descOrder">Theo tên từ Z đến A</option>
                     </select>
                 </div>
             </div>

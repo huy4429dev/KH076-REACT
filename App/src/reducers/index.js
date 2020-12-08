@@ -16,6 +16,7 @@ import order from './backEnd/order';
 import productColor from './backEnd/productColor';
 import productSize from './backEnd/productSize';
 import product from './backEnd/product';
+import customer from './backEnd/customer';
 
 const config = {
     key: 'doremon',
@@ -36,7 +37,8 @@ const rootReducer = combineReducers({
     order,
     productColor,
     productSize,
-    product
+    product,
+    customer
 });
 
 export default persistReducer(config, rootReducer);

@@ -28,6 +28,7 @@ class ProductController extends BaseController
             ->with('images')
             ->with('colors')
             ->with('sizes')
+            ->with('category')
             ->skip( ($page - 1) * $pageSize )
             ->take($pageSize)
             ->get();
@@ -44,6 +45,7 @@ class ProductController extends BaseController
             ->with('images')
             ->with('colors')
             ->with('sizes')
+            ->with('category')
             ->skip( ($page - 1) * $pageSize )
             ->take($pageSize)
             ->get();
@@ -91,12 +93,36 @@ class ProductController extends BaseController
 
     
     public function show($id){
-        $found = Product::where('id', $id)
-                        ->with('user')
-                        ->with('images')
-                        ->with('colors')
-                        ->with('sizes')
-                        ->first();
+
+        $user = $request->user();
+
+        if($user->roles->contains('name', 'admin')){
+            $found = Product::where('id', $id)
+            ->where('id', $id)
+            ->with('user')
+            ->with('images')
+            ->with('colors')
+            ->with('sizes')
+            ->with('category')
+            ->with('ratings')
+            ->first();
+        }
+        else if($user->roles->contains('name', 'shop')){
+
+            $shopId = $user->shops()->first()->id; 
+            $userIdsOfShop = Shop::find($shopId)->users->pluck('id');
+
+            $found = Product::whereIn('user_id',$userIdsOfShop)
+            ->where('id', $id)
+            ->with('user')
+            ->with('images')
+            ->with('colors')
+            ->with('sizes')
+            ->with('category')
+            ->with('ratings')
+            ->first();
+        }
+
 
         if($found == null){
             

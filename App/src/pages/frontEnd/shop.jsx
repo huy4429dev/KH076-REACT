@@ -11,9 +11,14 @@ import * as actions from './../../actions/frontEnd/product';
 import Loadding from './../../components/loadding2';
 
 class Shop extends Component {
-    state = {
-        layoutColumns: 3,
-        loading: false
+    constructor(props) {
+        super(props);
+        this.state = {
+            layoutColumns: 3,
+            loading: false,
+            filterBy: '',
+            price: 1000000
+        }
     }
     componentDidMount() {
         window.scrollTo(0, 0);
@@ -31,9 +36,19 @@ class Shop extends Component {
     openFilter = () => {
         document.querySelector(".collection-filter").style = "left: -15px";
     }
-
+    filterSort = (v) => {
+        this.setState({
+            filterBy: v
+        })
+    }
+    filterPrice = (v) => {
+        this.setState({
+            price: v
+        })
+    }
     render() {
         const { listProduct } = this.props.productHome;
+        const { filterBy, price } = this.state;
         return (
             <div>
                 <Loadding show={this.state.loading} type="full" />
@@ -70,12 +85,18 @@ class Shop extends Component {
                                                                 </div>
                                                                 <div className="row">
                                                                     <div className="col-12">
-                                                                        <FilterBar onLayoutViewClicked={(colmuns) => this.LayoutViewClicked(colmuns)} />
+                                                                        <FilterBar
+                                                                            filterSort={(v) => this.filterSort(v)}
+                                                                            onLayoutViewClicked={(colmuns) => this.LayoutViewClicked(colmuns)} />
                                                                     </div>
                                                                 </div>
                                                             </div>
                                                         </div>
-                                                        <ProductListing colSize={this.state.layoutColumns} products={listProduct} />
+                                                        <ProductListing
+                                                            filterBy={filterBy}
+                                                            price={price}
+                                                            colSize={this.state.layoutColumns}
+                                                            products={listProduct} />
 
                                                     </div>
                                                 </div>
@@ -87,7 +108,7 @@ class Shop extends Component {
 
                                     <StickyBox offsetTop={20} offsetBottom={20}>
                                         <div>
-                                            <Filter />
+                                            <Filter filterPrice={(v) => this.filterPrice(v)} />
                                             <NewProduct />
                                             <div className="collection-sidebar-banner">
                                                 <a href="#">

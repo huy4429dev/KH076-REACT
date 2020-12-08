@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
 import InfiniteScroll from 'react-infinite-scroll-component';
-
+import _ from 'lodash';
 import ProductListItem from "./productListItem";
 import Loadding from './../../loadding2';
 
@@ -15,12 +15,37 @@ class ProductListing extends Component {
     }
 
     render() {
-        const { products, addToCart, symbol, addToWishlist, addToCompare } = this.props;
+        const { products, addToCart, price, symbol, addToWishlist, addToCompare, filterBy } = this.props;
+        let items = [];
+        if (products) {
+            switch (filterBy) {
+                case 'highToLow':
+                    items = _.orderBy(products.items, ['price'], ['desc']);
+                    break;
+                case 'lowToHigh':
+                    items = _.orderBy(products.items, ['price'], ['asc']);
+                    break;
+                case 'newest':
+                    items = _.orderBy(products.items, ['created_at'], ['desc']);
+                    break;
+                case 'ascOrder':
+                    items = _.orderBy(products.items, [pr => pr.name.toLowerCase()], ['asc']);
+                    break;
+                case 'descOrder':
+                    items = _.orderBy(products.items, [pr => pr.name.toLowerCase()], ['desc']);
+                    break;
+                default:
+                    items = products.items;
+                    break;
+            }
+        }
+        console.log(items, "ft");
+
         return (
             <div>
                 <div className="product-wrapper-grid">
                     <div className="container-fluid">
-                        {products?.items?.length > 0 ?
+                        {items.length > 0 ?
                             <InfiniteScroll
                                 dataLength={this.state.limit} //This is important field to render the next data
                                 next={this.fetchMoreItems}
@@ -33,13 +58,17 @@ class ProductListing extends Component {
                                 }
                             >
                                 <div className="row">
-                                    {products?.items?.slice(0, this.state.limit).map((product, index) =>
-                                        <div className={`${this.props.colSize === 3 ? 'col-xl-3 col-md-6 col-grid-box' : 'col-lg-' + this.props.colSize}`} key={index}>
-                                            <ProductListItem product={product} symbol={symbol}
-                                                onAddToCompareClicked={() => addToCompare(product)}
-                                                onAddToWishlistClicked={() => addToWishlist(product)}
-                                                onAddToCartClicked={addToCart} key={index} />
-                                        </div>)
+                                    {
+                                        items.length > 0 && items.filter(item => item.price <= price).map((product, index) => {
+                                            return (
+                                                <div div className={`${this.props.colSize === 3 ? 'col-xl-3 col-md-6 col-grid-box' : 'col-lg-' + this.props.colSize}`} key={index}>
+                                                    <ProductListItem product={product} symbol={symbol}
+                                                        onAddToCompareClicked={() => addToCompare(product)}
+                                                        onAddToWishlistClicked={() => addToWishlist(product)}
+                                                        onAddToCartClicked={addToCart} key={index} />
+                                                </div>
+                                            )
+                                        })
                                     }
                                 </div>
                             </InfiniteScroll>
@@ -55,7 +84,7 @@ class ProductListing extends Component {
                         }
                     </div>
                 </div>
-            </div>
+            </div >
         )
     }
 }

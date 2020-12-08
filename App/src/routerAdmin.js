@@ -39,9 +39,9 @@ const routesAdmin = [
         main: () => <ProductList />
     },
     {
-        path: '/admin/products/detailt',
+        path: '/admin/products/detail/:id',
         exact: true,
-        main: () => <Detailt />
+        main: ({match}) => <Detailt match={match} />  
     },
     {
         path: '/admin/products/add',
@@ -84,7 +84,7 @@ const routesAdmin = [
         main: () => <Contact />
     },
     {
-        path: '/admin/customer',
+        path: '/admin/customers',
         exact: true,
         main: () => <Customer />
     },
