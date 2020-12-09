@@ -4,6 +4,7 @@ import connect from './../../lib/connect';
 import * as actions from './../../actions/frontEnd/blog';
 import Loading from './../../components/loadding2';
 import moment from "moment";
+import $ from 'jquery';
 
 class BlogDetails extends Component {
 
@@ -14,6 +15,7 @@ class BlogDetails extends Component {
         }
     }
     componentDidMount() {
+        $(".blog-detail img").css("max-width", "960px");
         const { id } = this.props.match.params;
         this.setState({ loading: true });
         this.props.actions.getDetailBlog(id)

@@ -7,7 +7,6 @@ use App\Http\Controllers\BaseController as BaseController;
 use App\Models\Shop;
 use App\Models\Role;
 use App\Models\Product;
-use App\Models\Us;
 use App\Models\Profile;
 use App\Models\User;
 use Validator;
@@ -54,9 +53,9 @@ class ShopController extends BaseController
             ]
            ];
 
-            
+
         foreach($data as $item) {
-            
+
             DB::table('shops')->insert([
                 'name' => $item['name'],
                 'description' => $item['description'],
@@ -83,12 +82,12 @@ class ShopController extends BaseController
                 "username" => "shoptest3",
                 "password" => bcrypt("123456"),
             ]
-       
+
            ];
 
-                   
+
         foreach($data as $item) {
-            
+
 
            DB::table('users')->insert([
             'username' => $item['username'],
@@ -96,8 +95,8 @@ class ShopController extends BaseController
             'password' => $item['password'],
             'created_at' => Carbon::now(),
             'updated_at' => Carbon::now(),
-           ]); 
-            
+           ]);
+
         }
 
             User::where('username','shoptest1')->first()->roles()->attach(['role_id' => Role::where('name','shop')->first()->id]);
@@ -107,18 +106,18 @@ class ShopController extends BaseController
         Shop::where('name','shop  1')->first()->users()->attach(['user_id' =>  User::where('username','shoptest1')->first()->id]);
         Shop::where('name','shop  2')->first()->users()->attach(['user_id' =>  User::where('username','shoptest2')->first()->id]);
         Shop::where('name','shop  3')->first()->users()->attach(['user_id' =>  User::where('username','shoptest3')->first()->id]);
-      
+
         return 'init data test success';
     }
 
-     
+
 
   public function newProducts(Request $request){
 
 
         //  $shopId = $shopId;
         // $userIdsOfShop = Shop::find($shopId)->users->pluck('id');
-        
+
         $Products = Product::orderBy('created_at','desc')
         ->with('user')
         ->with('images')
@@ -129,7 +128,7 @@ class ShopController extends BaseController
 
         return $this->sendResponse(
             $data = [
-                     'items' => $Products , 
+                     'items' => $Products ,
                     ]
           );
     }
@@ -137,11 +136,11 @@ class ShopController extends BaseController
 
 
      public function manProducts(Request $request){
-        
+
         // $shopId = $request->query('shopid');
         // $shopId = $shopId;
         // $userIdsOfShop = Shop::find($shopId)->users->pluck('id');
-        
+
         $Products = Product::orderBy('created_at','desc')
         ->with('user')
         ->with('images')
@@ -152,14 +151,14 @@ class ShopController extends BaseController
 
         return $this->sendResponse(
             $data = [
-                     'items' => $Products , 
+                     'items' => $Products ,
                     ]
           );
     }
      public function womanProducts(Request $request){
         // $shopId = $shopId;
         // $userIdsOfShop = Shop::find($shopId)->users->pluck('id');
-        
+
         $Products = Product::orderBy('created_at','desc')
         ->with('user')
         ->with('images')
@@ -170,14 +169,14 @@ class ShopController extends BaseController
 
         return $this->sendResponse(
             $data = [
-                     'items' => $Products , 
+                     'items' => $Products ,
                     ]
           );
     }
     public function topProduct(Request $request){
         // $shopId = $shopId;
         // $userIdsOfShop = Shop::find($shopId)->users->pluck('id');
-        
+
         $Products = Product::orderBy('created_at','desc')
         ->with('user')
         ->with('images')
@@ -188,14 +187,14 @@ class ShopController extends BaseController
 
         return $this->sendResponse(
             $data = [
-                        'items' => $Products , 
+                        'items' => $Products ,
                     ]
             );
     }
     public function saleMen(Request $request){
         //      $shopId = $shopId;
         // $userIdsOfShop = Shop::find($shopId)->users->pluck('id');
-        
+
         $Products = Product::orderBy('created_at','desc')
             ->with('user')
             ->with('images')
@@ -206,14 +205,14 @@ class ShopController extends BaseController
 
         return $this->sendResponse(
             $data = [
-                        'items' => $Products , 
+                        'items' => $Products ,
                     ]
             );
     }
     public function saleWomen(Request $request){
         //     $shopId = $shopId;
         // $userIdsOfShop = Shop::find($shopId)->users->pluck('id');
-        
+
         $Products = Product::orderBy('created_at','desc')
         ->with('user')
         ->with('images')
@@ -224,14 +223,14 @@ class ShopController extends BaseController
 
     return $this->sendResponse(
         $data = [
-                    'items' => $Products , 
+                    'items' => $Products ,
                 ]
         );
     }
     public function index(Request $request){
             //$shopId = $shopId;
             // $userIdsOfShop = Shop::find($shopId)->users->pluck('id');
-            
+
             $Products = Product::orderBy('created_at','desc')
             ->with('user')
             ->with('images')
@@ -241,11 +240,11 @@ class ShopController extends BaseController
 
         return $this->sendResponse(
             $data = [
-                        'items' => $Products , 
+                        'items' => $Products ,
                     ]
             );
         }
-    
+
     // public function index(Request $request){
 
     //     $page = $request->query('page') ?? 1;
@@ -258,7 +257,7 @@ class ShopController extends BaseController
 
     //     return $this->sendResponse(
     //         $data = [
-    //                  'items' => $Shops , 
+    //                  'items' => $Shops ,
     //                  'total' => $Shops->count()
     //                 ]
     //       );
@@ -273,7 +272,7 @@ class ShopController extends BaseController
                         ->first();
 
         if($found == null){
-            
+
             return $this->sendError('Product Errors.',['error' => 'Product not found !']);
         }
 
@@ -294,10 +293,10 @@ class ShopController extends BaseController
         $searchKey = $request->query('q');
 
         if($searchKey != null){
-            
+
             $query = $query
                            ->where('name','like','%'.$searchKey.'%');
-                           
+
         }
 
         $Shops = $query
@@ -308,19 +307,19 @@ class ShopController extends BaseController
 
         return $this->sendResponse(
             $data = [
-                     'items' => $Shops , 
+                     'items' => $Shops ,
                      'total' => $Shops->count()
                     ]
           );
     }
 
-    
+
     // public function show($id){
 
     //     $found = Shop::find($id);
 
     //     if($found == null){
-            
+
     //         return $this->sendError('Shop Errors.',['error' => 'Shop not found !']);
     //     }
 
@@ -338,11 +337,11 @@ class ShopController extends BaseController
         ]);
 
         if($validator->fails()){
-            return $this->sendError('Validation Error.', $validator->errors());       
+            return $this->sendError('Validation Error.', $validator->errors());
         }
 
         $Shop = Shop::where('id',$id)->first();
-        
+
         if($Shop != null){
 
             $Shop->name = $request->name;
@@ -367,7 +366,7 @@ class ShopController extends BaseController
         ]);
 
         if($validator->fails()){
-            return $this->sendError('Validation Error.', $validator->errors());       
+            return $this->sendError('Validation Error.', $validator->errors());
         }
 
         $Shop = new Shop();
@@ -385,19 +384,19 @@ class ShopController extends BaseController
 
     public function delete($id,Request $request){
 
-        $found = Shop::find($id); 
+        $found = Shop::find($id);
 
         if($found == null){
-            
+
             return $this->sendError('Shop Errors.',['error' => 'Shop not found !']);
         }
 
         $found->delete();
 
         return $this->sendResponse(
-            $found, 
+            $found,
             'Delete Shop successfully'
           );
     }
-  
+
 }

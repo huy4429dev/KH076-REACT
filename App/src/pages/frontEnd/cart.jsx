@@ -157,7 +157,7 @@ class Cart extends Component {
                                                                     </h2>
                                                                     :
                                                                     <h2 className="td-color">
-                                                                        { }
+                                                                        {item.quantity * item.product.price}
                                                                     </h2>
                                                             }
 
