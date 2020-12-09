@@ -23,11 +23,11 @@ class UserController extends BaseController
             'role' => 'required',
             'c_password' => 'required|same:password'
         ]);
-   
+
         if($validator->fails()){
-            return $this->sendError('Validation Error.', $validator->errors());       
+            return $this->sendError('Validation Error.', $validator->errors());
         }
-   
+
         $input = $request->all();
         $input['password'] = bcrypt($input['password']);
 
@@ -35,16 +35,16 @@ class UserController extends BaseController
 
         $foundRole = Role::where('name',$request->role)->first();
         if($foundRole == null){
-            return $this->sendError('Role Error.', 'Role not found');  
+            return $this->sendError('Role Error.', 'Role not found');
         }
 
         $user->roles()->attach(['role_id' => $foundRole->id]);
 
-        
+
         $success['token'] =  $user->createToken('MyApp')->accessToken;
         $success['name'] =  $user->name;
         $success['role'] =  $user->roles()->orderBy('role_id','desc')->get();
-   
+
         return $this->sendResponse($success, 'User register successfully.');
     }
 
@@ -57,9 +57,9 @@ class UserController extends BaseController
         ]);
 
         if($validator->fails()){
-            return $this->sendError('Validation Error.', $validator->errors());       
+            return $this->sendError('Validation Error.', $validator->errors());
         }
-    
+
         if( Auth::attempt(['email'=>$request->email, 'password'=>$request->password]) ) {
             $user = Auth::user();
             $userRole = $user->roles()->orderBy('role_id','desc')->first();
@@ -69,7 +69,7 @@ class UserController extends BaseController
             }
 
             $token = $user->createToken($user->email.'-'.now(), [$this->scope]);
-    
+
             return response()->json([
                 'token' => $token->accessToken,
                 'user' =>  $user ,
@@ -78,17 +78,17 @@ class UserController extends BaseController
         }
         else {
 
-            return $this->sendError('Account Errors.',['error' => 'Email or password incorrect !']);    
+            return $this->sendError('Account Errors.',['error' => 'Email or password incorrect !']);
         }
     }
 
     public function index(Request $request){
-        
+
         // get role
-        
+
         $role = $request->user()->roles()->orderBy('role_id','desc')->first();
-        
-        // get value paginate 
+
+        // get value paginate
 
         $page = $request->query('page') ?? 1;
         $pageSize = $request->query('pageSize') ?? 25;
@@ -99,7 +99,7 @@ class UserController extends BaseController
                            ->skip( ($page - 1) * $pageSize )
                            ->take($pageSize)
                            ->get();
-            
+
         }
         else {
 
@@ -109,29 +109,29 @@ class UserController extends BaseController
               ->skip( ($page - 1) * $pageSize )
               ->take($pageSize)
               ->get();
-            
+
         }
 
-        
+
         return $this->sendResponse(
                                     $data = [
-                                             'items' => $users , 
+                                             'items' => $users ,
                                              'total' => $users-> count()
                                             ]
                                   );
     }
 
     public function search(Request $request){
-        
-         // get role 
+
+         // get role
 
          $role = $request->user()->roles()->orderBy('role_id','desc')->first();
-        
-         // get value paginate 
- 
+
+         // get value paginate
+
          $page = $request->query('page') ?? 1;
          $pageSize = $request->query('pageSize') ?? 25;
-        
+
          $query = User::query();
 
         // search by key word
@@ -139,7 +139,7 @@ class UserController extends BaseController
          $searchKey = $request->query('q');
 
          if($searchKey != null){
-            
+
             $query = $query->join('profiles','profiles.user_id','=','users.id')
                            ->where('username','like','%'.$searchKey.'%')
                            ->orWhere('name','like','%'.$searchKey.'%')
@@ -147,36 +147,36 @@ class UserController extends BaseController
                            ->orWhere('address','like','%'.$searchKey.'%')
                            ->orWhere('phone','like','%'.$searchKey.'%')
                            ->orWhere('facebook','like','%'.$searchKey.'%');
-                           
+
          }
 
-         // filter 
+         // filter
 
 
          if($role->name === 'admin'){
- 
+
              $users = $query
                             ->orderBy('users.id','desc')
                             ->skip( ($page - 1) * $pageSize )
                             ->take($pageSize)
                             ->get();
-             
+
          }
          else {
- 
+
              $users = $query->whereHas('roles', function($q){
                  $q->where('name','user');
              })->orderBy('users.id','desc')
                ->skip( ($page - 1) * $pageSize )
                ->take($pageSize)
                ->get();
-             
+
          }
- 
-         
+
+
          return $this->sendResponse(
                                      $data = [
-                                              'items' => $users , 
+                                              'items' => $users ,
                                               'total' => $users-> count()
                                              ]
                                    );
@@ -202,9 +202,9 @@ class UserController extends BaseController
                 'name' => 'required',
                 'c_password' => 'same:password'
             ]);
-    
+
             if($validator->fails()){
-                return $this->sendError('Validation Error.', $validator->errors());       
+                return $this->sendError('Validation Error.', $validator->errors());
             }
 
             $user = User::where('id',$id)->with('profile')->first();
@@ -219,21 +219,21 @@ class UserController extends BaseController
                     $user->password =  bcrypt($input['password']);
                 }
 
-                $user->profile->name = $request->name; 
-                $user->profile->avatar = $request->avatar; 
-                $user->profile->birthday = $request->birthday; 
-                $user->profile->gender = $request->gender; 
-                $user->profile->address = $request->address; 
-                $user->profile->phone = $request->phone; 
-                $user->profile->facebook = $request->facebook; 
+                $user->profile->name = $request->name;
+                $user->profile->avatar = $request->avatar;
+                $user->profile->birthday = $request->birthday;
+                $user->profile->gender = $request->gender;
+                $user->profile->address = $request->address;
+                $user->profile->phone = $request->phone;
+                $user->profile->facebook = $request->facebook;
                 $user->save();
-    
+
             }
-            else 
+            else
             {
                 return $this->sendError('Account Errors.',['error' => 'User not found !']);
             }
-           
+
             return $this->sendResponse($user, 'Update user successfully.');
     }
 
@@ -243,12 +243,12 @@ class UserController extends BaseController
         $found->delete();
 
         if($found == null){
-            
+
             return $this->sendError('Category Errors.',['error' => 'Category not found !']);
         }
 
         return $this->sendResponse(
-            $found, 
+            $found,
             'Delete user successfully'
           );
     }
@@ -265,11 +265,11 @@ class UserController extends BaseController
             'name' => 'required',
             'c_password' => 'required|same:password'
         ]);
-   
+
         if($validator->fails()){
-            return $this->sendError('Validation Error.', $validator->errors());       
+            return $this->sendError('Validation Error.', $validator->errors());
         }
-   
+
         $input = $request->all();
         $account['username'] = $request->username;
         $account['email'] = $request->email;
@@ -278,14 +278,14 @@ class UserController extends BaseController
         $user = User::create($account);
         $user->roles()->attach(['role_id' => Role::where('name','user')->first()->id]);
 
-        $profile['name'] = $request->name; 
-        $profile['avatar'] = $request->avatar; 
-        $profile['birthday'] = $request->birthday; 
-        $profile['gender'] = $request->gender; 
-        $profile['address'] = $request->address; 
-        $profile['phone'] = $request->phone; 
-        $profile['facebook'] = $request->facebook; 
-        $profile['user_id'] = $user->id; 
+        $profile['name'] = $request->name;
+        $profile['avatar'] = $request->avatar;
+        $profile['birthday'] = $request->birthday;
+        $profile['gender'] = $request->gender;
+        $profile['address'] = $request->address;
+        $profile['phone'] = $request->phone;
+        $profile['facebook'] = $request->facebook;
+        $profile['user_id'] = $user->id;
 
         $profile = Profile::create($profile);
 
@@ -303,7 +303,7 @@ class UserController extends BaseController
         ]);
 
         if($validator->fails()){
-            return $this->sendError('Validation Error.', $validator->errors());       
+            return $this->sendError('Validation Error.', $validator->errors());
         }
 
         $user = User::where('facebook_id',$request->id)->first();
@@ -311,20 +311,22 @@ class UserController extends BaseController
                 $user = new User();
                 $user->username =  $request->name;
                 $user->facebook_id =  $request->id;
+                $user->email =  "{$request->id}facebook@gmail.com";
+                $user->password =  "123456";
                 $user->save();
 
             $foundRole = Role::where('name',$request->role)->first();
             if($foundRole == null){
-                return $this->sendError('Role Error.', 'Role not found');  
+                return $this->sendError('Role Error.', 'Role not found');
             }
             $user->roles()->attach(['role_id' => $foundRole->id]);
-   
+
             return response()->json([
                 'token' =>  $user->createToken('MyApp')->accessToken,
                 'user' =>  $user ,
                 'role' => $user->roles()->orderBy('role_id','desc')->get()
             ]);
-    
+
         }else{
                 $userRole = $user->roles()->orderBy('role_id','desc')->first();
 
@@ -333,7 +335,7 @@ class UserController extends BaseController
                 }
 
                 $token = $user->createToken($user->facebook_id.'-'.now(), [$this->scope]);
-        
+
                 return response()->json([
                     'token' => $token->accessToken,
                     'user' =>  $user ,
@@ -346,9 +348,9 @@ class UserController extends BaseController
 
                 'url' => 'required',
             ]);
-    
+
             if($validator->fails()){
-                return $this->sendError('Validation Error.', $validator->errors());       
+                return $this->sendError('Validation Error.', $validator->errors());
             }
 
             $profile = Profile::where('user_id',$id)->first();
@@ -360,8 +362,8 @@ class UserController extends BaseController
                 $user = User::where('id',$id)->with('profile')->first();
                 $newProfile = new Profile();
                 $newProfile->name = $user->username;
-                $newProfile->avatar = $request->url; 
-                $newProfile->user_id = $id; 
+                $newProfile->avatar = $request->url;
+                $newProfile->user_id = $id;
                 $newProfile->save();
             }
             $newProfile = User::where('id',$id)->with('profile')->first();
@@ -380,30 +382,30 @@ class UserController extends BaseController
                 'address' => 'required',
                 'gender'=>'required'
             ]);
-    
+
             if($validator->fails()){
-                return $this->sendError('Validation Error.', $validator->errors());       
+                return $this->sendError('Validation Error.', $validator->errors());
             }
 
             $user = User::where('id',$id)->with('profile')->first();
             $profile = Profile::where('user_id',$id)->first();
             if($profile  != null){
-                $profile->name = $request->username; 
-                $profile->birthday = date("Y-m-d H:i:s", strtotime(request('birthday'))); 
-                $profile->gender = $request->gender; 
-                $profile->address = $request->address; 
-                $profile->phone = $request->phone; 
+                $profile->name = $request->username;
+                $profile->birthday = date("Y-m-d H:i:s", strtotime(request('birthday')));
+                $profile->gender = $request->gender;
+                $profile->address = $request->address;
+                $profile->phone = $request->phone;
                 $profile->save();
             }
             if($user != null ){
-                $user->address = $request->address; 
+                $user->address = $request->address;
                 $user->username = $request->username;
                 $user->email = $request->email;
-                $user->phone = $request->phone; 
+                $user->phone = $request->phone;
                 $user->save();
-    
+
             }
-            else 
+            else
             {
                 return $this->sendError('Account Errors.',['error' => 'User not found !']);
             }

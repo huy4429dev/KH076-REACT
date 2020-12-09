@@ -37,7 +37,7 @@ class Login extends Component {
                     this.setState({ loading: false });
                     if (data.token) {
                         window.notify('Đăng nhập thành công', 'success');
-                        // this.props.history.push('/');
+                        this.props.history.push('/');
                     } else {
                         window.notify('Đăng nhập không thành công', 'danger');
                     }
@@ -61,7 +61,7 @@ class Login extends Component {
                     <div className="container">
                         <div className="row">
                             <div className="col-lg-6">
-                                <h3>Login</h3>
+                                <h3>Đăng nhập</h3>
                                 <div className="theme-card">
                                     <form className="theme-form">
                                         <div className="form-group">
@@ -76,7 +76,7 @@ class Login extends Component {
                                             {this.validator.message('email', this.state.email, 'required|email', { className: 'text-danger' })}
                                         </div>
                                         <div className="form-group">
-                                            <label htmlFor="review">Password</label>
+                                            <label htmlFor="review">Mật khẩu</label>
                                             <input type="password" className="form-control" id="review"
                                                 placeholder="Mật khẩu..." required=""
                                                 name="password"
@@ -84,11 +84,12 @@ class Login extends Component {
                                                 onChange={(e) => this.setState({ [e.target.name]: e.target.value })}
                                                 onBlur={() => this.validator.showMessageFor('password')}
                                             />
-                                            {this.validator.message('email', this.state.password, 'required', { className: 'text-danger' })}
+                                            {this.validator.message('password', this.state.password, 'required', { className: 'text-danger' })}
                                         </div>
                                         <div className="d-flex">
                                             <div>
-                                                <a className="btn btn-solid" onClick={(e) => this.login(e)}>Đăng nhập</a>
+                                                {/* <a className="btn btn-solid" onClick={(e) => this.login(e)}>Đăng nhập</a> */}
+                                                <Link to={'/'} className="btn btn-solid" onClick={(e) => this.login(e)}>Đăng nhập</Link>
                                             </div>
                                             <Facebook />
                                         </div>

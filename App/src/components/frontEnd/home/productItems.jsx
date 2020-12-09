@@ -109,7 +109,7 @@ class ProductItem extends Component {
                         <div className="rating">
                             {RatingStars}
                         </div>
-                        <Link to={`/left-sidebar/product/${product.id}`}>
+                        <Link to={`/product/${product.id}`}>
                             <h6>{product.name}</h6>
                         </Link>
                         {

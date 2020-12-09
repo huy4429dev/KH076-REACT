@@ -1,14 +1,20 @@
 import React, { Component, Fragment } from 'react';
 import Breadcrumb from './../../../components/backEnd/breadCrumb';
 import Datatable from '../../../components/backEnd/products/listCategory';
-import Modal from 'react-responsive-modal';
 import 'react-responsive-modal/styles.css';
 import connect from './../../../lib/connect';
 import SimpleReactValidator from 'simple-react-validator';
-import * as actions from './../../../actions/backEnd/category';
-import Loading from './../../../components/backEnd/loading';
-import $ from 'jquery';
-import CkEditor from './../../../components/backEnd/ckediter';
+import * as actions from './../../../actions/backEnd/blog';
+import Loading from './../../../components/loadding2';
+import Create from './create';
+import queryString from 'query-string';
+import Pagination from "react-bootstrap-4-pagination";
+import moment from 'moment';
+import {
+    Link,
+} from "react-router-dom";
+import Edit from './edit';
+
 class Blog extends Component {
     constructor(props) {
         super(props);
@@ -17,6 +23,13 @@ class Blog extends Component {
             loading: true,
             name: '',
             description: '',
+            openCreate: false,
+            openEdit: false,
+            dataEdit: null,
+            filter: {
+                page: 1,
+                pageSize: 25
+            }
         };
         this.validator = new SimpleReactValidator({ autoForceUpdate: this });
     }
@@ -26,15 +39,14 @@ class Blog extends Component {
         this.setState({
             loading: true
         })
-        const { getCategories } = this.props.actions;
-        getCategories()
+        const param = queryString.stringify(this.state.filter);
+        const { getList } = this.props.actions;
+        getList(param)
             .then(() => {
                 this.setState({ loading: false });
             })
             .catch((err) => {
                 this.setState({ loading: false });
-                $.notify({ message: 'Tải xuống danh mục sản phẩm không thành công' }, { type: 'danger' });
-                $.notify('Tải xuống danh mục sản phẩm không thành công', 'danger');
             });
 
     }
@@ -107,18 +119,37 @@ class Blog extends Component {
             open: false,
         });
     };
-
+    handleDelete = (id) => {
+        this.props.actions.remove(id).
+            then(data => {
+                this.setState({ loading: false })
+                if (data.success) {
+                    window.notify("Xóa thành công");
+                } else {
+                    window.notify("Xóa không thành công", "danger");
+                }
+            }).catch(err => {
+                this.setState({ loading: false })
+                window.notify("Xóa không thành công", "danger");
+            })
+    }
+    handleEdit = (item) => {
+        this.setState({
+            dataEdit: item,
+            openEdit: true
+        })
+    }
     render() {
         const { open, category } = this.state;
         const { categories } = this.props;
         // const items = categories.items ? categories.items : [];
-        const items = [];
+        const { blogs } = this.props.blog;
+        console.log(blogs, "âs");
 
         return (
             <Fragment>
-                <CkEditor />
-                <Breadcrumb title="Category" parent="Digital" />
-                {/* <!-- Container-fluid starts--> */}
+                <Breadcrumb title="Tin tức" parent="Digital" />
+                <Loading type="full" show={this.state.show} />
                 <div className="container-fluid">
                     <div className="row">
                         <div className="col-sm-12">
@@ -128,55 +159,67 @@ class Blog extends Component {
                                 </div>
                                 <div className="card-body">
                                     <div className="btn-popup pull-right">
-                                        <button type="button" className="btn btn-secondary" onClick={this.onOpenModal} data-toggle="modal" data-original-title="test" data-target="#exampleModal">Thêm mới</button>
-                                        <Modal open={open} onClose={this.onCloseModal} >
-                                            <div className="modal-header">
-                                                <h5 className="modal-title f-w-600" id="exampleModalLabel2">Thêm bài viết</h5>
-                                            </div>
-                                            <form onSubmit={this.handleSubmit}>
-                                                <div className="modal-body">
-                                                    <div className="form-group">
-                                                        <label htmlFor="recipient-name" className="col-form-label" >{this.props.name} Tên :</label>
-                                                        <input
-                                                            name="name"
-                                                            type="text"
-                                                            value={this.state.name}
-                                                            className="form-control"
-                                                            onChange={this.handleInputOnchange}
-                                                        // onBlur={() => this.validator.showMessageFor('name')}
-                                                        />
-                                                        {this.validator.message('name', this.state.name, 'required', { className: 'text-danger' })}
+                                        <Create open={this.state.openCreate}
+                                            onCloseModal={() => this.setState({ openCreate: false })}
+                                        />
+                                        <button type="button" className="btn btn-secondary"
+                                            onClick={() => this.setState({ openCreate: true })} data-toggle="modal" data-original-title="test" data-target="#exampleModal">Thêm mới</button>
 
-                                                    </div>
-                                                    <div className="form-group">
-                                                        <label htmlFor="message-text" className="col-form-label">Mô tả :</label>
-                                                        <textarea
-                                                            name="description"
-                                                            className="form-control"
-                                                            onChange={this.handleInputOnchange}
-
-                                                        />
-                                                    </div>
-                                                </div>
-                                                <div className="modal-footer">
-                                                    <button type="submit" className="btn btn-secondary" onClick={() => this.handleSubmit}>Lưu</button>
-                                                    <button type="button" className="btn btn-primary" onClick={() => this.onCloseModal('VaryingMdo')}>Hủy</button>
-                                                </div>
-                                            </form>
-                                        </Modal>
                                     </div>
                                     <div className="clearfix"></div>
                                     <div id="basicScenario" className="product-physical">
                                         {
-                                            this.state.loading
-                                                ? "LOADINGGGGGGGGG"
-                                                : <Datatable
-                                                    myData={items}
-                                                    class="-striped -highlight"
-                                                    onDelete={(id) => { console.log('ON DELETE', id); }}
-                                                />
-                                        }
+                                            !this.state.loading &&
+                                            <React.Fragment>
+                                                <table className="table">
+                                                    <tr>
+                                                        <th style={{ width: '5%' }}>#</th>
+                                                        <th style={{ width: '20%' }}>Tên</th>
+                                                        <th style={{ width: '20%' }}>Ảnh</th>
+                                                        <th style={{ width: '20%' }}>Mô tả</th>
+                                                        <th style={{ width: '15%' }}>Ngày tạo</th>
+                                                        <th style={{ width: '15%' }}>Ngày cập nhật</th>
+                                                        <th style={{ width: '10%' }} className='text-center' colSpan='2'>Action</th>
+                                                    </tr>
+                                                    {
+                                                        blogs && (
+                                                            blogs.items.map((item, index) => {
+                                                                return (
+                                                                    <tr >
+                                                                        <td>{++index}</td>
+                                                                        <td>{item.title}</td>
+                                                                        <td><img src={item.image} style={{ height: "50px", width: "50px" }} /></td>
+                                                                        <td>{item.disception}</td>
+                                                                        <td>{moment(item.created_at).format("DD/MM/YYYY")}</td>
+                                                                        <td>
+                                                                            <button style={{ padding: '5px 10px' }} type='button' className='btn btn-warning btn-sm mr-1' onClick={() => this.handleEdit(item)}>Sửa</button>
+                                                                            <button style={{ padding: '5px 10px' }} type='button' className='btn btn-primary btn-sm' onClick={() => this.handleDelete(item.id)}>Xóa</button>
+                                                                        </td>
+                                                                    </tr>
+                                                                )
+                                                            })
+                                                        )
 
+                                                    }
+                                                </table>
+                                                {
+                                                    blogs?.items.length == 0 &&
+                                                    <p className="text-center alert alert-warning">Chưa có danh mục</p>
+                                                }
+                                                {/* <Pagination
+                                                    totalPages={total / pageSize + 1}
+                                                    currentPage={page}
+                                                    showMax={total > pageSize ? total / pageSize + 1 : 0}
+                                                    size={"md"}
+                                                    prevNext={true}
+                                                    onClick={this.handlePageChange}
+                                                /> */}
+                                            </React.Fragment>
+                                        }
+                                        <Edit open={this.state.openEdit}
+                                            dataEdit={this.state.dataEdit}
+                                            onCloseModal={() => this.setState({ openEdit: false })}
+                                        />
                                     </div>
                                 </div>
                             </div>

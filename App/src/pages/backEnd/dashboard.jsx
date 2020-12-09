@@ -65,7 +65,7 @@ class Dashboard extends Component {
         const { loading } = this.state;
 
         const date = new Date();
-        const curentMonth = date.getMonth();
+        const curentMonth = date.getMonth() + 1;
 
         let labelLineData = [];
         let dataLineData = [];

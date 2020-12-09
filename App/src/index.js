@@ -20,7 +20,7 @@ ReactDOM.render(
 	<React.StrictMode >
 		<Provider store={store}>
 			<PersistGate loading={null} persistor={persistor}>
-				<Router>
+				<Router >
 					<Switch>
 						<Route exact path={
 							["/", "/product", "/shop", "/checkout", "/cart", "/login", "/register", "/settings/*"]

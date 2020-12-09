@@ -23,12 +23,12 @@ class Home extends Component {
                 <section className="p-0">
                     <div className="full-banner parallax-banner1 parallax text-center p-left"
                         style={{
-                            backgroundImage: "url(https://media.slidesgo.com/storage/50887/responsive-images/QnWBlHOUCKzBiJtMx3SALP3gSdEXAkuOYKE42JsT_Iqmneot7FALCn6PyI5xX1wm21mcZMSLxLlK0q0Y9uyrhIN-p1K8OU_EY1BkCCunLezObdjVWGoiGHbg8bU4q-LMchr61TsCo02VHneDNPHGldmE3xugmMOmcuYd5eKJuxQ1x3NteRk1GMd6WfTKG-plnDsu7g%3Ds1600___media_library_original_1600_900.png)",
+                            backgroundImage: "url(https://ih1.redbubble.net/image.357784026.6852/cposter,small,square_product,1000x1000.2.jpg)",
                             backgroundRepeat: "no-repeat",
                             backgroundPosition: "center"
                         }}
                     >
-                        <div className="container">
+                        {/* <div className="container">
                             <div className="row">
                                 <div className="col">
                                     <div className="banner-contain">
@@ -38,7 +38,7 @@ class Home extends Component {
                                     </div>
                                 </div>
                             </div>
-                        </div>
+                        </div> */}
                     </div>
                 </section>
                 {/*Parallax banner End*/}

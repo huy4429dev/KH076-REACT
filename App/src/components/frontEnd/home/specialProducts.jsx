@@ -9,10 +9,9 @@ import ProductItem from './productItems';
 
 class SpecialProducts extends Component {
     componentDidMount() {
-        const shopId = 1;
-        this.props.actions.getNewProducts(shopId);
-        this.props.actions.getManProducts(shopId);
-        this.props.actions.getWomenProducts(shopId);
+        this.props.actions.getNewProducts();
+        this.props.actions.getManProducts();
+        this.props.actions.getWomenProducts();
     }
     render() {
 

@@ -7,9 +7,8 @@ import * as actions from './../../../actions/frontEnd/product';
 
 class Banner extends Component {
     componentDidMount() {
-        const shopId = 1;
-        this.props.actions.getBestSaleMen(shopId);
-        this.props.actions.getBestSaleWomen(shopId);
+        this.props.actions.getBestSaleMen();
+        this.props.actions.getBestSaleWomen();
     }
 
     render() {
@@ -19,11 +18,11 @@ class Banner extends Component {
             <div>
                 {/* <Breadcrumb parent={'Elements'} title={'Slider'} /> */}
                 <section className="p-0">
-                    <Slider className="slide-1 home-slider">
+                <Slider className="slide-1 home-slider">
                         <div>
                             <div className="home home1 text-center"
                                 style={{
-                                    backgroundImage: "url(https://media.slidesgo.com/storage/117798/responsive-images/0-annual-marketing-plan___media_library_original_1600_900.png)",
+                                    backgroundImage: "url(https://images.unsplash.com/photo-1513373319109-eb154073eb0b?ixlib=rb-1.2.1&ixid=MXwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHw%3D&auto=format&fit=crop&w=1350&q=80)",
                                     backgroundRepeat: "no-repeat",
                                     backgroundPosition: "center"
                                 }}
@@ -33,9 +32,9 @@ class Banner extends Component {
                                         <div className="col">
                                             <div className="slider-contain">
                                                 <div>
-                                                    <h4>welcome to fashion</h4>
-                                                    <h1>men fashion</h1>
-                                                    <Link to={'/shop'} className="btn btn-solid">shop now</Link>
+                                                    <h4>Chào mừng đến với Multikart</h4>
+                                                    <h1>Thời trang nam</h1>
+                                                    <Link to={'/shop'} className="btn btn-solid">Mua sắm nào</Link>
                                                 </div>
                                             </div>
                                         </div>
@@ -46,7 +45,7 @@ class Banner extends Component {
                         <div>
                             <div className="home home1 text-center"
                                 style={{
-                                    backgroundImage: "url(https://image.freepik.com/free-vector/horizontal-fashion-banner-blog_23-2148670931.jpg)",
+                                    backgroundImage: "url(https://images.unsplash.com/photo-1603252109360-909baaf261c7?ixid=MXwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHw%3D&ixlib=rb-1.2.1&auto=format&fit=crop&w=1350&q=80)",
 
                                     backgroundRepeat: "no-repeat",
                                     backgroundPosition: "center"
@@ -57,9 +56,9 @@ class Banner extends Component {
                                         <div className="col">
                                             <div className="slider-contain">
                                                 <div>
-                                                    <h4>welcome to fashion</h4>
-                                                    <h1>men fashion</h1>
-                                                    <Link to={`/shop`} className="btn btn-solid">shop now</Link>
+                                                    <h4>Chào mừng đến với Multikart</h4>
+                                                    <h1>Thời trang nam</h1>
+                                                    <Link to={'/shop'} className="btn btn-solid">Mua sắm nào</Link>
                                                 </div>
                                             </div>
                                         </div>
@@ -70,7 +69,7 @@ class Banner extends Component {
                         <div>
                             <div className="home home2 text-center"
                                 style={{
-                                    backgroundImage: "url(https://media.slidesgo.com/storage/135449/responsive-images/0-memphis-marketing-plan___media_library_original_1600_900.png)",
+                                    backgroundImage: "url(https://images.unsplash.com/photo-1490481651871-ab68de25d43d?ixid=MXwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHw%3D&ixlib=rb-1.2.1&auto=format&fit=crop&w=1350&q=80)",
                                     backgroundRepeat: "no-repeat",
                                     backgroundPosition: "center"
                                 }}
@@ -80,9 +79,9 @@ class Banner extends Component {
                                         <div className="col">
                                             <div className="slider-contain">
                                                 <div>
-                                                    <h4>welcome to fashion</h4>
-                                                    <h1>women fashion</h1>
-                                                    <Link to={`/shop`} className="btn btn-solid">shop now</Link>
+                                                    <h4>Chào mừng đến với Multikart</h4>
+                                                    <h1>Thời trang nữ</h1>
+                                                    <Link to={'/shop'} className="btn btn-solid">Mua sắm nào</Link>
                                                 </div>
                                             </div>
                                         </div>

@@ -18,21 +18,22 @@ class Tabset_profile extends Component {
             phone: '',
             birthday: '',
             address: '',
-            gender: props.user.profile ? props.user.profile.gender : '2',
+            gender: props.user?.profile ? props.user.profile.gender : '2',
             loading: false
         }
     }
 
     UNSAFE_componentWillReceiveProps(nextProps) {
         if (nextProps.user && nextProps.user != this.props.user) {
+            console.log(nextProps.user);
             const { user } = this.props;
             this.setState({
                 username: nextProps.user.username,
                 email: nextProps.user.email,
                 phone: nextProps.user.phone + '',
-                birthday: nextProps.user.profile != null ? moment(nextProps.user.profile.birthday) : '',
+                birthday: nextProps.user.profile != null ? (nextProps.user.profile.birthday ? moment(nextProps.user.profile.birthday) : new Date()) :  new Date(),
                 address: nextProps.user.address,
-                gender: nextProps.user.profile != null ? nextProps.user.profile.gender : '1',
+                gender: nextProps.user.profile != null ?  (nextProps.user.profile.gender ? moment(nextProps.user.profile.gender) : '1') : '1',
             })
         }
     }
@@ -143,16 +144,10 @@ class Tabset_profile extends Component {
                                                 />
                                             </td>
                                         </tr>
-                                        <tr>
+                                        {/* <tr>
                                             <td>Ngày sinh:</td>
                                             <td>
-                                                {/* <ContentEditable
-                                                    // innerRef={this.contentEditable}
-                                                    html={this.state.birthday}
-                                                    disabled={false}
-                                                    onChange={(e) => this.handleChange(e, "birthday")}
-                                                    tagName='p'
-                                                /> */}
+                                        
                                                 <DateTimePicker
                                                     disableClock="true"
                                                     onChange={this.onChangeDate}
@@ -160,7 +155,7 @@ class Tabset_profile extends Component {
                                                     value={this.state.birthday}
                                                 />
                                             </td>
-                                        </tr>
+                                        </tr> */}
                                         <tr>
                                             <td>Địa chỉ:</td>
                                             <td>
