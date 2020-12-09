@@ -10,13 +10,14 @@ export default (state = initState, action) => {
     switch (action.type) {
         case types.ADD_CART:
             index = state.items.findIndex(item => item.product.id == action.item.id);
+            console.log(action.item.id, state.items);
             if (index != -1) {
                 state.items[index].quantity += action.quantity;
             } else {
                 state.items = [
                     {
                         product: action.item,
-                        quantity: 1
+                        quantity: action.quantity
                     }
                     , ...state.items
                 ];
