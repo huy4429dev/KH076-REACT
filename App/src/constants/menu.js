@@ -100,8 +100,7 @@ export const MENUITEMS = [
     type: "sub",
     active: false,
     children: [
-      { path: "/admin/user", title: "Danh sách", type: "link" },
-      { path: "/admin/user/add", title: "Thêm mới", type: "link" },
+      { path: "/admin/user/add", title: "Thêm mới", type: "link" }
     ],
   },
 
@@ -112,7 +111,7 @@ export const MENUITEMS = [
     active: false,
     children: [
       { path: "/admin/report/revenue", title: "Doanh thu", type: "link" },
-      { path: "/admin/report/product", title: "Khách hàng", type: "link" },
+      { path: "/admin/report/customer", title: "Khách hàng", type: "link" },
       { path: "/admin/report/employee", title: "Nhân viên", type: "link" }
     ],
   },

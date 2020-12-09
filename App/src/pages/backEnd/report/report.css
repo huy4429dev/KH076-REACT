@@ -1,0 +1,7 @@
+
+.report tr{
+    transition: all 0.2s;
+}
+.report tr:hover{
+    background: rgb(124, 181, 236);
+}

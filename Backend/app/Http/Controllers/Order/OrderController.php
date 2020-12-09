@@ -137,6 +137,9 @@ class OrderController extends BaseController
         $Order->status = $request->status;
         $Order->ship_address = $request->ship_address;
         $Order->total = $request->total;
+
+
+
         if($request->user_id != null){
             $user = User::where('id',$request->user_id)->first();
             $user->email = $request->email;
@@ -154,6 +157,8 @@ class OrderController extends BaseController
             $user->save();
             $Order->user_id  = $user->id;
         }
+
+        
         $Order->save();
 
         foreach ($request->detailt as $key => $value) {
@@ -164,6 +169,8 @@ class OrderController extends BaseController
             $OrderItem->order_id = $Order->id;
             $OrderItem->save();
         }
+
+
         $data['order'] = $Order;
         $data['user'] = $user;
         $data['orderDetail'] = $OrderItem;

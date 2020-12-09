@@ -7,7 +7,7 @@ import 'react-responsive-modal/styles.css';
 import connect from '../../../lib/connect';
 import SimpleReactValidator from 'simple-react-validator';
 import * as actions from '../../../actions/backEnd/category';
-import Loading from './../../../components/loadding2';
+import Loading from './../../../components/loading';
 import $ from 'jquery';
 
 class Customer extends Component {

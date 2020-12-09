@@ -3,7 +3,7 @@ import { Link } from 'react-router-dom';
 import InfiniteScroll from 'react-infinite-scroll-component';
 import _ from 'lodash';
 import ProductListItem from "./productListItem";
-import Loadding from './../../loadding2';
+import Loadding from './../../loading';
 
 class ProductListing extends Component {
 

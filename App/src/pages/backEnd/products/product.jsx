@@ -638,7 +638,7 @@ class Product extends Component {
                                                                         <td>{index++}</td>
                                                                         <td><img style={{ width: '50px' }} src={item.images[0]?.url} alt="" /></td>
                                                                         <td><Link to={`/admin/products/detail/${item.id}`} >   {item.name} </Link></td>
-                                                                        <td>{"danh muc"}</td>
+                                                                        <td>{item.category.name}</td>
                                                                         <td>{item.price.toLocaleString()} đ</td>
                                                                         <td>{item.quantity}</td>
                                                                         <td>{item.status === 1 ? <span class="badge badge-success">Đang KD</span> : <span class="badge badge-warning">Dừng KD</span>}</td>
