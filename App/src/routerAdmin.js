@@ -14,6 +14,8 @@ import Customer from './pages/backEnd/customer';
 import ColorProduct from './pages/backEnd/products/colorProduct';
 import SizeProduct from './pages/backEnd/products/sizeProduct';
 import Order from './pages/backEnd/order/order';
+import Revenue from './pages/backEnd/report/reportRevenue';
+import ReportCustomer from './pages/backEnd/report/reportCustomer';
 
 
 
@@ -22,11 +24,6 @@ const routesAdmin = [
         path: '/admin',
         exact: true,
         main: () => <Dashboard />
-    },
-    {
-        path: '/admin/user',
-        exact: true,
-        main: () => <User />
     },
     {
         path: '/admin/products/category',
@@ -92,6 +89,16 @@ const routesAdmin = [
         path: '/admin/orders',
         exact: true,
         main: () => <Order />
+    },
+    {
+        path: '/admin/report/revenue',
+        exact: true,
+        main: () => <Revenue />
+    },
+    {
+        path: '/admin/report/customer',
+        exact: true,
+        main: () => <ReportCustomer />
     },
 ];
 

@@ -317,8 +317,9 @@ Route::prefix('report')->group(function(){
     Route::middleware(['auth:api', 'role'])->group(function() {
          
         Route::middleware(['scope:admin,shop'])->get('/', [ReportController::class,'index'] );
-        // Route::middleware(['scope:admin,shop,user'])->get('/search', [RatingController::class,'search'] );
-        // Route::middleware(['scope:admin,shop,user'])->get('/{id}', [RatingController::class,'show'] );
+        Route::middleware(['scope:admin,shop'])->get('/revenue', [ReportController::class,'revenue'] );
+        Route::middleware(['scope:admin,shop'])->get('/employee', [ReportController::class,'employee'] );
+        Route::middleware(['scope:admin,shop'])->get('/customer', [ReportController::class,'customer'] );
         // Route::middleware(['scope:admin,shop,user'])->post('/', [RatingController::class,'create'] );
         // Route::middleware(['scope:admin,shop,user'])->put('/{id}', [RatingController::class,'update'] );
         // Route::middleware(['scope:admin,shop,user'])->delete('/{id}', [RatingController::class,'delete'] );

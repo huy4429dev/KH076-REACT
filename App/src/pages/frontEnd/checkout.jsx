@@ -6,7 +6,7 @@ import SimpleReactValidator from 'simple-react-validator';
 import connect from './../../lib/connect';
 import * as actions from './../../actions/frontEnd/cart';
 import Breadcrumb from "./../../components/frontEnd/home/breadcrumb";
-import Loading from './../../components/loadding2';
+import Loading from './../../components/loading';
 import Modal from './order';
 
 class CheckOut extends Component {

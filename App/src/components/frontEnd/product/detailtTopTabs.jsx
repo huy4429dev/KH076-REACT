@@ -4,7 +4,7 @@ import 'react-tabs/style/react-tabs.scss';
 import { Link } from 'react-router-dom';
 import connect from './../../../lib/connect';
 import * as actions from './../../../actions/frontEnd/product';
-import Loading from './../../loadding2';
+import Loading from './../../loading';
 import SimpleReactValidator from 'simple-react-validator';
 class DetailsTopTabs extends Component {
     constructor(props) {

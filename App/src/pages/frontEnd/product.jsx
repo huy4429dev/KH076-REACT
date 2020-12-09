@@ -14,7 +14,7 @@ import DetailsTopTabs from './../../components/frontEnd/product/detailtTopTabs';
 import Service from './../../components/frontEnd/product/service';
 import connect from './../../lib/connect';
 import * as actions from './../../actions/frontEnd/product';
-import Loading from './../../components/loadding2';
+import Loading from './../../components/loading';
 
 class Product extends Component {
 

@@ -162,7 +162,7 @@ class SizeProduct extends Component {
                                                     <div className="col-4">
                                                         <div class="card">
                                                             <div className="d-flex justify-content-between align-items-center">
-                                                                <h5 class="card-header" style={{ size: 'gray' }}>DANH SÁCH MẪU SIZE</h5>
+                                                                <h5 class="card-header" style={{ color: 'gray' }}>DANH SÁCH MẪU SIZE</h5>
                                                                 <div>
                                                                     <button
                                                                         type="button"
@@ -193,13 +193,13 @@ class SizeProduct extends Component {
                                                                             <div key={item.id} className="template-size-item d-flex align-items-center  px-3"
                                                                                 style={{
                                                                                     border: '1px solid #c5c5c5',
-                                                                                    paddingLeft:' 8px',
+                                                                                    paddingLeft: ' 8px',
                                                                                     cursor: 'pointer',
                                                                                     borderRadius: '4px',
                                                                                     marginBottom: '4px',
                                                                                 }}
                                                                             >
-                                                                                <span style={{width:'30px', color:'gray'}}>#</span>
+                                                                                <span style={{ width: '30px', color: 'gray' }}>#</span>
                                                                                 <div className='flex-1'>
                                                                                     <h5 class="card-title mb-0 py-1"
                                                                                         style={{ color: 'gray', fontSize: '14px' }}
