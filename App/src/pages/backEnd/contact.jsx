@@ -123,7 +123,7 @@ class Contact extends Component {
                         <div className="col-sm-12">
                             <div className="card">
                                 <div className="card-header">
-                                    <h5>Danh sách bài viết</h5>
+                                    <h5>Danh sách liên hệ</h5>
                                 </div>
                                 <div className="card-body">
                                     <div className="btn-popup pull-right">

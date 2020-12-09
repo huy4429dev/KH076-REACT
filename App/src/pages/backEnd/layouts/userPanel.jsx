@@ -1,21 +1,38 @@
 import React, { Component } from 'react'
 import connect from './../../../lib/connect';
 import * as actions from './../../../actions/frontEnd/login';
+import * as EP from "./../../../constants/endpoint";
+
 export class UserPanel extends Component {
+    showAvatar = () => {
+        const { user } = this.props.login;
+        if (user) {
+            if (user.profile) {
+                return (
+                    <div className="d-flex justify-content-center">
+                        <img style={{ width: 50, height: 50 }} src={`${EP.endpoint}${user.profile.avatar}`}
+                            alt="" className="img-fluid m-0 rounded-circle blur-up lazyloaded" />
+                    </div>
+                )
+            } else {
+                return (
+                    <div className="d-flex justify-content-center text-uppercase">
+                        <div onClick={this.avatar}
+                            className="rounded-circle bg-light text-dark text-center d-flex justify-content-center align-items-center"
+                            style={{ width: 50, height: 50 }}>
+                            {user.username.charAt(0)}
+                        </div>
+                    </div>
+                )
+            }
+        }
+    }
     render() {
         const { user } = this.props.login;
-        return (
-            <div>
-                <div className="sidebar-user text-center">
-                    <div className="mx-auto border text-uppercase border-secondary bg-light text-dark rounded-circle d-flex justify-content-center align-items-center"
-                        style={{ width: "50px", height: "50px" }}>
-                        {user?.username?.charAt(0) ?? 'ADMIN'}
-                    </div>
-                    {/* <h6 className="mt-3 f-14">{user?.username?.charAt(0) ?? 'ADMIN'}</h6> */}
-                    <p className='mt-3'> {user?.username?.name ?? 'ADMIN'}</p>
-                </div>
-            </div>
-        )
+        return null;
+        // <div> 
+        //     {this.showAvatar()}
+        // </div>
     }
 }
 

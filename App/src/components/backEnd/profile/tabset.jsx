@@ -31,9 +31,9 @@ class Tabset_profile extends Component {
                 username: nextProps.user.username,
                 email: nextProps.user.email,
                 phone: nextProps.user.phone + '',
-                birthday: nextProps.user.profile != null ? (nextProps.user.profile.birthday ? moment(nextProps.user.profile.birthday) : new Date()) :  new Date(),
+                birthday: nextProps.user.profile != null ? (nextProps.user.profile.birthday ? moment(nextProps.user.profile.birthday) : new Date()) : new Date(),
                 address: nextProps.user.address,
-                gender: nextProps.user.profile != null ?  (nextProps.user.profile.gender ? moment(nextProps.user.profile.gender) : '1') : '1',
+                gender: nextProps.user?.profile ? nextProps.user.profile.gender : '2',
             })
         }
     }
