@@ -175,11 +175,11 @@ Route::prefix('products')->group(function(){
     Route::get('/top-product', [ShopController::class,'topProduct'] );
     Route::post('/comment', [ShopController::class,'comment'] );
     Route::get('/{id}', [ShopController::class,'show'] );
-
+   Route::get('/search', [ProductController::class,'search'] );
 
     Route::middleware(['auth:api', 'role'])->group(function() {
         Route::get('/', [ProductController::class,'index'] );
-        Route::get('/search', [ProductController::class,'search'] );
+     
         Route::middleware(['scope:admin,shop,user'])->post('/', [ProductController::class,'create'] );
         Route::middleware(['scope:admin,shop,user'])->put('/{id}', [ProductController::class,'update'] );
         Route::middleware(['scope:admin,shop,user'])->delete('/{id}', [ProductController::class,'delete'] );

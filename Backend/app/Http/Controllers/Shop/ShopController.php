@@ -228,22 +228,26 @@ class ShopController extends BaseController
         );
     }
     public function index(Request $request){
-            //$shopId = $shopId;
-            // $userIdsOfShop = Shop::find($shopId)->users->pluck('id');
-
-            $Products = Product::orderBy('created_at','desc')
+        $page = $request->query('page') ? $request->query('page') : 1;
+        $pageSize = $request->query('pageSize') ? $request->query('pageSize') : 25;
+            $Products = Product::orderBy('id','desc')
             ->with('user')
             ->with('images')
             ->with('colors')
             ->with('sizes')
+            ->with('category')
+            ->skip( ($page - 1) * $pageSize )
+            ->take($pageSize)
             ->get();
-
+        
+        $total = Product::get();
         return $this->sendResponse(
             $data = [
-                        'items' => $Products ,
+                     'items' => $Products , 
+                     'total' => $total->count()
                     ]
-            );
-        }
+          );
+    }
 
     // public function index(Request $request){
 

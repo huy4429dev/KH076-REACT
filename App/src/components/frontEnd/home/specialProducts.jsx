@@ -19,7 +19,6 @@ class SpecialProducts extends Component {
         const bestSeller = [];
         const mensWear = [];
         const womensWear = [];
-        console.log(this.props.productHome, "abc");
         const { newProduct, manProduct, womenProduct } = this.props.productHome;
         return (
             <div>
