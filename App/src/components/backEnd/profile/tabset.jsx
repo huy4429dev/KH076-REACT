@@ -124,7 +124,7 @@ class Tabset_profile extends Component {
                                         </tr>
                                         <tr>
                                             <td>giới tính:</td>
-                                            <td>
+                                            <td style={{ minWidth: "10rem" }}>
                                                 <Select
                                                     defaultValue={defaultGender}
                                                     options={options}
