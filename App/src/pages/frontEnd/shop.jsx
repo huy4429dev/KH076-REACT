@@ -11,7 +11,7 @@ import * as actions from './../../actions/frontEnd/product';
 import Loadding from './../../components/loadding2';
 import Pagination from "react-bootstrap-4-pagination";
 import queryString from 'query-string';
-
+import $ from 'jquery';
 class Shop extends Component {
     constructor(props) {
         super(props);
@@ -22,13 +22,14 @@ class Shop extends Component {
             price: 1000000,
             filter: {
                 page: 1,
-                pageSize: 20
+                pageSize: 20,
             }
         }
     }
     componentDidMount() {
         window.scrollTo(0, 0);
         this.getData();
+        $('.page-link').on('click', (e) => e.preventDefault());
     }
     getData = () => {
         this.setState({ loading: true });
@@ -56,23 +57,28 @@ class Shop extends Component {
             price: v
         })
     }
-    change = (e, value, key) => {
-        e.preventDefault();
-        e.stopPropagation();
-        console.log(value, key);
-        // this.setState({
-        //     filter: {
-        //         ...this.state.filter,
-        //         [key]: value
-        //     }
-        // }, () => {
-        //     this.getData();
-        // })
+    change = (value) => {
+        this.setState({
+            filter: {
+                ...this.state.filter,
+                page: value
+            }
+        }, () => {
+            this.getData();
+        })
+    }
+    changePrice = (value) => {
+        this.setState({
+            filter: {
+                ...this.state.filter,
+                ...value
+            }
+        }, () => this.getData())
     }
     render() {
         const { listProduct } = this.props.productHome;
         const { filterBy, price, filter } = this.state;
-
+        console.log(this.state);
         return (
             <div>
                 <Loadding show={this.state.loading} type="full" />
@@ -121,19 +127,22 @@ class Shop extends Component {
                                                             price={price}
                                                             colSize={this.state.layoutColumns}
                                                             products={listProduct} />
-                                                        <div className="mt-5">
-                                                            <Pagination
-                                                                threeDots
-                                                                totalPages={listProduct ? Math.ceil(listProduct.total / filter.pageSize) : 0}
-                                                                currentPage={filter.page}
-                                                                showMax={7}
-                                                                prevNext
-                                                                activeBgColor="#18eaca"
-                                                                activeBorderColor="#7bc9c9"
-                                                                onClick={(e, page) => this.change(e, page, "page")}
-                                                            />
-                                                        </div>
-
+                                                        {
+                                                            listProduct?.items?.length > 0 && (
+                                                                <div className="mt-5">
+                                                                    <Pagination
+                                                                        threeDots
+                                                                        totalPages={listProduct ? Math.ceil(listProduct.total / filter.pageSize) : 0}
+                                                                        currentPage={filter.page}
+                                                                        showMax={7}
+                                                                        prevNext
+                                                                        activeBgColor="#18eaca"
+                                                                        activeBorderColor="#7bc9c9"
+                                                                        onClick={(page) => this.change(page)}
+                                                                    />
+                                                                </div>
+                                                            )
+                                                        }
                                                     </div>
                                                 </div>
                                             </div>
@@ -144,11 +153,11 @@ class Shop extends Component {
 
                                     <StickyBox offsetTop={20} offsetBottom={20}>
                                         <div>
-                                            <Filter filterPrice={(v) => this.filterPrice(v)} />
+                                            <Filter changePrice={(value) => this.changePrice(value)} />
                                             <NewProduct />
                                             <div className="collection-sidebar-banner">
                                                 <a href="#">
-                                                    <img src={`${process.env.PUBLIC_URL}/assets/images/side-banner.png`} className="img-fluid" alt="" />
+                                                    <img src={`https://react.pixelstrap.com/multikart/assets/images/side-banner.png`} className="img-fluid" alt="" />
                                                 </a>
                                             </div>
                                         </div>

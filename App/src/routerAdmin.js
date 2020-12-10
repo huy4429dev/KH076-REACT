@@ -9,7 +9,7 @@ import AddUser from './pages/backEnd/user/create';
 import Profile from './pages/backEnd/profile';
 import CategoryDetailt from './pages/backEnd/products/categoryDetailt';
 import Blog from './pages/backEnd/blog';
-import Contact from './pages/backEnd/contact';
+import Contact from './pages/backEnd/contact/index';
 import Customer from './pages/backEnd/customer';
 import ColorProduct from './pages/backEnd/products/colorProduct';
 import SizeProduct from './pages/backEnd/products/sizeProduct';
@@ -38,7 +38,7 @@ const routesAdmin = [
     {
         path: '/admin/products/detail/:id',
         exact: true,
-        main: ({match}) => <Detailt match={match} />  
+        main: ({ match }) => <Detailt match={match} />
     },
     {
         path: '/admin/products/add',

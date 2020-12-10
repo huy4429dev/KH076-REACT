@@ -8,11 +8,11 @@ const initState = {
 export default (state = initState, action) => {
     let index;
     switch (action.type) {
-        // case types.GET_LIST_POST_SUCCESS:
-        //     return {
-        //         ...state,
-        //         posts: action.data,
-        //     }
+        case types.GET_CATEGORY_SUCCESS:
+            state.items = action.data.data.items;
+            return {
+                ...state,
+            }
         default:
             return state;
     }

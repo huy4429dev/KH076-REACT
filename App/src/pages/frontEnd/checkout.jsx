@@ -274,7 +274,7 @@ class CheckOut extends Component {
                                                     </ul>
                                                     <ul className="sub-total">
                                                         <li>Tổng <span className="count">{this.totalPrice(items)}đ</span></li>
-                                                        <li>Vận chuyển <div className="shipping">
+                                                        {/* <li>Vận chuyển <div className="shipping">
                                                             <div className="shopping-option">
                                                                 <input type="checkbox" name="free-shipping" id="free-shipping" />
                                                                 <label htmlFor="free-shipping">Miễn phí</label>
@@ -284,15 +284,15 @@ class CheckOut extends Component {
                                                                 <label htmlFor="local-pickup">Local Pickup</label>
                                                             </div>
                                                         </div>
-                                                        </li>
+                                                        </li> */}
                                                     </ul>
 
                                                     <ul className="total">
-                                                        <li>Tổng tiền: <span className="count">{total}</span></li>
+                                                        <li>Tổng tiền: <span className="count">{this.totalPrice(items)}đ</span></li>
                                                     </ul>
                                                 </div>
 
-                                                <div className="payment-box">
+                                                {/* <div className="payment-box">
                                                     <div className="upper-box">
                                                         <div className="payment-options">
                                                             <ul>
@@ -312,11 +312,11 @@ class CheckOut extends Component {
                                                         </div>
                                                     </div>
                                                     <button type="button" className="btn-solid btn" onClick={(e) => this.addOrder(e)} >Đặt hàng</button>
-                                                </div>
+                                                </div> */}
                                             </div>
                                         </div>
                                     </div>
-                                    <div className="row section-t-space">
+                                    {/* <div className="row section-t-space">
                                         <div className="col-lg-6">
                                             <div className="stripe-section">
                                                 <h5>stripe js example</h5>
@@ -365,7 +365,7 @@ class CheckOut extends Component {
                                                 </div>
                                             </div>
                                         </div>
-                                    </div>
+                                    </div> */}
                                 </form>
                             </div>
                         </div>

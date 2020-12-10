@@ -13,23 +13,22 @@ use Illuminate\Support\Facades\Auth;
 class BlogController extends BaseController
 {
         public function index(Request $request){
-
-        $page = $request->query('page') ?? 1;
-        $pageSize = $request->query('pageSize') ?? 25;
-
-        $blogs = Blog::orderBy('id','desc')
-        ->with('user')
-        ->skip( ($page - 1) * $pageSize )
-        ->take($pageSize)
-        ->get();
-
+        $page = $request->query('page') ? $request->query('page') : 1;
+        $pageSize = $request->query('pageSize') ? $request->query('pageSize') : 25;
+            $Products = Blog::orderBy('id','desc')
+            ->with('user')
+            ->skip( ($page - 1) * $pageSize )
+            ->take($pageSize)
+            ->get();
+        
+        $total = Blog::get();
         return $this->sendResponse(
-                $data = [
-                        'items' => $blogs , 
-                        'total' => $blogs->count()
-                        ]
-            );
-        }
+            $data = [
+                     'items' => $Products , 
+                     'total' => $total->count()
+                    ]
+          );
+    }
       public function create(Request $request){
 
         $validator = Validator::make($request->all(), [

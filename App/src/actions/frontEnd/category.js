@@ -1,22 +1,16 @@
-// export const types = {
-//     GET_FILE_SUCCES: 'FACEBOOK_FILE_IMAGE_GET_FILE_SUCCES',
-// }
+import * as ep from './../../constants/enpoint';
+export const types = {
+    GET_CATEGORY_SUCCESS: "GET_CATEGORY_SUCCESS",
+    GET_CATEGORY_ERROR: "GET_CATEGORY_ERROR",
+}
 
-// export const getfile = (pageId) => {
-//     return {
-//         url: `/api/collection?pageId=${pageId}`,
-//         types: {
-//             success: types.GET_FILE_SUCCES,
-//         }
-//     };
 
-// };
-// // export const addOften = (item, data) => {
-// //     return {
-// //         url: '/api/conversation/attachment/favorite/' + item.id,
-// //         method: 'put',
-// //         params: {
-// //             ...data
-// //         },
-// //     };
-// // };
+export const getList = () => {
+    return {
+        url: `${ep.enpoint}/api/categories/list`,
+        method: 'get',
+        onSuccess: types.GET_CATEGORY_SUCCESS,
+        onError: types.GET_CATEGORY_ERROR
+    };
+};
+;

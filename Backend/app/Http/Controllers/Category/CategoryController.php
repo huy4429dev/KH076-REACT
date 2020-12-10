@@ -191,4 +191,15 @@ class CategoryController extends BaseController
           );
     }
   
+      public function home(Request $request){
+        
+                $categories = Category::orderBy('id','desc')
+                ->get();
+
+        return $this->sendResponse(
+            $data = [
+                     'items' => $categories , 
+                    ]
+          );
+    }
 }

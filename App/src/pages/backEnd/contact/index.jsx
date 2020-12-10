@@ -4,7 +4,7 @@ import Datatable from '../../../components/backEnd/products/listCategory';
 import 'react-responsive-modal/styles.css';
 import connect from './../../../lib/connect';
 import SimpleReactValidator from 'simple-react-validator';
-import * as actions from './../../../actions/backEnd/blog';
+import * as actions from './../../../actions/backEnd/contact';
 import Loading from './../../../components/loadding2';
 import Create from './create';
 import queryString from 'query-string';
@@ -16,7 +16,7 @@ import {
 } from "react-router-dom";
 import Edit from './edit';
 
-class Blog extends Component {
+class Contact extends Component {
     constructor(props) {
         super(props);
         this.state = {
@@ -154,30 +154,29 @@ class Blog extends Component {
     render() {
         const { open, category, filter } = this.state;
         const { categories } = this.props;
-        // const items = categories.items ? categories.items : [];
-        const { blogs } = this.props.blog;
-        console.log(blogs, "âs");
+        const { contacts } = this.props.contact;
+        console.log(contacts, "dmm");
 
         return (
             <Fragment>
-                <Breadcrumb title="Tin tức" parent="Digital" />
+                <Breadcrumb title="Liên hệ" parent="Admin" />
                 <Loading type="full" show={this.state.show} />
                 <div className="container-fluid">
                     <div className="row">
                         <div className="col-sm-12">
                             <div className="card">
                                 <div className="card-header">
-                                    <h5>Danh sách bài viết</h5>
+                                    <h5>Danh sách liên hệ</h5>
                                 </div>
                                 <div className="card-body">
-                                    <div className="btn-popup pull-right">
+                                    {/* <div className="btn-popup pull-right">
                                         <Create open={this.state.openCreate}
                                             onCloseModal={() => this.setState({ openCreate: false })}
                                         />
                                         <button type="button" className="btn btn-secondary"
                                             onClick={() => this.setState({ openCreate: true })} data-toggle="modal" data-original-title="test" data-target="#exampleModal">Thêm mới</button>
 
-                                    </div>
+                                    </div> */}
                                     <div className="clearfix"></div>
                                     <div id="basicScenario" className="product-physical">
                                         {
@@ -186,25 +185,23 @@ class Blog extends Component {
                                                 <table className="table">
                                                     <tr>
                                                         <th style={{ width: '5%' }}>#</th>
-                                                        <th style={{ width: '20%' }}>Tên</th>
-                                                        <th style={{ width: '20%' }}>Ảnh</th>
-                                                        <th style={{ width: '20%' }}>Mô tả</th>
+                                                        <th style={{ width: '20%' }}>Nội dung</th>
+                                                        <th style={{ width: '20%' }}>Người gửi</th>
                                                         <th style={{ width: '15%' }}>Ngày tạo</th>
                                                         <th style={{ width: '10%' }} className='text-center' colSpan='2'>Action</th>
                                                     </tr>
                                                     {
-                                                        blogs && (
-                                                            blogs.items.map((item, index) => {
+                                                        contacts && (
+                                                            contacts.items.map((item, index) => {
                                                                 return (
                                                                     <tr >
                                                                         <td>{++index}</td>
-                                                                        <td>{item.title}</td>
-                                                                        <td><img src={item.image} style={{ height: "50px", width: "50px" }} /></td>
-                                                                        <td>{item.disception}</td>
+                                                                        <td>{item.message}</td>
+                                                                        <td>{item.user.username}</td>
                                                                         <td>{moment(item.created_at).format("DD/MM/YYYY")}</td>
                                                                         <td>
                                                                             <div className="d-flex">
-                                                                                <button style={{ padding: '5px 10px' }} type='button' className='btn btn-warning btn-sm mr-1' onClick={() => this.handleEdit(item)}>Sửa</button>
+                                                                                {/* <button style={{ padding: '5px 10px' }} type='button' className='btn btn-warning btn-sm mr-1' onClick={() => this.handleEdit(item)}>Sửa</button> */}
                                                                                 <button style={{ padding: '5px 10px' }} type='button' className='btn btn-primary btn-sm' onClick={() => this.handleDelete(item.id)}>Xóa</button>
                                                                             </div>
 
@@ -217,21 +214,26 @@ class Blog extends Component {
                                                     }
                                                 </table>
                                                 {
-                                                    blogs?.items.length == 0 &&
+                                                    contacts?.items.length == 0 &&
                                                     <p className="text-center alert alert-warning">Chưa có danh mục</p>
                                                 }
-                                                <div className="mt-5">
-                                                    <Pagination
-                                                        threeDots
-                                                        totalPages={blogs ? Math.ceil(blogs.total / filter.pageSize) : 0}
-                                                        currentPage={filter.page}
-                                                        showMax={7}
-                                                        prevNext
-                                                        activeBgColor="#18eaca"
-                                                        activeBorderColor="#7bc9c9"
-                                                        onClick={(page) => this.change(page)}
-                                                    />
-                                                </div>
+                                                {
+                                                    contacts?.items.length > 0 && (
+                                                        <div className="mt-5">
+                                                            <Pagination
+                                                                threeDots
+                                                                totalPages={contacts ? Math.ceil(contacts.total / filter.pageSize) : 0}
+                                                                currentPage={filter.page}
+                                                                showMax={7}
+                                                                prevNext
+                                                                activeBgColor="#18eaca"
+                                                                activeBorderColor="#7bc9c9"
+                                                                onClick={(page) => this.change(page)}
+                                                            />
+                                                        </div>
+                                                    )
+                                                }
+
                                             </React.Fragment>
                                         }
                                         <Edit open={this.state.openEdit}
@@ -250,9 +252,9 @@ class Blog extends Component {
     }
 }
 
-export default connect(Blog, state => (
+export default connect(Contact, state => (
     {
         categories: state.category,
-        blog: state.blogAdmin
+        contact: state.contact
     }
 ), actions);

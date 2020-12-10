@@ -53,4 +53,38 @@ class ContactController extends BaseController
         );
 
     }
+     public function index(Request $request){
+        $page = $request->query('page') ? $request->query('page') : 1;
+        $pageSize = $request->query('pageSize') ? $request->query('pageSize') : 25;
+
+            $Contact = Contact::orderBy('id','desc')
+            ->with('user')
+            ->skip( ($page - 1) * $pageSize )
+            ->take($pageSize)
+            ->get();
+        
+        $total = Contact::get();
+        return $this->sendResponse(
+            $data = [
+                     'items' => $Contact , 
+                     'total' => $Contact->count()
+                    ]
+          );
+    }
+       public function delete($id,Request $request){
+
+        $found = Contact::find($id); 
+
+        if($found == null){
+            
+            return $this->sendError('Shop Errors.',['error' => 'Shop not found !']);
+        }
+
+        $found->delete();
+
+        return $this->sendResponse(
+            $found, 
+            'Delete Shop successfully'
+          );
+    }
 }

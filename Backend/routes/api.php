@@ -141,7 +141,7 @@ Route::prefix('uploads')->group(function(){
 
 
 Route::prefix('categories')->group(function(){
-    
+     Route::get('/list', [CategoryController::class,'home'] );
     Route::middleware(['auth:api', 'role'])->group(function() {
         
         Route::get('/', [CategoryController::class,'index'] );
@@ -297,6 +297,8 @@ Route::prefix('rates')->group(function(){
 
 Route::prefix('contact')->group(function(){
       Route::post('/create', [ContactController::class,'create'] );
+    Route::get('/', [ContactController::class,'index'] );
+      Route::delete('/{id}', [ContactController::class,'delete'] );
     // Route::middleware(['auth:api', 'role'])->group(function() {
          
     //     Route::middleware(['scope:admin,shop,user'])->get('/', [ShopController::class,'index'] );

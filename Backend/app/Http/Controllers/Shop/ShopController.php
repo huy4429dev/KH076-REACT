@@ -230,7 +230,17 @@ class ShopController extends BaseController
     public function index(Request $request){
         $page = $request->query('page') ? $request->query('page') : 1;
         $pageSize = $request->query('pageSize') ? $request->query('pageSize') : 25;
-            $Products = Product::orderBy('id','desc')
+
+        $query = Product::query();
+           $min = $request->query('min');
+           $max = $request->query('max');
+
+            if($min != null){
+                $query = $query->whereBetween('price',[$min, $max]);
+            }
+
+            $Products = $query
+            ->orderBy('id','desc')
             ->with('user')
             ->with('images')
             ->with('colors')

@@ -141,6 +141,12 @@ export const MENUITEMS = [
   //     title: 'Reports', path: '/reports/report', icon: BarChart, type: 'link', active: false
   // },
   {
+    title: "Liên hệ",
+    icon: Settings,
+    type: "sub",
+    children: [{ path: "/admin/contact", title: "Liên hệ", type: "link" }],
+  },
+  {
     title: "Thiết lập",
     icon: Settings,
     type: "sub",

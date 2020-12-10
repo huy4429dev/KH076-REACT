@@ -1,42 +1,74 @@
 import React, { Component } from 'react';
 import Slider from 'react-slick';
 import { Link } from 'react-router-dom';
-
-
+import * as actions from './../../../actions/frontEnd/product';
+import connect from './../../../lib/connect';
 
 class NewProduct extends Component {
+    constructor(props) {
+        super(props);
+        this.state = {
+            items: []
+        }
+    }
+    componentDidMount() {
+        this.props.actions.getNewProducts().then(data => {
+            if (data.success) {
+                this.setState({ items: data.data.items })
+            }
+        })
+    }
+
     render() {
         const { symbol } = this.props;
-        const items = [];
+        const { items } = this.state;
 
-        var arrays = [];
-        while (items.length > 0) {
-            arrays.push(items.splice(0, 3));
-        }
-
+        // while (items.length > 0) {
+        //     arrays.push(items.splice(0, 3));
+        // }
+        var settings = {
+            // dots: true,
+            infinite: true,
+            speed: 500,
+            slidesToShow: 1,
+            slidesToScroll: 1,
+            vertical: false,
+            // verticalSwiping: false,
+        };
         return (
             <div className="theme-card">
-                <h5 className="title-border">new product</h5>
+                <h5 className="title-border">Sản phẩm mới</h5>
                 <Slider className="offer-slider slide-1">
-                    {arrays.map((products, index) =>
+                    {items.length > 0 && items.map((product, index) =>
                         <div key={index}>
-                            {products.map((product, i) =>
-                                <div className="media" key={i}>
-                                    <Link to={`${process.env.PUBLIC_URL}/left-sidebar/product/${product.id}`}><img className="img-fluid" src={`${product.variants[0].images}`} alt="" /></Link>
-                                    <div className="media-body align-self-center">
-                                        <div className="rating">
-                                            <i className="fa fa-star"></i>
-                                            <i className="fa fa-star"></i>
-                                            <i className="fa fa-star"></i>
-                                            <i className="fa fa-star"></i>
-                                            <i className="fa fa-star"></i>
-                                        </div>
-                                        <Link to={`${process.env.PUBLIC_URL}/left-sidebar/product/${product.id}`}><h6>{product.name}</h6></Link>
-                                        <h4>{symbol}{(product.price * product.discount / 100)}
-                                            <del><span className="money">{symbol}{product.price}</span></del></h4>
+
+                            <div className="media" key={index}>
+                                <Link to={`/product/${product.id}`}>
+                                    <img className="img-fluid"
+                                        src={`${product.images[0].url}`} alt="" /></Link>
+                                <div className="media-body align-self-center">
+                                    <div className="rating">
+                                        <i className="fa fa-star"></i>
+                                        <i className="fa fa-star"></i>
+                                        <i className="fa fa-star"></i>
+                                        <i className="fa fa-star"></i>
+                                        <i className="fa fa-star"></i>
                                     </div>
+                                    <Link to={`/product/${product.id}`}><h6>{product.name}</h6></Link>
+                                    {
+                                        product.discount ?
+                                            <h4>{product.price - (product.price * product.discount / 100)}đ
+                                                <del><span className="money">{product.price}đ</span></del>
+                                            </h4>
+                                            :
+                                            <h4>
+                                                <span className="money">{product.price}đ</span>
+                                            </h4>
+                                    }
+
                                 </div>
-                            )}
+                            </div>
+
                         </div>
                     )}
                 </Slider>
@@ -46,4 +78,6 @@ class NewProduct extends Component {
 }
 
 
-export default NewProduct;
+export default connect(NewProduct, state => ({
+
+}), actions);

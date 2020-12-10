@@ -14,6 +14,6 @@ class Contact extends Model
     public $timestamps = true;
      
     public function user(){
-        return $this->belongsTo(Customer ::class);
+        return $this->belongsTo(User ::class);
     }
 }

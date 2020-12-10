@@ -31,7 +31,7 @@ ReactDOM.render(
 						<Route exact path={
 							["/admin", "/admin/dashboard", "/admin/user", "/admin/user/add", "/admin/products/category",
 								"/admin/products/list", "/admin/products/detailt", "/admin/products/add",
-								"/admin/profile", "/admin/blog"
+								"/admin/profile", "/admin/blog", "/admin/orders", "/admin/contact"
 							]
 						} component={({ history }) => <Admin history={history} />} />
 

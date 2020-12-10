@@ -11,7 +11,11 @@ class Filter extends Component {
 
         this.state = {
             openFilter: false,
-            price: 0
+            price: 0,
+            value: {
+                min: 0,
+                max: 1000000,
+            }
         }
     }
 
@@ -38,13 +42,22 @@ class Filter extends Component {
         event.target.classList.add('active');
         this.props.filterColor(color)
     }
-
+    changePrice = (value) => {
+        this.setState({
+            value: {
+                ...this.state.value,
+                ...value
+            }
+        })
+        this.props.changePrice(value);
+    }
     render() {
+        console.log(this.state);
         // const filteredBrands = this.props.filters.brand;
         const filteredBrands = "xxx";
-        console.log(this.state);
         const brands = [];
         const colors = [];
+
         return (
             <div className="collection-filter-block">
                 {/*brand filter start*/}
@@ -99,14 +112,26 @@ class Filter extends Component {
                             <div className="collection-collapse-block-content block-price-content" ref={setCollapsibleElement}>
                                 <div className="collection-brand-filter">
                                     <div className="custom-control custom-checkbox collection-filter-checkbox">
-                                        <InputRange
-                                            maxValue={1000000}
-                                            minValue={0}
-                                            value={this.state.price}
+                                        {/* <InputRange
+                                            draggableTrack={true}
+                                            // maxValue={1000000}
+                                            // minValue={0}
+                                            // value={this.state.price}
+                                            value={{
+                                                min: 10,
+                                                max: 70,
+                                            }}
                                             onChange={value => {
                                                 this.setState({ price: value })
                                                 this.props.filterPrice(value)
-                                            }} />
+                                            }} /> */}
+                                        <InputRange
+                                            draggableTrack
+                                            maxValue={500000}
+                                            minValue={50}
+                                            onChange={value => this.setState({ value: value })}
+                                            onChangeComplete={value => this.changePrice(value)}
+                                            value={this.state.value} />
                                     </div>
                                 </div>
                             </div>
