@@ -18,6 +18,7 @@ import $ from 'jquery';
 import {
     Link,
 } from "react-router-dom";
+
 const customButton = { borderRadius: 0, paddingTop: '6px', paddingBottom: '6px', paddingLeft: '10px', paddingRight: '10px' };
 class Product extends Component {
     constructor(props) {
@@ -45,8 +46,7 @@ class Product extends Component {
             openModalDelete: false,
             page: 1,
             pageSize: 25,
-            filter: {
-            }
+            q: ''
         };
         this.validator = new SimpleReactValidator({
             autoForceUpdate: this,
@@ -80,6 +80,42 @@ class Product extends Component {
 
     }
 
+    handleOnSearch = (event) => {
+
+        const { searchProducts } = this.props.actions;
+
+        const value = event.target.value;
+
+
+        if (this.state.q !== value && !this.state.loading) {
+
+            if (this.searchTimer) {
+                clearTimeout(this.searchTimer);
+            }
+
+            this.searchTimer = setTimeout(() => {
+
+                this.setState({
+                    loading: true
+                })
+
+
+                searchProducts(1, `&q=${value}`)
+                    .then(() => {
+                        this.setState({ loading: false, q: value });
+                    })
+                    .catch((err) => {
+                        this.setState({ loading: false });
+                        window.notify('Lỗi: ' + err.message, 'danger');
+                    })
+
+
+
+            }, 800);
+        }
+
+    }
+
 
     handleInputOnchange = (event) => {
 
@@ -88,7 +124,7 @@ class Product extends Component {
         const tagName = target.name;
         this.setState({
             [tagName]: value
-        }, () => { console.log(this.state, 'DATA CHANGE'); });
+        });
 
     }
 
@@ -149,8 +185,6 @@ class Product extends Component {
     }
 
     onOpenModal = () => {
-
-        const { name } = this.state;
         this.setState({
             open: true,
             name: null,
@@ -279,28 +313,27 @@ class Product extends Component {
 
     handleEdit = (item) => {
 
+        let { itemEdit } = this.state;
+
         this.setState({
             itemEdit: item,
             showEdit: true
-        })
+        });
+
+        console.log(item, 'ITEM EDIT');
 
     }
 
     handlePageChange = (page) => {
 
-        console.log(page, 'PAGE');
-
+        
         this.setState({
             loading: true
         })
-        const { getProducts, getCategories, getColors, getSizes } = this.props.actions;
-
-        Promise.all([
-            getProducts(page),
-            getCategories(),
-            getColors(),
-            getSizes()
-        ])
+        const { searchProducts } = this.props.actions;
+        const {q} = this.state;
+        let filter = `&q=${q}`;
+        searchProducts(page,filter)
             .then(() => {
                 this.setState({ loading: false, page: page });
             })
@@ -385,28 +418,8 @@ class Product extends Component {
             });
     }
 
-    applyFilter = (filter) => {
-
-        filter = { ...this.state.filter, ...filter };
-        this.setState({
-            filter,
-            loading: true
-        });
-
-        const { getCategories } = this.props.actions;
-        getCategories()
-            .then(() => {
-                this.setState({ loading: false });
-            })
-            .catch((err) => {
-                this.setState({ loading: false });
-                $.notify({ message: 'Tải xuống danh mục sản phẩm không thành công' }, { type: 'danger' });
-            });
-    }
-
-
     render() {
-        const { open, colors, loading, openModalEdit, openModalDelete, page, pageSize, filter, showEdit } = this.state;
+        const { open, colors, loading, openModalEdit, openModalDelete, page, pageSize, filter, showEdit, q } = this.state;
         let { products, categories, productColors, productSizes } = this.props;
         categories = categories ?? null;
         productColors = productColors ?? null;
@@ -428,12 +441,14 @@ class Product extends Component {
                                     <h5>SẢN PHẨM</h5>
                                     <div className='d-flex align-items-center'>
                                         <div className="form-group mb-0 mr-2">
-                                            <input  
-                                                 type="text" 
-                                                 className="form-control" 
-                                                 style={{fontSize: '14px'}}
-                                                 placeholder='Tìm kiếm sản phẩm ...'
-                                                 />
+                                            <input
+                                                type="text"
+                                                className="form-control"
+                                                style={{ fontSize: '14px', outline: 'none' }}
+                                                placeholder='Tìm kiếm sản phẩm ...'
+                                                name='q'
+                                                onChange={this.handleOnSearch}
+                                            />
                                         </div>
                                         <button
                                             type="button"
@@ -666,7 +681,7 @@ class Product extends Component {
                                                                         <td>{item.quantity}</td>
                                                                         <td>{item.status === 1 ? <span class="badge badge-success">Đang KD</span> : <span class="badge badge-warning">Dừng KD</span>}</td>
                                                                         <td className='text-center'>
-                                                                            <button style={{ padding: '5px 10px' }} type='button' className='btn btn-warning btn-sm mr-1' onClick={() => this.setState({ openEdit: true })}>Sửa</button>
+                                                                            <button style={{ padding: '5px 10px' }} type='button' className='btn btn-warning btn-sm mr-1' onClick={() => this.handleEdit(item)}>Sửa</button>
                                                                             <button style={{ padding: '5px 10px' }} type='button' className='btn btn-primary btn-sm' onClick={() => this.handleDelete(item.id)}>Xóa</button>
                                                                         </td>
                                                                     </tr>
@@ -703,13 +718,6 @@ class Product extends Component {
                     />
 
                 </div>
-                {/* 
-                <ModalEdit
-                    open={this.state.showEdit}
-                    data={this.state.itemEdit}
-                    onHandleEditItem={(item) => this.handleEditItem(item)}
-                    onCloseModal={() => this.setState({ showEdit: false })}
-                /> */}
 
                 <ModalDelete
                     open={openModalDelete}

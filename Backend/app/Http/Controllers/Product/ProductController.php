@@ -50,17 +50,6 @@ class ProductController extends BaseController
             ->take($pageSize)
             ->get();
 
-        }else{
-            $Products = Product
-            ::orderBy('id','desc')
-            ->with('user')
-            ->with('images')
-            ->with('colors')
-            ->with('sizes')
-            ->with('category')
-            ->skip( ($page - 1) * $pageSize )
-            ->take($pageSize)
-            ->get();
         }
 
         return $this->sendResponse(
@@ -71,6 +60,7 @@ class ProductController extends BaseController
           );
     }
 
+
     public function search(Request $request){
 
         $page = $request->query('page') ?? 1;
@@ -78,18 +68,16 @@ class ProductController extends BaseController
 
         $query = Product::query();
 
-        $searchKey = $request->query('search');
+        $searchKey = $request->query('q');
 
         if($searchKey != null){
             
             $query = $query
                            ->where('name','like','%'.$searchKey.'%');
-                           
         }
 
         $Products = $query
         ->orderBy('id','desc')
-        ->with('images')
         ->skip( ($page - 1) * $pageSize )
         ->take($pageSize)
         ->get();
@@ -102,6 +90,62 @@ class ProductController extends BaseController
           );
     }
 
+   
+    public function searchAdmin(Request $request){
+
+        $user = $request->user();
+        $page = $request->query('page') ?? 1;
+        $pageSize = $request->query('pageSize') ?? 25;
+
+        $query = Product::query();
+
+        $searchKey = $request->query('q');
+
+        if($searchKey != null){
+            
+            $query = $query
+                           ->where('name','like','%'.$searchKey.'%');
+        }
+
+        if($user->roles->contains('name', 'admin')){
+
+            $Products = $query->orderBy('id','desc')
+            ->with('user')
+            ->with('images')
+            ->with('colors')
+            ->with('sizes')
+            ->with('category')
+            ->skip( ($page - 1) * $pageSize )
+            ->take($pageSize)
+            ->get();
+
+        }
+
+        else if($user->roles->contains('name', 'shop')){
+
+
+            $shopId = $user->shops()->first()->id; 
+            $userIdsOfShop = Shop::find($shopId)->users->pluck('id');
+            $Products = $query->whereIn('user_id',$userIdsOfShop)
+            ->orderBy('id','desc')
+            ->with('user')
+            ->with('images')
+            ->with('colors')
+            ->with('sizes')
+            ->with('category')
+            ->skip( ($page - 1) * $pageSize )
+            ->take($pageSize)
+            ->get();
+
+        }
+
+        return $this->sendResponse(
+            $data = [
+                     'items' => $Products , 
+                     'total' => $Products->count()
+                    ]
+          );
+    }
     
     public function show($id){
 
