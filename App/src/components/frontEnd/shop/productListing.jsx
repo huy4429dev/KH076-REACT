@@ -39,7 +39,6 @@ class ProductListing extends Component {
                     break;
             }
         }
-        console.log(items, "ft");
 
         return (
             <div>

@@ -110,13 +110,13 @@ class SideBar extends Component {
                                 </Link>
                             </li>
                         </li>
-                        <li>
+                        {/* <li>
                             <li >
                                 <Link to="/about" className="nav-link">
                                     {'Giới thiệu'}
                                 </Link>
                             </li>
-                        </li>
+                        </li> */}
                     </ul>
                 </nav>
             </div>

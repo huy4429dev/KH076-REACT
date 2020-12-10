@@ -15,7 +15,7 @@ import Service from './../../components/frontEnd/product/service';
 import connect from './../../lib/connect';
 import * as actions from './../../actions/frontEnd/product';
 import Loading from './../../components/loadding2';
-import Pagination from "react-bootstrap-4-pagination";
+
 class Product extends Component {
 
     constructor() {

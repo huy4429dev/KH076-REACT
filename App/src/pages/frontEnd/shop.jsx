@@ -11,7 +11,7 @@ import * as actions from './../../actions/frontEnd/product';
 import Loadding from './../../components/loadding2';
 import Pagination from "react-bootstrap-4-pagination";
 import queryString from 'query-string';
-import { filter } from 'lodash';
+
 class Shop extends Component {
     constructor(props) {
         super(props);
@@ -56,7 +56,9 @@ class Shop extends Component {
             price: v
         })
     }
-    change = (value, key) => {
+    change = (e, value, key) => {
+        e.preventDefault();
+        e.stopPropagation();
         console.log(value, key);
         // this.setState({
         //     filter: {
@@ -128,7 +130,7 @@ class Shop extends Component {
                                                                 prevNext
                                                                 activeBgColor="#18eaca"
                                                                 activeBorderColor="#7bc9c9"
-                                                                onClick={(page) => this.change(page, "page")}
+                                                                onClick={(e, page) => this.change(e, page, "page")}
                                                             />
                                                         </div>
 

@@ -103,11 +103,11 @@ class NavBar extends Component {
                                     {'Liên hệ'}
                                 </Link>
                             </li>
-                            <li >
+                            {/* <li >
                                 <Link to="/about" className="nav-link">
                                     {'Giới thiệu'}
                                 </Link>
-                            </li>
+                            </li> */}
                         </ul >
                     </div >
                 </div >

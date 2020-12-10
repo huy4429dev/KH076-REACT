@@ -25,7 +25,6 @@ class Tabset_profile extends Component {
 
     UNSAFE_componentWillReceiveProps(nextProps) {
         if (nextProps.user && nextProps.user != this.props.user) {
-            console.log(nextProps.user);
             const { user } = this.props;
             this.setState({
                 username: nextProps.user.username,
@@ -47,7 +46,6 @@ class Tabset_profile extends Component {
     }
     updateProfile = () => {
         const { user } = this.props;
-        console.log(user);
         this.setState({ loading: true });
         const { username, email, phone, birthday, address, gender } = this.state;
         const data = {

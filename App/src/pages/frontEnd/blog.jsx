@@ -16,7 +16,7 @@ class Blog extends Component {
     }
     componentDidMount() {
         window.scrollTo(0, 0);
-        this.setState({ laoding: true });
+        this.setState({ loading: true });
         Promise.all([
             this.props.actions.getList(),
             this.props.actions.getRecent()
