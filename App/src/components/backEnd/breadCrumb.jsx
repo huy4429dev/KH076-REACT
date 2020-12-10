@@ -11,7 +11,7 @@ export class Breadcrumb extends Component {
                     <div className="row">
                         <div className="col-lg-6">
                             <div className="page-header-left">
-                                <h3>Thống kê
+                                <h3>{this.props.parent}
                                     <small>Trang quản lý</small>
                                 </h3>
                             </div>

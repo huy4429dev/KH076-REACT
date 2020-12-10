@@ -23,6 +23,15 @@ export const getProducts = (page = 1) => {
   };
 };
 
+export const searchProducts = (page = 1 ,filter = '') => {
+  return {
+    url: `${ep.enpoint}/api/products/search-admin?page=${page}${filter}`,
+    method: "get",
+    onSuccess: types.GET_PRODUCTS_SUCCESS,
+    onError: types.GET_PRODUCTS_ERROR,
+  };
+};
+
 export const getProduct = (id) => {
   return {
     url: `${ep.enpoint}/api/products/${id}`,

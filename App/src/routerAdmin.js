@@ -21,7 +21,7 @@ import ReportCustomer from './pages/backEnd/report/reportCustomer';
 
 const routesAdmin = [
     {
-        path: '/admin',
+        path: '/admin/dashboard',
         exact: true,
         main: () => <Dashboard />
     },

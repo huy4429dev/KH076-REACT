@@ -1,8 +1,0 @@
-{
-  "dependencies": {
-    "highcharts": "^8.2.2",
-    "highcharts-react-official": "^3.0.0",
-    "react-contenteditable": "^3.3.5",
-    "react-tooltip": "^4.2.11"
-  }
-}

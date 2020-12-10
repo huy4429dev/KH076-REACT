@@ -95,7 +95,7 @@ class LoginTabset extends Component {
                     if (data.token) {
                         window.notify('Đăng nhập thành công', 'success');
                         if (this.props.redirect) {
-                            this.props.redirect();
+                            this.props.redirect('/dashboard');
                         }
                     }
                     else {
@@ -140,24 +140,24 @@ class LoginTabset extends Component {
                                 </div>
                                 <div className="form-terms">
                                     <div className="custom-control custom-checkbox mr-sm-2">
-                                        <input type="checkbox" className="custom-control-input" id="customControlAutosizing" />
+                                        {/* <input type="checkbox" className="custom-control-input" id="customControlAutosizing" />
                                         <label className="d-block">
                                             <input className="checkbox_animated" id="chk-ani2" type="checkbox" />
                                                         Reminder Me <span className="pull-right"> <a href="#" className="btn btn-default forgot-pass p-0">lost your password</a></span>
-                                        </label>
+                                        </label> */}
                                     </div>
                                 </div>
                                 <div className="form-button">
                                     <button className="btn btn-primary" onClick={(e) => this.login(e)}>Đăng nhập</button>
                                 </div>
                                 <div className="form-footer">
-                                    <span>Or Login up with social platforms</span>
+                                    {/* <span>Or Login up with social platforms</span>
                                     <ul className="social">
                                         <li><a className="fa fa-facebook" href=""></a></li>
                                         <li><a className="fa fa-twitter" href=""></a></li>
                                         <li><a className="fa fa-instagram" href=""></a></li>
                                         <li><a className="fa fa-pinterest" href=""></a></li>
-                                    </ul>
+                                    </ul> */}
                                 </div>
                             </form>
                         </TabPanel>

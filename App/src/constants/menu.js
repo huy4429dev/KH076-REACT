@@ -17,12 +17,24 @@ import {
 
 export const MENUITEMS = [
   {
-    path: "/admin",
+    path: "/admin/dashboard",
     title: "Tổng quan",
     icon: Home,
     type: "link",
     badgeType: "primary",
     active: false,
+    role: ['admin']
+  },
+  {
+    title: "Cửa hàng",
+    icon: DollarSign,
+    type: "sub",
+    type: "link",
+    badgeType: "primary",
+    path: "/admin/shops",
+    active: false,
+    role: ['admin']
+
   },
   {
     title: "Sản phẩm",
@@ -51,6 +63,7 @@ export const MENUITEMS = [
       //     ]
       // },
     ],
+    role: ['shop']
   },
   {
     title: "Đơn hàng",
@@ -58,6 +71,7 @@ export const MENUITEMS = [
     type: "sub",
     active: false,
     children: [{ path: "/admin/orders", title: "Danh sách", type: "link" }],
+    role: ['shop']
   },
   {
     title: "Khách hàng",
@@ -65,6 +79,7 @@ export const MENUITEMS = [
     type: "link",
     path: "/admin/customers",
     active: false,
+    role: ['admin','shop']
   },
   // {
   //     title: 'Sales', icon: DollarSign, type: 'sub', active: false, children: [
@@ -102,6 +117,7 @@ export const MENUITEMS = [
     children: [
       { path: "/admin/user/add", title: "Thêm mới", type: "link" }
     ],
+    role: ['shop']
   },
 
   {
@@ -123,6 +139,7 @@ export const MENUITEMS = [
     children: [
       { path: "/admin/blog", title: "Danh sách", type: "link" },
     ],
+    role: ['shop']
   },
   // {
   //     title: 'Vendors', icon: Users, type: 'sub', active: false, children: [
@@ -151,6 +168,7 @@ export const MENUITEMS = [
     icon: Settings,
     type: "sub",
     children: [{ path: "/admin/profile", title: "Hồ sơ", type: "link" }],
+    role: ['admin','shop']
   },
   // {
   //     title: 'Invoice', path: '/invoice', icon: Archive, type: 'link', active: false

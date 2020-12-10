@@ -9,6 +9,7 @@ use App\Models\Role;
 use App\Models\Profile;
 use App\Models\OrderItem;
 use App\Models\User;
+use App\Models\Shop;
 use Validator;
 use Illuminate\Support\Facades\Auth;
 
@@ -16,16 +17,31 @@ class OrderController extends BaseController
 {
     public function index(Request $request){
 
+
         $user = $request->user();
         $page = $request->query('page') ?? 1;
         $pageOrder = $request->query('pageOrder') ?? 25;
 
+        if($user->roles->contains('name', 'admin')){
+
         $Orders = Order::orderBy('id','desc')
-        ->where('creator_id', $user->id)
         ->with('user')
         ->skip( ($page - 1) * $pageOrder )
         ->take($pageOrder)
         ->get();
+
+        }
+        else if($user->roles->contains('name', 'shop')){
+            $shopId = $user->shops()->first()->id; 
+            $userIdsOfShop = Shop::find($shopId)->users->pluck('id');
+
+            $Orders = Order::whereIn('creator_id',$userIdsOfShop)
+            ->orderBy('id','desc')
+            ->with('user')
+            ->skip( ($page - 1) * $pageOrder )
+            ->take($pageOrder)
+            ->get();
+        }
 
         return $this->sendResponse(
             $data = [

@@ -5,3 +5,13 @@
 .report tr:hover{
     background: rgb(124, 181, 236);
 }
+
+.react-datepicker__input-container input{ 
+    color:#ff8084 !important;
+    padding: 6px !important;
+    margin-right: 10px;
+}
+
+.tr-active{
+    background: rgb(124, 181, 236);
+}

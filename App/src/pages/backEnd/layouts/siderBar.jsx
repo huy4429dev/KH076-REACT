@@ -1,6 +1,8 @@
 import React, { Component, Fragment } from 'react'
 import UserPanel from './userPanel';
 import { Link } from 'react-router-dom';
+import connect from './../../../lib/connect';
+import * as actions from './../../../actions/frontEnd/login';
 
 import {
     Home,
@@ -21,8 +23,12 @@ import logo from './../../../assets/images/dashboard/multikart-logo.png'
 import { MENUITEMS } from './../../../constants/menu';
 
 
-export class sidebar extends Component {
+class sidebar extends Component {
 
+    constructor(props) {
+        super(props)
+    }
+    
     state = { selectedPath: "1", mainmenu: [] };
     onItemSelection = (arg, e) => {
         this.setState({ selectedPath: arg.path });
@@ -92,7 +98,18 @@ export class sidebar extends Component {
             selectionColor: "#C51162"
         };
 
-        const mainmenu = this.state.mainmenu.map((menuItem, i) =>
+    let { mainmenu, token } = this.state;
+    let { role } = this.props.login;
+
+        mainmenu = mainmenu.filter(item => {
+            if (item.role?.length > 0) {
+                return item.role.includes(role);
+            }
+            return true;
+
+        });
+
+        mainmenu = mainmenu.map((menuItem, i) =>
             <li className={`${menuItem.active ? 'active' : ''}`} key={i}>
                 {(menuItem.sidebartitle) ?
                     <div className="sidebar-title">{menuItem.sidebartitle}</div>
@@ -164,7 +181,7 @@ export class sidebar extends Component {
                 <div className="page-sidebar">
                     <div className="main-header-left d-none d-lg-block">
                         <div className="logo-wrapper">
-                            <Link to={`${process.env.PUBLIC_URL}/dashboard`}>
+                            <Link to={`${process.env.PUBLIC_URL}/admin/dashboard`}>
                                 <img className="blur-up lazyloaded" src={logo} alt="" />
                             </Link>
                         </div>
@@ -181,4 +198,7 @@ export class sidebar extends Component {
     }
 }
 
-export default sidebar
+export default connect(sidebar, state => ({
+    login: state.login
+}), actions);
+

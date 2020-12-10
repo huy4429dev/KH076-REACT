@@ -73,7 +73,7 @@ class UserController extends BaseController
             return response()->json([
                 'token' => $token->accessToken,
                 'user' =>  $user ,
-                'role' => $user->roles()->orderBy('role_id','desc')->get()
+                'role' => $user->roles()->orderBy('role_id','desc')->first()->name
             ]);
         }
         else {
@@ -377,10 +377,6 @@ class UserController extends BaseController
             $validator = Validator::make($request->all(), [
                 'username' => 'required',
                 'email' => 'required|email',
-                'birthday' => 'required',
-                'phone' => 'required',
-                'address' => 'required',
-                'gender'=>'required'
             ]);
 
             if($validator->fails()){

@@ -198,6 +198,7 @@ class ReportController extends BaseController
         $dayStart = (new Carbon($fromDate))->day ;
         $dayEnd = (new Carbon($toDate))->day;
 
+
         if($user->roles->contains('name', 'admin')){
 
             $data = Order::whereBetween ('created_at',[$fromDate,$toDate])
@@ -295,8 +296,9 @@ class ReportController extends BaseController
         }
 
         $data = [];
-        $data['dataCount'] = $dataCount[0];
-        $data['dataFill'] = $dataFill;
+         
+        $data['dataCount'] = $dataCount[0] ?? 0;
+        $data['dataFill'] = $dataFill  ;
 
         return $this->sendResponse(
             $data

@@ -5,11 +5,15 @@ import connect from '../../../lib/connect';
 import SimpleReactValidator from 'simple-react-validator';
 import * as actions from '../../../actions/backEnd/revenue';
 import Loading from '../../../components/backEnd/loading';
+import { Calendar } from 'react-feather';
+
 import HighchartsReact from 'highcharts-react-official';
 import Highcharts from 'highcharts';
+import DatePicker from 'react-datepicker';
+import "react-datepicker/dist/react-datepicker.css";
 import './report.css';
-
-
+import moment from 'moment';
+const date = new Date();
 const customButton = { brevenueRadius: 0, paddingTop: '6px', paddingBottom: '6px', paddingLeft: '10px', paddingRight: '10px' };
 
 class Revenue extends Component {
@@ -18,6 +22,7 @@ class Revenue extends Component {
         this.state = {
             open: false,
             loading: true,
+            showCalendar: false,
             name: '',
             description: '',
             dataStatictis: [],
@@ -50,7 +55,8 @@ class Revenue extends Component {
                         }
                     }
                 }
-            }
+            },
+            startDate: date
         };
 
 
@@ -87,75 +93,7 @@ class Revenue extends Component {
     }
 
 
-    handleInputOnchange = (event) => {
-
-        const target = event.target;
-        const value = target.value;
-        const tagName = target.name;
-        const { name, description } = this.state;
-        this.setState({
-            [tagName]: value
-        });
-
-    }
-
-    handleSubmit = (event) => {
-
-        event.preventDefault();
-
-
-        if (this.validator.allValid()) {
-
-            this.setState({
-                loading: true
-            });
-
-            const { name, description } = this.state;
-            const { createrevenue } = this.props.actions;
-            if (name === '' || name === null) return;
-            createrevenue({
-                name: name,
-                description: description
-            })
-                .then((data) => {
-                    if (data.success) {
-                        return data;
-                    } else {
-                        throw new Error('Something went wrong');
-                    }
-                })
-                .then((data) => {
-                    this.setState({ loading: false });
-                    window.notify("Thêm mới danh mục thành công");
-                })
-                .catch((err) => {
-                    this.setState({ loading: false });
-                });
-
-            this.onCloseModal();
-
-        } else {
-
-            this.validator.showMessages();
-        }
-
-    }
-
-    onOpenModal = () => {
-
-        const { name } = this.state;
-        this.setState({
-            open: true,
-            name: null,
-            description: null,
-        });
-    };
-
-    onCloseModal = () => {
-        this.setState({
-            open: false,
-        });
-    };
+    
 
     handlelRefresh = () => {
 
@@ -199,16 +137,48 @@ class Revenue extends Component {
     }
 
 
-    render() {
-        const { open, chartOptions, dataStatictis } = this.state;
-        console.log(dataStatictis, 'REVENUE');
-        const date = new Date();
+    setStartDate = (date) => {
 
-        const curentMonth = date.getMonth() + 1;
+        let firstDayOfMonth = new Date(date.getFullYear(), date.getMonth(), 1);
+        firstDayOfMonth = moment(firstDayOfMonth).format('YYYY-MM-DD[T]HH:mm:ss.SSS');
+        let lastDayOfMonth = new Date(date.getFullYear(), date.getMonth() + 1, 0);
+        lastDayOfMonth = moment(lastDayOfMonth).format('YYYY-MM-DD[T]HH:mm:ss.SSS');
+        const filter = `fromDate=${firstDayOfMonth}&toDate=${lastDayOfMonth}`;
+        this.setState({
+            loading: true,
+            startDate: date
+        });
+
+        const { getRevenue } = this.props.actions;
+
+        let { chartOptions } = this.state;
+
+        getRevenue(filter)
+            .then((data) => {
+
+                const listDays = data.map(item => item.day);
+                const listAmounts = data.map(item => item.totalAmount);
+                chartOptions.xAxis.categories = listDays;
+                chartOptions.series[0].data = listAmounts;
+                this.setState({
+                    loading: false,
+                    dataStatictis: data,
+                    chartOptions: chartOptions
+                });
+            })
+            .catch((err) => {
+                this.setState({ loading: false });
+                window.notify('Tải xuống báo cáo không thành công: ' + err.message, 'danger');
+            });
+
+    }
+
+    render() {
+        const {chartOptions, dataStatictis, startDate } = this.state;
+
         return (
             <Fragment>
                 <Breadcrumb title="DOANH THU" parent="BÁO CÁO" />
-
                 {/* <!-- Container-fluid starts--> */}
                 <div className="container-fluid">
                     <div className="row">
@@ -216,11 +186,13 @@ class Revenue extends Component {
                             <div className="card">
                                 <div className="card-header d-flex justify-content-between">
                                     <h5>BÁO CÁO DOANH THU</h5>
-                                    <div>
-                                        <div className="report__filter">
-                                            <div className="form-group">
-                                            </div>
-                                        </div>
+                                    <div className='d-flex align-items-center'>
+                                        <DatePicker
+                                            onChange={date => this.setStartDate(date)}
+                                            dateFormat="MM/yyyy"
+                                            showMonthYearPicker
+                                            selected={startDate}
+                                        />
                                         <button
                                             type="button"
                                             className="btn btn-primary mr-1"
@@ -243,7 +215,7 @@ class Revenue extends Component {
                                                 :
                                                 <div>
                                                     <h4 className="text-center">
-                                                        Biểu đồ thống kê doanh thu tháng {curentMonth} - 2020
+                                                        Biểu đồ thống kê doanh thu tháng {startDate.getMonth() + 1} - 2020
                                                     </h4>
                                                     <HighchartsReact
                                                         highcharts={Highcharts}
@@ -265,8 +237,9 @@ class Revenue extends Component {
                                                             {
                                                                 dataStatictis.length > 0 &&
                                                                 dataStatictis.map(item => (
-                                                                    <tr>
-                                                                        <td>{item.day}/{curentMonth}</td>
+                                                                    
+                                                                    <tr className={startDate.getDay() == item.day ? 'tr-active' : ''}>
+                                                                        <td>{item.day}/{startDate.getMonth()}</td>
                                                                         <td>{item.totalOrder}</td>
                                                                         <td>{item.totalOrderSuccess}</td>
                                                                         <td>{item.totalProduct}</td>
