@@ -99,7 +99,7 @@ class Dashboard extends Component {
         return (
 
             <Fragment>
-                <Breadcrumb title="Dashboard" parent="Dashboard" />
+                <Breadcrumb title="Tổng quan" parent="Tổng Quan"  />
                 <div className="container-fluid">
                     <div className="row">
                         <div className="col-xl-3 col-md-6 xl-50">
@@ -183,15 +183,15 @@ class Dashboard extends Component {
                                 <div className="card-header">
                                     <h5>Sản phẩm bán chạy</h5>
                                 </div>
-                                <div className="card-body">
+                                <div className="card-body" style={{paddingBottom: 38}}>
                                     <div className="user-status table-responsive products-table">
                                         <table className="table table-bordernone mb-0">
                                             <thead>
                                                 <tr>
-                                                    <th style={{fontSize: '13px'}} scope="col">Sản phẩm</th>
-                                                    <th style={{fontSize: '13px'}} scope="col">Số lượng</th>
-                                                    <th style={{fontSize: '13px'}} scope="col">Lượt bán</th>
-                                                    <th style={{fontSize: '13px'}} scope="col">Đơn giá</th>
+                                                    <th style={{fontSize: '13.4px'}} scope="col">Sản phẩm</th>
+                                                    <th style={{fontSize: '13.4px'}} scope="col">Số lượng</th>
+                                                    <th style={{fontSize: '13.4px'}} scope="col">Lượt bán</th>
+                                                    <th style={{fontSize: '13.4px'}} scope="col">Đơn giá</th>
                                                 </tr>
                                             </thead>
                                             {

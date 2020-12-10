@@ -7,10 +7,13 @@ import * as actions from '../../../actions/backEnd/reportCustomer';
 import Loading from '../../../components/backEnd/loading';
 import HighchartsReact from 'highcharts-react-official';
 import Highcharts from 'highcharts';
+import DatePicker from 'react-datepicker';
+import "react-datepicker/dist/react-datepicker.css";
 import './report.css';
-
+import moment from 'moment';
 
 const customButton = { brevenueRadius: 0, paddingTop: '6px', paddingBottom: '6px', paddingLeft: '10px', paddingRight: '10px' };
+const date = new Date();
 
 class ReportCustomer extends Component {
     constructor(props) {
@@ -57,19 +60,20 @@ class ReportCustomer extends Component {
                         },
                         size: 250
                     }
-                    
+
                 },
                 series: [{
                     data: [{
                         name: 'Khách hàng cũ',
-                        y:5,
+                        y: 5,
                     }, {
                         name: 'Khách hàng mới',
                         y: 10
                     }
-                   ]
+                    ]
                 }]
-            }
+            },
+            startDate: date
         };
 
 
@@ -83,29 +87,31 @@ class ReportCustomer extends Component {
         })
         const { getReportCustomer } = this.props.actions;
 
-        let { chartOptions , chart} = this.state;
+        let { chartOptions, chart } = this.state;
 
         getReportCustomer()
             .then((data) => {
 
-                // const listDays = data.map(item => item.day);
-                // const listAmounts = data.map(item => item.totalAmount);
-                
-                chartOptions.series.data  = [{
+                chartOptions.series[0] = {
+                    data:
+                        [
+                            {
+                                name: 'Khách hàng mới',
+                                y: parseInt(data.data.dataCount.totalOrderSucessNewCustomer)
+                            },
+                            {
 
-                    name: 'Khách hàng cũ',
-                    y: data.data.dataCount.totalOrderSuccess - data.data.dataCount.totalOrderSucessNewCustomer ,
-                },
-                {
-                    name: 'Khách hàng mới',
-                    y: parseInt(data.data.dataCount.totalOrderSucessNewCustomer)
-                }
-               ];
-               
+                                name: 'Khách hàng cũ',
+                                y: data.data.dataCount.totalOrderSuccess - data.data.dataCount.totalOrderSucessNewCustomer,
+                            }
+                        ]
+                };
+
                 this.setState({
                     loading: false,
                     chart: true,
-                    chartOptions: chartOptions
+                    chartOptions: chartOptions,
+                    dataStatictis: data.data.dataFill
                 });
             })
             .catch((err) => {
@@ -227,29 +233,75 @@ class ReportCustomer extends Component {
         });
     }
 
+    setStartDate = (date) => {
 
+        let firstDayOfMonth = new Date(date.getFullYear(), date.getMonth(), 1);
+        firstDayOfMonth = moment(firstDayOfMonth).format('YYYY-MM-DD[T]HH:mm:ss.SSS');
+        let lastDayOfMonth = new Date(date.getFullYear(), date.getMonth() + 1, 0);
+        lastDayOfMonth = moment(lastDayOfMonth).format('YYYY-MM-DD[T]HH:mm:ss.SSS');
+        const filter = `fromDate=${firstDayOfMonth}&toDate=${lastDayOfMonth}`;
+
+        
+
+        this.setState({
+            loading: true,
+            startDate: date
+        })
+
+        const { getReportCustomer } = this.props.actions;
+        let { chartOptions, chart } = this.state;
+
+        getReportCustomer(filter)
+            .then((data) => {
+
+                chartOptions.series[0] = {
+                    data:
+                        [
+                            {
+                                name: 'Khách hàng mới',
+                                y: parseInt(data.data.dataCount.totalOrderSucessNewCustomer)
+                            },
+                            {
+
+                                name: 'Khách hàng cũ',
+                                y: data.data.dataCount.totalOrderSuccess - data.data.dataCount.totalOrderSucessNewCustomer,
+                            }
+                        ]
+                };
+
+                this.setState({
+                    loading: false,
+                    chart: true,
+                    chartOptions: chartOptions,
+                    dataStatictis: data.data.dataFill
+                });
+            })
+            .catch((err) => {
+                this.setState({ loading: false });
+                window.notify('Tải xuống báo cáo không thành công: ' + err.message, 'danger');
+            });
+    }
+
+startDate
     render() {
-        const { open, chartOptions, dataStatictis } = this.state;
-        console.log(chartOptions, 'DATA');
-        const date = new Date();
-
-        const curentMonth = date.getMonth() + 1;
+        const { open, chartOptions, dataStatictis, startDate } = this.state;
         return (
             <Fragment>
                 <Breadcrumb title="KHÁCH HÀNG" parent="BÁO CÁO" />
 
-                {/* <!-- Container-fluid starts--> */}
                 <div className="container-fluid">
                     <div className="row">
                         <div className="col-sm-12">
                             <div className="card">
                                 <div className="card-header d-flex justify-content-between">
                                     <h5>BÁO CÁO KHÁCH HÀNG</h5>
-                                    <div>
-                                        <div className="report__filter">
-                                            <div className="form-group">
-                                            </div>
-                                        </div>
+                                    <div className='d-flex align-items-center'>
+                                        <DatePicker
+                                            onChange={date => this.setStartDate(date)}
+                                            dateFormat="MM/yyyy"
+                                            showMonthYearPicker
+                                            selected={startDate} 
+                                        />
                                         <button
                                             type="button"
                                             className="btn btn-primary mr-1"
@@ -272,9 +324,9 @@ class ReportCustomer extends Component {
                                                 :
                                                 <div>
                                                     <h4 className="text-center">
-                                                        Biểu đồ tỷ lệ chốt đơn khách hàng tháng {curentMonth} - 2020
+                                                        Biểu đồ tỷ lệ chốt đơn khách hàng tháng {startDate.getMonth() + 1} - 2020
                                                     </h4>
-                                                    
+
                                                     {
                                                         this.state.chart &&
                                                         <HighchartsReact
@@ -297,8 +349,8 @@ class ReportCustomer extends Component {
                                                             {
                                                                 dataStatictis.length > 0 &&
                                                                 dataStatictis.map(item => (
-                                                                    <tr>
-                                                                        <td>{item.day}/{curentMonth}</td>
+                                                                    <tr className={startDate.getDay() == item.day ? 'tr-active' : '' }>
+                                                                        <td>{item.day}/{startDate.getMonth()}</td>
                                                                         <td>{item.totalOrder}</td>
                                                                         <td>{item.totalOrderSuccess}</td>
                                                                         <td>{item.totalProduct}</td>

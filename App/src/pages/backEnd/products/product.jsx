@@ -23,6 +23,7 @@ class Product extends Component {
     constructor(props) {
         super(props);
         this.state = {
+            openEdit: false,
             open: false,
             loading: true,
             name: '',
@@ -160,6 +161,7 @@ class Product extends Component {
     onCloseModal = () => {
         this.setState({
             open: false,
+            showEdit: false
         });
     };
 
@@ -261,9 +263,17 @@ class Product extends Component {
     }
 
     handleDelete = (id) => {
+
         this.setState({
             openModalDelete: true,
             itemId: id
+        });
+
+    }
+
+    onCloseModalDelete = () => {
+        this.setState({
+            openModalDelete: false
         })
     }
 
@@ -278,7 +288,7 @@ class Product extends Component {
 
     handlePageChange = (page) => {
 
-        console.log(page,'PAGE');
+        console.log(page, 'PAGE');
 
         this.setState({
             loading: true
@@ -292,7 +302,7 @@ class Product extends Component {
             getSizes()
         ])
             .then(() => {
-                this.setState({ loading: false, page:page });
+                this.setState({ loading: false, page: page });
             })
             .catch((err) => {
                 this.setState({ loading: false });
@@ -340,12 +350,12 @@ class Product extends Component {
 
     handleDeleteItem = (id) => {
 
-        const { deleteCategory } = this.props.actions;
+        const { deleteProduct } = this.props.actions;
         this.setState({
             loading: true
         });
 
-        deleteCategory(id)
+        deleteProduct(id)
             .then((data) => {
 
                 if (data.success) {
@@ -363,10 +373,15 @@ class Product extends Component {
                     openModalDelete: false
                 });
 
-                window.notify("Xóa danh mục thành công");
+                window.notify("Xóa sản phẩm thành công");
             })
             .catch((err) => {
-                this.setState({ loading: false });
+                this.setState({
+                    loading: false,
+                    itemId: null,
+                    openModalDelete: false
+                });
+                window.notify("Cảnh báo: Ràng buộc đơn hàng", "warning");
             });
     }
 
@@ -391,7 +406,7 @@ class Product extends Component {
 
 
     render() {
-        const { open, colors, loading, openModalEdit, openModalDelete, page, pageSize, filter } = this.state;
+        const { open, colors, loading, openModalEdit, openModalDelete, page, pageSize, filter, showEdit } = this.state;
         let { products, categories, productColors, productSizes } = this.props;
         categories = categories ?? null;
         productColors = productColors ?? null;
@@ -411,7 +426,15 @@ class Product extends Component {
                             <div className="card">
                                 <div className="card-header d-flex justify-content-between">
                                     <h5>SẢN PHẨM</h5>
-                                    <div>
+                                    <div className='d-flex align-items-center'>
+                                        <div className="form-group mb-0 mr-2">
+                                            <input  
+                                                 type="text" 
+                                                 className="form-control" 
+                                                 style={{fontSize: '14px'}}
+                                                 placeholder='Tìm kiếm sản phẩm ...'
+                                                 />
+                                        </div>
                                         <button
                                             type="button"
                                             className="btn btn-secondary mr-1"
@@ -643,8 +666,8 @@ class Product extends Component {
                                                                         <td>{item.quantity}</td>
                                                                         <td>{item.status === 1 ? <span class="badge badge-success">Đang KD</span> : <span class="badge badge-warning">Dừng KD</span>}</td>
                                                                         <td className='text-center'>
-                                                                            <button style={{ padding: '5px 10px' }} type='button' className='btn btn-warning btn-sm mr-1' onClick={() => this.handleEdit()}>Sửa</button>
-                                                                            <button style={{ padding: '5px 10px' }} type='button' className='btn btn-primary btn-sm' onClick={() => this.handleDelete()}>Xóa</button>
+                                                                            <button style={{ padding: '5px 10px' }} type='button' className='btn btn-warning btn-sm mr-1' onClick={() => this.setState({ openEdit: true })}>Sửa</button>
+                                                                            <button style={{ padding: '5px 10px' }} type='button' className='btn btn-primary btn-sm' onClick={() => this.handleDelete(item.id)}>Xóa</button>
                                                                         </td>
                                                                     </tr>
                                                                 )
@@ -691,10 +714,173 @@ class Product extends Component {
                 <ModalDelete
                     open={openModalDelete}
                     data={this.state.itemId}
-                    title={'Xóa danh mục'}
+                    title={'Xóa sản phẩm'}
                     onHandleDelete={(id) => this.handleDeleteItem(id)}
-                    onCloseModal={(id) => this.onCloseModalDelete(id)}
+                    onCloseModal={() => this.onCloseModalDelete()}
                 />
+                <Modal open={showEdit} onClose={this.onCloseModal} >
+                    <div className="modal-header">
+                        <h5 className="modal-title f-w-600" id="exampleModalLabel2">Sửa sản phẩm</h5>
+                    </div>
+                    <div className="row product-adding">
+                        <div className="col-xl-6">
+                            <div className="card">
+                                <div className="card-header">
+                                    <h5>Thông tin chung</h5>
+                                </div>
+                                <div className="card-body">
+                                    <div className="digital-add needs-validation">
+                                        <div className="form-group">
+                                            <label className="col-form-label pt-0"><span>*</span>Tên sản phẩm</label>
+                                            <input onChange={this.handleInputOnchange} name="name" className="form-control" id="validationCustom01" type="text" required="" />
+                                            {this.validator.message('name', this.state.name, 'required', { className: 'text-danger mt-1' })}
+                                        </div>
+                                        <div className="form-group">
+                                            <label className="col-form-label pt-0"><span>*</span> Số lượng</label>
+                                            <input onChange={this.handleInputOnchange} name='quantity' className="form-control" id="validationCustom02" type="text" required="" />
+                                            {this.validator.message('quantity', this.state.name, 'required|number', { className: 'text-danger mt-1' })}
+                                        </div>
+                                        <div className="form-group">
+                                            <label className="col-form-label"><span>*</span> Danh mục</label>
+                                            <select name='categoryId' onChange={this.handleInputOnchange} className="custom-select" required="">
+                                                <option value="">Danh mục</option>
+                                                {
+                                                    categories != null && categories.items.map((item, index) => {
+
+                                                        if (item.children?.length && item.children?.length == 0) {
+                                                            return <option value={item.id} style={{ color: 'blue' }} >{item.name}</option>
+                                                        }
+                                                        else {
+                                                            let optionParent = <option value={item.id} style={{ color: 'blue', fontWeight: 'bold' }}>{item.name}</option>;
+                                                            if (item.children?.length > 0) {
+                                                                let optionChilds = item.children.map((child, childIndex) => {
+                                                                    return <option value={child.id}>{child.name}</option>;
+                                                                })
+
+                                                                return [optionParent, optionChilds]
+                                                            }
+                                                            else {
+                                                                return optionParent
+                                                            }
+                                                        }
+                                                    })
+
+                                                }
+                                            </select>
+                                        </div>
+                                        <div className="form-group">
+                                            <label className="col-form-label"><span>*</span> Giá bán</label>
+                                            <input name='price' onChange={this.handleInputOnchange} className="form-control" id="validationCustom02" type="text" required="" />
+                                        </div>
+                                        <div className="form-group">
+                                            <label className="col-form-label">Giảm giá (%)</label>
+                                            <input name='discount' onChange={this.handleInputOnchange} className="form-control" id="validationCustom02" type="text" required="" />
+                                        </div>
+                                        <div className="form-group">
+                                            <label className="col-form-label"><span>*</span> Trạng thái</label>
+                                            <div className="m-checkbox-inline mb-0 custom-radio-ml d-flex radio-animated">
+                                                <label className="d-block mr-2">
+                                                    <input onChange={this.handleInputOnchange} valye={1} checked className="radio_animated" id="edo-ani" type="radio" name="status" />
+                                                    <span style={{ color: 'green' }}>Đang kinh doanh</span>
+                                                </label>
+                                                <label className="d-block mr-0" >
+                                                    <input onChange={this.handleInputOnchange} valye={0} className="radio_animated" id="edo-ani1" type="radio" name="status" />
+                                                    <span>Ngừng kinh doanh</span>
+                                                </label>
+                                            </div>
+                                        </div>
+                                        <label className="col-form-label pt-0"> Thêm hình ảnh</label>
+                                        <MyDropzone
+                                            onUpload={this.handeUploadImage}
+                                        />
+                                        <div className="form-group">
+                                            <label className="col-form-label">Mẫu màu</label>
+                                            <div className="m-checkbox-inline mb-0 custom-radio-ml d-flex radio-animated">
+                                                <label className="d-block mr-2 d-flex">
+                                                    {
+                                                        productColors != null &&
+                                                            productColors.items.length > 0 ?
+
+                                                            productColors.items.map(item => (
+                                                                <span
+                                                                    onClick={() => this.handlePickColor(item.id)}
+                                                                    data-tip={item.name}
+                                                                    className='d-block mr-1'
+                                                                    style={{ width: '20px', height: '20px', background: item.color, opacity: item.active ? 1 : 0.5 }}>
+                                                                </span>
+                                                            ))
+                                                            : <span>Chưa có mẫu màu</span>
+
+
+                                                    }
+
+                                                    <ReactTooltip />
+                                                </label>
+                                            </div>
+                                        </div>
+
+                                        <div className="form-group">
+                                            <label className="col-form-label">Mẫu size</label>
+                                            <div className="m-checkbox-inline mb-0 custom-radio-ml d-flex radio-animated">
+                                                {
+                                                    productSizes != null &&
+                                                        productSizes.items.length > 0 ?
+
+                                                        productSizes.items.map(item => (
+                                                            <label className="d-block mr-2">
+                                                                <input onChange={() => this.handlePickSize(item.id)}
+                                                                    type="checkbox"
+                                                                    name="size"
+                                                                    className="mr-2"
+                                                                />
+                                                                <span style={{ color: 'green' }}>{item.name}</span>
+                                                            </label>
+                                                        ))
+                                                        : <span>Chưa có mẫu size</span>
+                                                }
+
+                                            </div>
+                                        </div>
+
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div className="col-xl-6">
+                            <div className="card">
+                                <div className="card-header">
+                                    <h5>Thêm mô tả</h5>
+                                </div>
+                                <div className="card-body">
+                                    <div className="digital-add needs-validation">
+                                        <div className="form-group mb-0">
+                                            <div className="description-sm">
+                                                <CKEditors
+                                                    activeclassName="p10"
+                                                    content={this.state.description}
+                                                    events={{
+                                                        "change": this.handleCkEditorOnchange
+                                                    }}
+                                                />
+
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div className="card">
+                                <div className="card-body">
+                                    <div className="form-group mb-0">
+                                        <div className="product-buttons text-center">
+                                            <button onClick={this.handleSubmit} type="button" className="btn btn-primary">Lưu</button>
+                                            <button type="button" className="btn btn-light">Hủy</button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </Modal>
             </Fragment>
         )
     }
