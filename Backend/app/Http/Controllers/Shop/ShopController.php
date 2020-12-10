@@ -234,10 +234,18 @@ class ShopController extends BaseController
         $query = Product::query();
            $min = $request->query('min');
            $max = $request->query('max');
+           $color = $request->query('color');
+           $barnd = $request->query('barnd');
 
             if($min != null){
                 $query = $query->whereBetween('price',[$min, $max]);
             }
+            if($color != null){
+                $query = $query->whereHas('roles', function($q){
+                                $q->where('name', '=', 'user');
+                            });
+            }
+
 
             $Products = $query
             ->orderBy('id','desc')
