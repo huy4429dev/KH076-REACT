@@ -6,13 +6,15 @@ import CartContainer from './../../../components/frontEnd/cart';
 import SideBar from './../../../components/frontEnd/sidebar';
 import { Link } from 'react-router-dom';
 import SiderBar from './../../../components/frontEnd/sidebar';
+import Search from './../../../components/frontEnd/search';
 
 class Header extends Component {
     constructor(props) {
         super(props);
 
         this.state = {
-            navClose: { right: '0px' }
+            navClose: { right: '0px' },
+            showSearch: false
         }
     }
     componentWillMount() {
@@ -73,6 +75,7 @@ class Header extends Component {
         }
     }
     render() {
+        const { showSearch } = this.state;
         return (
             <div>
                 <header id="sticky" className="sticky">
@@ -100,23 +103,18 @@ class Header extends Component {
                                     <div className="menu-right pull-right">
                                         {/*Top Navigation Bar Component*/}
                                         <NavBar />
-
                                         <div>
-                                            <div className="icon-nav">
+                                            <div className="icon-nav  position-relative" >
                                                 <ul>
-                                                    <li className="onhover-div mobile-search">
-                                                        <div><img src={`${process.env.PUBLIC_URL}/assets/images/icon/search.png`} onClick={this.openSearch} className="img-fluid" alt="" />
-                                                            <i className="fa fa-search" onClick={this.openSearch}></i></div>
-                                                    </li>
-                                                    {/* <li className="onhover-div mobile-setting">
-                                                        <div><img src={`${process.env.PUBLIC_URL}/assets/images/icon/setting.png`} className="img-fluid" alt="" />
-                                                            <i className="fa fa-cog"></i></div>
-                                                        <div className="show-div setting">
-                                                            <h6>language</h6>
-                                                         
+                                                    <li className="onhover-div mobile-search ">
+                                                        <div onClick={() => this.setState({ showSearch: true })}>
+                                                            <img src={`/assets/images/icon/search.png`} className="img-fluid" alt="" />
+                                                            <i className="fa fa-search" ></i>
+                                                            {
+                                                                <Search show={showSearch} hide={() => this.setState({ showSearch: false })} />
+                                                            }
                                                         </div>
-                                                    </li> */}
-                                                    {/*Header Cart Component */}
+                                                    </li>
                                                     <CartContainer />
                                                 </ul>
                                             </div>
@@ -128,7 +126,7 @@ class Header extends Component {
                     </div>
                 </header>
 
-                <div id="search-overlay" className="search-overlay">
+                {/* <div id="search-overlay" className="search-overlay">
                     <div>
                         <span className="closebtn" onClick={this.closeSearch} title="Close Overlay">×</span>
                         <div className="overlay-content">
@@ -146,7 +144,7 @@ class Header extends Component {
                             </div>
                         </div>
                     </div>
-                </div>
+                </div> */}
 
             </div>
         )

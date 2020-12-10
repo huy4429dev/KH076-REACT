@@ -17,12 +17,14 @@ export const types = {
     GET_TOP_SALE_MEN_SUCCESS: "GET_TOP_SALE_MEN_SUCCESS",
     GET_TOP_SALE_MEN_ERROR: "GET_TOP_SALE_MEN_ERROR",
     COMMENT_SUCCESS: "COMMENT_SUCCESS",
-    COMMENT_FAILE: "COMMENT_FAILE"
+    COMMENT_FAILE: "COMMENT_FAILE",
+    SEARCH_SUCCESS: "SEARCH_SUCCESS",
+    SEARCH_ERROR: "SEARCH_ERROR"
 }
 
-export const getListProducts = () => {
+export const getListProducts = (param) => {
     return {
-        url: `${ep.enpoint}/api/products/shops`,
+        url: `${ep.enpoint}/api/products/shops?${param}`,
         method: 'get',
         onSuccess: types.GET_LIST_PRODUCTS_SUCCESS,
         onError: types.GET_LIST_PRODUCTS_ERROR,
@@ -91,5 +93,13 @@ export const comment = (data) => {
         data: data,
         onSuccess: types.COMMENT_SUCCESS,
         onError: types.COMMENT_FAILE,
+    };
+};
+export const search = (search) => {
+    return {
+        url: `${ep.enpoint}/api/products/search?${search}`,
+        method: 'get',
+        onSuccess: types.SEARCH_SUCCESS,
+        onError: types.SEARCH_ERROR,
     };
 }; 

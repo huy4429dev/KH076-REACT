@@ -138,7 +138,6 @@ export const MENUITEMS = [
     active: false,
     children: [
       { path: "/admin/blog", title: "Danh sách", type: "link" },
-      { path: "/admin/blog/add", title: "Thêm bài viết", type: "link" },
     ],
     role: ['shop']
   },

@@ -14,8 +14,8 @@ import DetailsTopTabs from './../../components/frontEnd/product/detailtTopTabs';
 import Service from './../../components/frontEnd/product/service';
 import connect from './../../lib/connect';
 import * as actions from './../../actions/frontEnd/product';
-import Loading from './../../components/loading';
-
+import Loading from './../../components/loadding2';
+import Pagination from "react-bootstrap-4-pagination";
 class Product extends Component {
 
     constructor() {
@@ -26,10 +26,7 @@ class Product extends Component {
             loading: false
         };
     }
-
-    componentDidMount() {
-        window.scrollTo(0, 0);
-        const { id } = this.props.match.params;
+    getData = (id) => {
         this.setState({ loading: true })
         this.props.actions.getDetailtProduct(id)
             .then(() => this.setState({ loading: false }))
@@ -38,9 +35,19 @@ class Product extends Component {
             nav1: this.slider1,
             nav2: this.slider2
         });
+    }
+    componentDidMount() {
+        window.scrollTo(0, 0);
+        const { id } = this.props.match.params;
+        this.getData(id);
 
     }
-
+    UNSAFE_componentWillReceiveProps(nextProps) {
+        if (nextProps.match && nextProps.match != this.props.match) {
+            const { id } = nextProps.match.params;
+            this.getData(id);
+        }
+    }
     render() {
         const { symbol, addToCart, addToCartUnsafe, addToWishlist } = this.props;
 

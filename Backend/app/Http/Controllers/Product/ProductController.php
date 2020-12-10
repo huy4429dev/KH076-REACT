@@ -50,6 +50,17 @@ class ProductController extends BaseController
             ->take($pageSize)
             ->get();
 
+        }else{
+            $Products = Product
+            ::orderBy('id','desc')
+            ->with('user')
+            ->with('images')
+            ->with('colors')
+            ->with('sizes')
+            ->with('category')
+            ->skip( ($page - 1) * $pageSize )
+            ->take($pageSize)
+            ->get();
         }
 
         return $this->sendResponse(
@@ -60,7 +71,6 @@ class ProductController extends BaseController
           );
     }
 
-
     public function search(Request $request){
 
         $page = $request->query('page') ?? 1;
@@ -68,7 +78,7 @@ class ProductController extends BaseController
 
         $query = Product::query();
 
-        $searchKey = $request->query('q');
+        $searchKey = $request->query('search');
 
         if($searchKey != null){
             
@@ -79,6 +89,7 @@ class ProductController extends BaseController
 
         $Products = $query
         ->orderBy('id','desc')
+        ->with('images')
         ->skip( ($page - 1) * $pageSize )
         ->take($pageSize)
         ->get();

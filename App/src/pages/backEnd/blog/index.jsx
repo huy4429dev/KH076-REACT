@@ -178,7 +178,6 @@ class Blog extends Component {
                                                         <th style={{ width: '20%' }}>Ảnh</th>
                                                         <th style={{ width: '20%' }}>Mô tả</th>
                                                         <th style={{ width: '15%' }}>Ngày tạo</th>
-                                                        <th style={{ width: '15%' }}>Ngày cập nhật</th>
                                                         <th style={{ width: '10%' }} className='text-center' colSpan='2'>Action</th>
                                                     </tr>
                                                     {
@@ -192,8 +191,11 @@ class Blog extends Component {
                                                                         <td>{item.disception}</td>
                                                                         <td>{moment(item.created_at).format("DD/MM/YYYY")}</td>
                                                                         <td>
-                                                                            <button style={{ padding: '5px 10px' }} type='button' className='btn btn-warning btn-sm mr-1' onClick={() => this.handleEdit(item)}>Sửa</button>
-                                                                            <button style={{ padding: '5px 10px' }} type='button' className='btn btn-primary btn-sm' onClick={() => this.handleDelete(item.id)}>Xóa</button>
+                                                                            <div className="d-flex">
+                                                                                <button style={{ padding: '5px 10px' }} type='button' className='btn btn-warning btn-sm mr-1' onClick={() => this.handleEdit(item)}>Sửa</button>
+                                                                                <button style={{ padding: '5px 10px' }} type='button' className='btn btn-primary btn-sm' onClick={() => this.handleDelete(item.id)}>Xóa</button>
+                                                                            </div>
+
                                                                         </td>
                                                                     </tr>
                                                                 )

@@ -9,7 +9,9 @@ import connect from './../../lib/connect';
 import * as actions from './../../actions/frontEnd/product';
 // import Loadding from './../../components/loading';
 import Loadding from './../../components/loadding2';
-
+import Pagination from "react-bootstrap-4-pagination";
+import queryString from 'query-string';
+import { filter } from 'lodash';
 class Shop extends Component {
     constructor(props) {
         super(props);
@@ -17,13 +19,21 @@ class Shop extends Component {
             layoutColumns: 3,
             loading: false,
             filterBy: '',
-            price: 1000000
+            price: 1000000,
+            filter: {
+                page: 1,
+                pageSize: 20
+            }
         }
     }
     componentDidMount() {
         window.scrollTo(0, 0);
+        this.getData();
+    }
+    getData = () => {
         this.setState({ loading: true });
-        this.props.actions.getListProducts()
+        const param = queryString.stringify(this.state.filter);
+        this.props.actions.getListProducts(param)
             .then(() => this.setState({ loading: false }))
             .catch(() => this.setState({ loading: false }));
     }
@@ -46,9 +56,21 @@ class Shop extends Component {
             price: v
         })
     }
+    change = (value, key) => {
+        console.log(value, key);
+        // this.setState({
+        //     filter: {
+        //         ...this.state.filter,
+        //         [key]: value
+        //     }
+        // }, () => {
+        //     this.getData();
+        // })
+    }
     render() {
         const { listProduct } = this.props.productHome;
-        const { filterBy, price } = this.state;
+        const { filterBy, price, filter } = this.state;
+
         return (
             <div>
                 <Loadding show={this.state.loading} type="full" />
@@ -97,6 +119,18 @@ class Shop extends Component {
                                                             price={price}
                                                             colSize={this.state.layoutColumns}
                                                             products={listProduct} />
+                                                        <div className="mt-5">
+                                                            <Pagination
+                                                                threeDots
+                                                                totalPages={listProduct ? Math.ceil(listProduct.total / filter.pageSize) : 0}
+                                                                currentPage={filter.page}
+                                                                showMax={7}
+                                                                prevNext
+                                                                activeBgColor="#18eaca"
+                                                                activeBorderColor="#7bc9c9"
+                                                                onClick={(page) => this.change(page, "page")}
+                                                            />
+                                                        </div>
 
                                                     </div>
                                                 </div>

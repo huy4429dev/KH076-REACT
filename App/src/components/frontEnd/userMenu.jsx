@@ -7,6 +7,9 @@ export class UserMenu extends Component {
     logout = () => {
         this.props.actions.logout();
     }
+    redirect = () => {
+        window.location.href = "http://localhost:3000/admin";
+    }
     render() {
         const { user } = this.props;
         return (
@@ -21,8 +24,9 @@ export class UserMenu extends Component {
                         <div className="dotted-animation"><span className="animate-circle"></span><span className="main-circle"></span></div>
                     </div>
                     <ul className="profile-dropdown onhover-show-div p-20 profile-dropdown-hover">
+                        <Link to="/profile"><li className="text-dark">Trang cá nhân</li></Link>
+                        <li className="text-dark" onClick={this.redirect}>Trang quản lý</li>
                         <li onClick={() => this.logout()} className="text-dark">Đăng xuất</li>
-                        <li><Link to={'/admin'}>Trang quản lý</Link></li>
                     </ul>
                 </li>
             </Fragment>

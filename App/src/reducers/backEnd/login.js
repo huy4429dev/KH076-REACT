@@ -16,7 +16,6 @@ export default (state = initState, action) => {
             state.token = action.data.token;
             state.user = action.data.user;
             state.role = action.data.role;
-            alert(action.data.role);
             localStorage.setItem('access_token', action.data.token);
             return {
                 ...state,

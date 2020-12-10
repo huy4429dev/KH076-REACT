@@ -22,6 +22,18 @@ const styles = {
         position: "absolute",
         zIndex: "10000000",
         transform: "translate(-50%, -50%)"
+    },
+    card: {
+        position: "absolute",
+        top: 0,
+        left: 0,
+        right: 0,
+        bottom: 0,
+        borderRadius: "2px",
+        zIndex: "10",
+        alignItems: "center",
+        justifyContent: "center",
+        display: "flex"
     }
 }
 export default class Loading extends React.Component {
@@ -53,10 +65,9 @@ export default class Loading extends React.Component {
             }
             else if (type == 'card') {
                 return (
-                    <div className={classes} style={{ backgroundColor }}>
-                        <svg viewBox="25 25 50 50">
-                            <circle cx="50" cy="50" r="20" fill="none" strokeWidth="2" strokeMiterlimit="10"></circle>
-                        </svg>
+                    <div style={styles.card}>
+                        <div className="loading-cls" style={styles.loading}>
+                        </div>
                     </div>
                 )
             }

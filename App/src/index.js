@@ -11,7 +11,7 @@ import "./index.scss";
 import "./lib/extensions";
 import { persistStore } from 'redux-persist';
 import { PersistGate } from 'redux-persist/integration/react'
-
+import { hot } from 'react-hot-loader';
 
 const store = configStore();
 let persistor = persistStore(store);
@@ -23,14 +23,15 @@ ReactDOM.render(
 				<Router >
 					<Switch>
 						<Route exact path={
-							["/", "/product", "/shop", "/checkout", "/cart", "/login", "/register", "/settings/*"]
+							["/", "/product/*", "/shop", "/checkout", "/cart", "/login", "/register", "/contact",
+								"/blog", "/about", "/checkout", "/profile"]
 						}>
 							<App />
 						</Route>
 						<Route exact path={
 							["/admin", "/admin/dashboard", "/admin/user", "/admin/user/add", "/admin/products/category",
 								"/admin/products/list", "/admin/products/detailt", "/admin/products/add",
-								"/admin/profile"
+								"/admin/profile", "/admin/blog"
 							]
 						} component={({ history }) => <Admin history={history} />} />
 
