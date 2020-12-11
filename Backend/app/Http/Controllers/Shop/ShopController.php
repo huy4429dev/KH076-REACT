@@ -240,11 +240,11 @@ class ShopController extends BaseController
             if($min != null){
                 $query = $query->whereBetween('price',[$min, $max]);
             }
-            if($color != null){
-                $query = $query->whereHas('roles', function($q){
-                                $q->where('name', '=', 'user');
-                            });
-            }
+            // if($color != null){
+            //     $query = $query->whereHas('colors', function($color){
+            //                     $color->where('name', '=', 'user');
+            //                 });
+            // }
 
 
             $Products = $query
