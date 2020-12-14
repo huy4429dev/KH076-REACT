@@ -78,6 +78,7 @@ class ProductController extends BaseController
 
         $Products = $query
         ->orderBy('id','desc')
+        ->with('images')
         ->skip( ($page - 1) * $pageSize )
         ->take($pageSize)
         ->get();

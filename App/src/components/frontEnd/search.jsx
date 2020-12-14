@@ -45,7 +45,7 @@ class Search extends Component {
             loading: false,
             products: [],
             filter: {
-                search: "",
+                q: "",
             }
         }
         this.insideContainer = React.createRef();
@@ -75,7 +75,7 @@ class Search extends Component {
         })
     }
     search = () => {
-        if (this.state.filter.search) {
+        if (this.state.filter.q) {
             this.setState({ loading: true });
             const param = queryString.stringify(this.state.filter);
             this.props.actions.search(param)
@@ -94,6 +94,7 @@ class Search extends Component {
     render() {
         const { loading, products, filter } = this.state;
         const { show } = this.props;
+        console.log(products, "abc");
         if (show) {
             return (
                 <div ref={this.insideContainer}
@@ -110,8 +111,8 @@ class Search extends Component {
                                     <div className="col-md-12">
                                         <div className="form-group">
                                             <input
-                                                value={filter.search}
-                                                name="search"
+                                                value={filter.q}
+                                                name="q"
                                                 onChange={(e) => this.change(e)}
                                                 type="text" className="form-control"
                                                 placeholder="Tìm kiếm sản phẩm..."
@@ -139,7 +140,7 @@ class Search extends Component {
 
                                         }
                                         {
-                                            (!loading && products.length == 0 && filter.search) &&
+                                            (!loading && products.length == 0 && filter.q) &&
                                             <div className="d-flex justify-content-center w-100">
                                                 <p >Không tìm thấy sản phẩm nào</p>
                                             </div>

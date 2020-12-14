@@ -174,7 +174,7 @@ Route::prefix('products')->group(function(){
    
     Route::get('/sale-men', [ShopController::class,'saleMen'] );
     Route::get('/sale-women', [ShopController::class,'saleWomen'] );
-    Route::get('/search', [ShopController::class,'search'] );
+    Route::get('/search', [ProductController::class,'search'] );
 
     Route::get('/new-products', [ShopController::class,'newProducts'] );
     Route::get('/man-products', [ShopController::class,'manProducts'] );
