@@ -109,7 +109,6 @@ class Facebook extends Component {
         });
     }
     render() {
-        console.log(this.props, "dsda");
         return (
             <div>
                 <div className="btn text-white ml-2" style={{ background: "#007bff" }} onClick={this.login}>Facebook</div>

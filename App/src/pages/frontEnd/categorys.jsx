@@ -3,15 +3,15 @@ import Breadcrumb from "./../../components/frontEnd/home/breadcrumb";
 import Filter from "./../../components/frontEnd/shop/filter";
 import FilterBar from "./../../components/frontEnd/shop/filterBar";
 import ProductListing from "./../../components/frontEnd/shop/productListing";
-import NewProduct from "./../../components/frontEnd/shop/newProduct";
-import StickyBox from "react-sticky-box";
+// import NewProduct from "./../../components/frontEnd/shop/newProduct";
+// import StickyBox from "react-sticky-box";
 import connect from './../../lib/connect';
 import * as actions from './../../actions/frontEnd/product';
-// import Loadding from './../../components/loading';
-import Loadding from './../../components/loadding2';
 import Pagination from "react-bootstrap-4-pagination";
+import Loading from "./../../components/loadding2";
 import queryString from 'query-string';
 import $ from 'jquery';
+
 class Shop extends Component {
     constructor(props) {
         super(props);
@@ -22,7 +22,7 @@ class Shop extends Component {
             price: 1000000,
             filter: {
                 page: 1,
-                pageSize: 20,
+                pageSize: 10,
             }
         }
     }
@@ -32,11 +32,14 @@ class Shop extends Component {
         $('.page-link').on('click', (e) => e.preventDefault());
     }
     getData = () => {
-        this.setState({ loading: true });
-        const param = queryString.stringify(this.state.filter);
-        this.props.actions.getListProducts(param)
-            .then(() => this.setState({ loading: false }))
-            .catch(() => this.setState({ loading: false }));
+        const { id } = this.props.match.params;
+        this.setState({ loading: true })
+        this.props.actions.getProductCategory(id, queryString.stringify(this.state.filter))
+            .then(() => {
+                this.setState({ loading: false })
+            }).catch(() => {
+                this.setState({ loading: false })
+            })
     }
     LayoutViewClicked(colums) {
         this.setState({
@@ -52,11 +55,6 @@ class Shop extends Component {
             filterBy: v
         })
     }
-    filterPrice = (v) => {
-        this.setState({
-            price: v
-        })
-    }
     change = (value) => {
         this.setState({
             filter: {
@@ -67,37 +65,28 @@ class Shop extends Component {
             this.getData();
         })
     }
-    changePrice = (value) => {
-        this.setState({
-            filter: {
-                ...this.state.filter,
-                ...value
-            }
-        }, () => this.getData())
-    }
     render() {
-        const { listProduct } = this.props.productHome;
-        const { filterBy, price, filter } = this.state;
-        console.log(this.state);
+        const { loading, filter, filterBy, price } = this.state;
+        const { productCategory } = this.props.productCategory;
         return (
             <div>
-                <Loadding show={this.state.loading} type="full" />
-                <Breadcrumb title={'Sản phẩm'} />
+                <Breadcrumb title={'Danh mục'} />
+                <Loading show={loading} type="full" />
                 <section className="section-b-space">
                     <div className="collection-wrapper">
                         <div className="container">
                             <div className="row">
-                                <div className="collection-content col">
+                                <div className="collection-content col-md-12">
                                     <div className="page-main-content">
                                         <div className="">
                                             <div className="row">
                                                 <div className="col-sm-12">
                                                     <div className="top-banner-wrapper">
-                                                        <a href="#"><img src={`https://media.slidesgo.com/storage/222093/conversions/0-beauty-salon-business-plan-thumb.jpg`} className="img-fluid" alt="" /></a>
+                                                        <a href="#"><img src={`https://react.pixelstrap.com/multikart/assets/images/mega-menu/2.jpg`} className="img-fluid" alt="" /></a>
                                                         <div className="top-banner-content small-section">
                                                             <h4>Thời trang</h4>
-                                                            <h5>Cam kết với sản phẩm</h5>
-                                                            <p>Là thương hiệu uy tín</p>
+                                                            {/* <h5>Lorem Ipsum is simply dummy text of the printing and typesetting industry.</h5>
+                                                            <p>Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum. </p> */}
                                                         </div>
                                                     </div>
                                                     <div className="collection-product-wrapper">
@@ -109,33 +98,38 @@ class Shop extends Component {
                                                                             <span onClick={this.openFilter}
                                                                                 className="filter-btn btn btn-theme"><i
                                                                                     className="fa fa-filter"
-                                                                                    aria-hidden="true"></i>Bộ lọc</span>
+                                                                                    aria-hidden="true"></i> Lọc</span>
                                                                         </div>
                                                                     </div>
                                                                 </div>
                                                                 <div className="row">
                                                                     <div className="col-12">
-                                                                        <FilterBar
-                                                                            filterSort={(v) => this.filterSort(v)}
-                                                                            onLayoutViewClicked={(colmuns) => this.LayoutViewClicked(colmuns)} />
+                                                                        {
+                                                                            productCategory &&
+                                                                            <FilterBar
+                                                                                filterSort={(v) => this.filterSort(v)}
+                                                                                products={productCategory.items}
+                                                                                onLayoutViewClicked={(colmuns) => this.LayoutViewClicked(colmuns)} />
+                                                                        }
                                                                     </div>
                                                                 </div>
                                                             </div>
                                                         </div>
                                                         {
-                                                            listProduct &&
-                                                            <ProductListing
+                                                            productCategory &&
+                                                            <ProductListing colSize={this.state.layoutColumns}
                                                                 filterBy={filterBy}
+                                                                products={productCategory}
                                                                 price={price}
-                                                                colSize={this.state.layoutColumns}
-                                                                products={listProduct} />
+                                                            />
+
                                                         }
                                                         {
-                                                            listProduct?.items?.length > 0 && (
+                                                            productCategory?.items?.length > 0 && (
                                                                 <div className="mt-5">
                                                                     <Pagination
                                                                         threeDots
-                                                                        totalPages={listProduct ? Math.ceil(listProduct.total / filter.pageSize) : 0}
+                                                                        totalPages={productCategory ? Math.ceil(productCategory.total / filter.pageSize) : 0}
                                                                         currentPage={filter.page}
                                                                         showMax={7}
                                                                         prevNext
@@ -152,21 +146,6 @@ class Shop extends Component {
                                         </div>
                                     </div>
                                 </div>
-                                <div className="col-sm-3 collection-filter">
-
-                                    <StickyBox offsetTop={20} offsetBottom={20}>
-                                        <div>
-                                            <Filter changePrice={(value) => this.changePrice(value)} />
-                                            <NewProduct />
-                                            <div className="collection-sidebar-banner">
-                                                <a href="#">
-                                                    <img src={`https://react.pixelstrap.com/multikart/assets/images/side-banner.png`} className="img-fluid" alt="" />
-                                                </a>
-                                            </div>
-                                        </div>
-                                    </StickyBox>
-                                    {/*side-bar banner end here*/}
-                                </div>
                             </div>
                         </div>
                     </div>
@@ -178,5 +157,5 @@ class Shop extends Component {
 }
 
 export default connect(Shop, state => ({
-    productHome: state.productHome
+    productCategory: state.productHome
 }), actions);

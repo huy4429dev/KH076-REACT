@@ -3,7 +3,6 @@ import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
 import connect from './../../lib/connect';
 import * as actions from './../../actions/frontEnd/category';
-import LTT from 'list-to-tree';
 class SideBar extends Component {
     constructor(props) {
         super(props);
@@ -198,7 +197,6 @@ class SideBar extends Component {
     }
     render() {
         const { items } = this.state;
-
         return (
             <div id="mySidenav" className="sidenav">
                 <a href="javascript:void(0)" className="sidebar-overlay" onClick={this.closeNav}></a>
@@ -209,7 +207,10 @@ class SideBar extends Component {
                         </div>
                     </a>
                     <ul id="sub-menu" className="sidebar-menu">
-                        {this.renderMenu(items)}
+                        {
+                            items &&
+                            this.renderMenu(items)
+                        }
                     </ul>
                 </nav>
             </div>

@@ -11,6 +11,7 @@ import Contact from './pages/frontEnd/contact';
 import About from './pages/frontEnd/about';
 import DetailBlog from './pages/frontEnd/detailBlog';
 import Profile from './pages/frontEnd/profile';
+import Categorys from './pages/frontEnd/categorys';
 
 
 
@@ -75,6 +76,11 @@ const routes = [
         path: '/profile',
         exact: true,
         main: ({ history, match }) => <Profile history={history} match={match} />
+    },
+    {
+        path: '/categorys/:id',
+        exact: true,
+        main: ({ history, match }) => <Categorys history={history} match={match} />
     },
 ];
 

@@ -184,6 +184,7 @@ Route::prefix('products')->group(function(){
     Route::post('/comment', [ShopController::class,'comment'] );
     Route::get('/{id}', [ShopController::class,'show'] );
     Route::get('/search', [ProductController::class,'search'] );
+    Route::get('/products-category/{categoryId}', [ShopController::class,'productsCategory'] );
 
 
 });

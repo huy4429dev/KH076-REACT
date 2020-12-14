@@ -10,7 +10,8 @@ const initState = {
     listProduct: null,
     topProduct: [],
     saleMen: [],
-    saleWomen: []
+    saleWomen: [],
+    productCategory: null
 }
 
 export default (state = initState, action) => {
@@ -53,6 +54,11 @@ export default (state = initState, action) => {
             }
         case types.GET_TOP_SALE_WOMEN_SUCCESS:
             state.saleWomen = action.data.data.items;
+            return {
+                ...state
+            }
+        case types.GET_PRODUCTS_CATEGORY_SUCCESS:
+            state.productCategory = action.data.data;
             return {
                 ...state
             }

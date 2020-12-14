@@ -13,7 +13,6 @@ class ProductListing extends Component {
         this.state = { limit: 5, hasMoreItems: true };
 
     }
-
     render() {
         const { products, addToCart, price, symbol, addToWishlist, addToCompare, filterBy } = this.props;
         let items = [];
@@ -39,7 +38,6 @@ class ProductListing extends Component {
                     break;
             }
         }
-
         return (
             <div>
                 <div className="product-wrapper-grid">
@@ -75,9 +73,9 @@ class ProductListing extends Component {
                             <div className="row">
                                 <div className="col-sm-12 text-center section-b-space mt-5 no-found" >
                                     <img src={`${process.env.PUBLIC_URL}/assets/images/empty-search.jpg`} className="img-fluid mb-4" />
-                                    <h3>Sorry! Couldn't find the product you were looking For!!!    </h3>
-                                    <p>Please check if you have misspelt something or try searching with other words.</p>
-                                    <Link to={`${process.env.PUBLIC_URL}/`} className="btn btn-solid">continue shopping</Link>
+                                    <h3>Không tìm thấy sản phẩm nào</h3>
+                                    {/* <p>Please check if you have misspelt something or try searching with other words.</p> */}
+                                    <Link to={`/`} className="btn btn-solid">quay lại trang chủ</Link>
                                 </div>
                             </div>
                         }

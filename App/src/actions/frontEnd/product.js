@@ -19,7 +19,9 @@ export const types = {
     COMMENT_SUCCESS: "COMMENT_SUCCESS",
     COMMENT_FAILE: "COMMENT_FAILE",
     SEARCH_SUCCESS: "SEARCH_SUCCESS",
-    SEARCH_ERROR: "SEARCH_ERROR"
+    SEARCH_ERROR: "SEARCH_ERROR",
+    GET_PRODUCTS_CATEGORY_SUCCESS: "GET_PRODUCTS_CATEGORY_SUCCESS",
+    GET_PRODUCTS_CATEGORY_ERROR: "GET_PRODUCTS_CATEGORY_ERROR",
 }
 
 export const getListProducts = (param) => {
@@ -102,4 +104,12 @@ export const search = (search) => {
         onSuccess: types.SEARCH_SUCCESS,
         onError: types.SEARCH_ERROR,
     };
-}; 
+};
+export const getProductCategory = (id, params) => {
+    return {
+        url: `${ep.enpoint}/api/products/products-category/${id}?${params}`,
+        method: 'get',
+        onSuccess: types.GET_PRODUCTS_CATEGORY_SUCCESS,
+        onError: types.GET_PRODUCTS_CATEGORY_ERROR,
+    };
+};

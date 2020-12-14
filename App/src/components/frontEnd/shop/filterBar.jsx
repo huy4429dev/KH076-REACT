@@ -42,7 +42,7 @@ class FilterBar extends Component {
     }
 
     render() {
-        const products = [];
+        const { products } = this.props;
         return (
             <div className="product-filter-content">
                 <div className="search-count">

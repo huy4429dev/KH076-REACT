@@ -420,5 +420,51 @@ class ShopController extends BaseController
             'Delete Shop successfully'
           );
     }
+        public function productsCategory($categoryId ,Request $request){
 
+        $page = $request->query('page') ? $request->query('page') : 1;
+        $pageSize = $request->query('pageSize') ? $request->query('pageSize') : 25;
+
+        $query = Product::query()->where('category_id',$categoryId);
+           $min = $request->query('min');
+           $max = $request->query('max');
+           $color = $request->query('color');
+           $barnd = $request->query('brand');
+
+            if($min != null){
+                $query = $query->whereBetween('price',[$min, $max]);
+            }
+            // if($color != null){
+            //     $query = $query->whereHas('colors', function($color){
+            //                     $color->where('name', '=', 'user');
+            //                 });
+            // }
+
+
+            $Products = $query
+            ->orderBy('id','desc')
+            ->with('user')
+            ->with('images')
+            ->with('colors')
+            ->with('sizes')
+            ->with('category')
+            ->skip( ($page - 1) * $pageSize )
+            ->take($pageSize)
+            ->get();
+        
+            // $total = $query
+            //     ->orderBy('id','desc')
+            //     ->with('user')
+            //     ->with('images')
+            //     ->with('colors')
+            //     ->with('sizes')
+            //     ->with('category')->get();
+
+        return $this->sendResponse(
+            $data = [
+                     'items' => $Products , 
+                     'total' => Product::where('category_id',$categoryId)->count()
+                    ]
+          );
+    }
 }
