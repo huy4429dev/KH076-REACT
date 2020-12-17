@@ -46,7 +46,7 @@ class FilterBar extends Component {
         return (
             <div className="product-filter-content">
                 <div className="search-count">
-                    <h5>Hiển thị 1-{products.length} Kết quả</h5>
+                    {/* <h5>Hiển thị 1-{products.length} Kết quả</h5> */}
                 </div>
                 <div className="collection-view">
                     <ul>

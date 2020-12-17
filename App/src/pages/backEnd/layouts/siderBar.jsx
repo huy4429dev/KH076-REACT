@@ -28,7 +28,7 @@ class sidebar extends Component {
     constructor(props) {
         super(props)
     }
-    
+
     state = { selectedPath: "1", mainmenu: [] };
     onItemSelection = (arg, e) => {
         this.setState({ selectedPath: arg.path });
@@ -98,8 +98,8 @@ class sidebar extends Component {
             selectionColor: "#C51162"
         };
 
-    let { mainmenu, token } = this.state;
-    let { role } = this.props.login;
+        let { mainmenu } = this.state;
+        let { role } = this.props.login;
 
         mainmenu = mainmenu.filter(item => {
             if (item.role?.length > 0) {

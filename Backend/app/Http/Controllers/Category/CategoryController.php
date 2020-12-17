@@ -47,7 +47,7 @@ class CategoryController extends BaseController
             else{
 
                 $categories = Category::whereIn('user_id',$userIdsOfShop)
-                ->has('children')
+                ->with('children')
                 ->orderBy('id','desc')
                 ->skip( ($page - 1) * $pageSize )
                 ->take($pageSize)

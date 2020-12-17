@@ -77,7 +77,7 @@ class Blog extends Component {
                             <div className="col-xl-3 col-lg-4 col-md-5">
                                 <div className="blog-sidebar">
                                     <div className="theme-card">
-                                        <h4>Recent Blog</h4>
+                                        <h4>Bài viết hiện tại</h4>
                                         <ul className="recent-blog">
                                             {
                                                 recent.length > 0 && recent.map((item, index) => {
@@ -98,7 +98,7 @@ class Blog extends Component {
                                             }
                                         </ul>
                                     </div>
-                                    <div className="theme-card">
+                                    {/* <div className="theme-card">
                                         <h4>Popular Blog</h4>
                                         <ul className="popular-blog">
                                             <li>
@@ -154,7 +154,7 @@ class Blog extends Component {
                                                 <p>it look like readable English. Many desktop publishing text. </p>
                                             </li>
                                         </ul>
-                                    </div>
+                                    </div> */}
                                 </div>
                             </div>
 

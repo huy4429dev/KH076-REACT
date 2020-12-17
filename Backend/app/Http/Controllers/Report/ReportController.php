@@ -112,7 +112,7 @@ class ReportController extends BaseController
                                     from (
                                         select o.id, sum(oi.quantity) totalProduct 
                                         from orders o 
-                                        join order_items oi 
+                                        join orders_items oi 
                                         on o.id = oi.order_id 
                                         group by o.id
                                     ) as a
@@ -125,17 +125,16 @@ class ReportController extends BaseController
             {
                 $shopId = $user->shops()->first()->id; 
                 $userIdsOfShop = Shop::find($shopId)->users->pluck('id')->toArray();
-                $userIdsOfShop = implode("",$userIdsOfShop);
-
+                $userIdsOfShop = implode(",",$userIdsOfShop);
                 $data = DB::select("select cast(o2.created_at as date) day, 
                                     sum(o2.total) as totalAmount, 
-                                count(o2.id) as totalOrder,  
+                                   count(o2.id) as totalOrder,  
                                     sum(a.totalProduct) totalProduct, 
                                     sum(case when o2.status = 1 then 1 else 0 end) totalOrderSuccess
                                     from (
                                         select o.id, sum(oi.quantity) totalProduct 
                                         from orders o 
-                                        join order_items oi 
+                                        join orders_items oi 
                                         on o.id = oi.order_id 
                                         group by o.id
                                     ) as a
@@ -215,7 +214,7 @@ class ReportController extends BaseController
                                 from (
                                     select o.id, sum(oi.quantity) totalProduct 
                                     from orders o 
-                                    join order_items oi 
+                                    join orders_items oi 
                                     on o.id = oi.order_id 
                                     group by o.id
                                 ) as a
@@ -234,7 +233,7 @@ class ReportController extends BaseController
         {
             $shopId = $user->shops()->first()->id; 
             $userIdsOfShop = Shop::find($shopId)->users->pluck('id')->toArray();
-            $userIdsOfShop = implode("",$userIdsOfShop);
+            $userIdsOfShop = implode(",",$userIdsOfShop);
 
             $data = DB::select("select cast(o2.created_at as date) day, 
                                 sum(o2.total) as totalAmount, 
@@ -244,7 +243,7 @@ class ReportController extends BaseController
                                 from (
                                     select o.id, sum(oi.quantity) totalProduct 
                                     from orders o 
-                                    join order_items oi 
+                                    join orders_items oi 
                                     on o.id = oi.order_id 
                                     group by o.id
                                 ) as a

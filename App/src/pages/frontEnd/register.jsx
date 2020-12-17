@@ -25,8 +25,11 @@ class Register extends Component {
         }
         this.validator = new SimpleReactValidator({
             autoForceUpdate: this,
-            email: 'email không hợp lệ',
-            default: 'Validation has failed!'
+            messages: {
+                required: 'Dữ liệu không hợp lệ ',
+                email: 'Email không hợp lệ'
+
+            }
         });
     }
     componentDidMount() {

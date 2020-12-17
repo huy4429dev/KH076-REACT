@@ -7,6 +7,9 @@ import * as actions from './../../actions/frontEnd/cart';
 const styles = {
     td: {
         minWidth: "150px"
+    },
+    tdcus :{
+        minWidth: "220px"
     }
 }
 class Cart extends Component {
@@ -127,7 +130,7 @@ class Cart extends Component {
                                                             }
 
                                                         </td>
-                                                        <td style={styles.td}>
+                                                        <td style={styles.tdcus}>
                                                             <div className="qty-box">
                                                                 <div className="input-group">
                                                                     <span className="input-group-prepend">

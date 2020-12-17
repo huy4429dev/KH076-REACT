@@ -24,7 +24,7 @@ ReactDOM.render(
 					<Switch>
 						<Route exact path={
 							["/", "/product/*", "/shop", "/checkout", "/cart", "/login", "/register", "/contact",
-								"/blog", "/about", "/checkout", "/profile", "/categorys/*"]
+								"/blog", "/about", "/checkout", "/profile", "/categories/*"]
 						}>
 							<App />
 						</Route>

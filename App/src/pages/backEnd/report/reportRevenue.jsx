@@ -239,7 +239,7 @@ class Revenue extends Component {
                                                                 dataStatictis.map(item => (
                                                                     
                                                                     <tr className={startDate.getDay() == item.day ? 'tr-active' : ''}>
-                                                                        <td>{item.day}/{startDate.getMonth()}</td>
+                                                                        <td>{item.day}/{startDate.getMonth() + 1}</td>
                                                                         <td>{item.totalOrder}</td>
                                                                         <td>{item.totalOrderSuccess}</td>
                                                                         <td>{item.totalProduct}</td>

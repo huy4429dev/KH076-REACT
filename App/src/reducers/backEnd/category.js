@@ -13,6 +13,7 @@ export default (state = initState, action) => {
   switch (action.type) {
 
     case types.GET_CATEGORIES_SUCCESS:
+
       return {
         ...state,
         items: [...action.data.data.items],
@@ -23,7 +24,7 @@ export default (state = initState, action) => {
 
       return {
         ...state,
-        items: [{ ...action.data.data }, ...state.items],
+        items: [{ ...action.data.data }, ...state.items], //
       };
 
     case types.UPDATE_CATEGORY_SUCCESS:

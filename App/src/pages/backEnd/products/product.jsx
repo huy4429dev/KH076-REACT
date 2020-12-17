@@ -469,13 +469,6 @@ class Product extends Component {
                                         >
                                             <i className="fa fa-refresh" aria-hidden="true"></i>
                                         </button>
-                                        <button
-                                            type="button"
-                                            className="btn btn-success"
-                                            style={customButton}
-                                        >
-                                            <i className="fas fa-print"></i>
-                                        </button>
                                     </div>
                                 </div>
                                 <div className="card-body">

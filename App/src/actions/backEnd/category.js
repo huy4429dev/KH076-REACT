@@ -14,6 +14,7 @@ export const types = {
   CREATE_CATEGORY_CHILDREN_ERROR: "CREATE_CATEGORY_CHILDREN_ERROR",
 };
 
+
 export const getCategories = (filter = '', page = 1) => {
   return {
     url: `${ep.enpoint}/api/categories?page=${page}&${filter}`,
@@ -21,7 +22,8 @@ export const getCategories = (filter = '', page = 1) => {
     onSuccess: types.GET_CATEGORIES_SUCCESS,
     onError: types.GET_CATEGORIES_ERROR,
   };
-};
+};  
+
 
 export const filterCategories = (filter) => {
   return {
@@ -34,7 +36,7 @@ export const filterCategories = (filter) => {
 
 export const createCategory = (data, parentId = 0) => {
   return {
-    url: `${ep.enpoint}/api/categories?parentId=${parentId}`,
+    url: `${ep.enpoint}/api/categories?parentId=${parentId}`, // goi api
     method: "post",
     data: { ...data },
     onSuccess: types.CREATE_CATEGORY_SUCCESS,

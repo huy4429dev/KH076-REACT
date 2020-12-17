@@ -12,13 +12,21 @@ class Banner extends Component {
     }
 
     render() {
+        const settings = {
+            dots: true,
+            infinite: true,
+            autoplaySpeed: 2000,
+            slidesToShow: 1,
+            slidesToScroll: 1,
+            autoplay:true,
+        };
         const { saleMen, saleWomen } = this.props.productHome;
         // const backgroundMen =  saleMen[0].images[0]. : ''
         return (
             <div>
                 {/* <Breadcrumb parent={'Elements'} title={'Slider'} /> */}
                 <section className="p-0">
-                <Slider className="slide-1 home-slider">
+                    <Slider className="slide-1 home-slider" {...settings}>
                         <div>
                             <div className="home home1 text-center"
                                 style={{
@@ -106,7 +114,7 @@ class Banner extends Component {
                                                     <div className="contain-banner">
                                                         <div>
                                                             <h4>save 30%</h4>
-                                                            <h2>men</h2>
+                                                            <h2>Phái nữ</h2>
                                                         </div>
                                                     </div>
                                                 </div>
@@ -125,7 +133,7 @@ class Banner extends Component {
                                                     <div className="contain-banner">
                                                         <div>
                                                             <h4>save 60%</h4>
-                                                            <h2>women</h2>
+                                                            <h2>Phái nữ</h2>
                                                         </div>
                                                     </div>
                                                 </div>

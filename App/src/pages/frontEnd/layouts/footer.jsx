@@ -55,14 +55,14 @@ class Footer extends Component {
                         <div className="row footer-theme partition-f">
                             <div className="col-lg-4 col-md-6">
                                 <div className="footer-title footer-mobile-title">
-                                    <h4>about</h4>
+                                    {/* <h4>about</h4> */}
                                 </div>
                                 <div className="footer-contant">
                                     <div className="footer-logo">
                                         <LogoImage logo={this.props.logoName} />
                                     </div>
-                                    <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor
-                                        incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, </p>
+                                    {/* <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor
+                                        incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, </p> */}
                                     <div className="footer-social">
                                         <ul>
                                             <li>
@@ -76,9 +76,6 @@ class Footer extends Component {
                                             </li>
                                             <li>
                                                 <Link to={'https://instagram.com'}><i className="fa fa-instagram" aria-hidden="true"></i></Link>
-                                            </li>
-                                            <li>
-                                                <Link to={'https://rss.com/'}><i className="fa fa-rss" aria-hidden="true"></i></Link>
                                             </li>
                                         </ul>
                                     </div>
@@ -110,7 +107,7 @@ class Footer extends Component {
                                             <li><a href="#">Mua sắm an toàn</a></li>
                                             {/* <li><a href="#">gallary</a></li> */}
                                             <li><a href="#">Chi nhánh</a></li>
-                                            <li><a href="#">Liên hệ</a></li>
+                                            <li><Link to="/contact">Liên hệ</Link></li>
                                         </ul>
                                     </div>
                                 </div>

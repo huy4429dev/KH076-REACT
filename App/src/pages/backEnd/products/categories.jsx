@@ -9,7 +9,7 @@ import * as actions from '../../../actions/backEnd/category';
 import Loading from '../../../components/backEnd/loading';
 import $ from 'jquery';
 
-class Categorys extends Component {
+class Categories extends Component {
     constructor(props) {
         super(props);
         this.state = {
@@ -28,13 +28,16 @@ class Categorys extends Component {
         })
         const { getCategories } = this.props.actions;
         getCategories()
-            .then(() => {
+            .then((data) => {
                 this.setState({ loading: false });
+
+                console.log(data, 'DATA CALL ALL CATEGORIES');
+
             })
             .catch((err) => {
                 this.setState({ loading: false });
                 $.notify({ message: 'Tải xuống danh mục sản phẩm không thành công' }, { type: 'danger' });
-            });
+            }); 
 
     }
 
@@ -44,10 +47,9 @@ class Categorys extends Component {
         const target = event.target;
         const value = target.value;
         const tagName = target.name;
-        const { name, description } = this.state;
         this.setState({
             [tagName]: value
-        });
+        } ,  () => console.log(this.state, 'NEW STATE'));
 
     }
 
@@ -64,10 +66,10 @@ class Categorys extends Component {
 
             const { name, description } = this.state;
             const { createCategory } = this.props.actions;
-            if (name === '' || name === null) return;
+
             createCategory({
                 name: name,
-                description: description
+                description: description 
             })
                 .then((data) => {
                     if (data.success) {
@@ -110,9 +112,10 @@ class Categorys extends Component {
     };
 
     render() {
+
         const { open, category } = this.state;
         const { categories } = this.props;
-        const items = categories.items ? categories.items : [];
+        const items = categories.items ? categories.items : []; 
         const total = categories.total ?? 0;
         return (
             <Fragment>
@@ -193,7 +196,7 @@ class Categorys extends Component {
     }
 }
 
-export default connect(Categorys, state => (
+export default connect(Categories, state => (
     {
         categories: state.category
     }

@@ -120,7 +120,7 @@ class SideBar extends Component {
                     if (item.children.length > 0) {
                         return (
                             <li key={index}>
-                                <Link to={`/categorys/${item.id}`} onClick={(e) => this.handleSubmenu(e)}>
+                                <Link to={`/categories/${item.id}`} onClick={(e) => this.handleSubmenu(e)}>
                                     {item.name}
                                     <span className="sub-arrow"></span>
                                 </Link>
@@ -132,7 +132,7 @@ class SideBar extends Component {
                     } else {
                         return (
                             <li key={index}>
-                                <Link to={`/categorys/${item.id}`} >
+                                <Link to={`/categories/${item.id}`} >
                                     {item.name}
                                 </Link>
                             </li>
@@ -148,7 +148,7 @@ class SideBar extends Component {
                 if (item.children.length > 0) {
                     return (
                         <li key={index}>
-                            <Link to={`/categorys/${item.id}`} onClick={(e) => this.handleSubTwoMenu(e)} >
+                            <Link to={`/categories/${item.id}`} onClick={(e) => this.handleSubTwoMenu(e)} >
                                 {item.name}
                                 <span className="sub-arrow"></span>
                             </Link>
@@ -160,7 +160,7 @@ class SideBar extends Component {
                 } else {
                     return (
                         <li key={index}>
-                            <Link to={`/categorys/${item.id}`}  >
+                            <Link to={`/categories/${item.id}`}  >
                                 {item.name}
                             </Link>
                         </li>
@@ -177,7 +177,7 @@ class SideBar extends Component {
                 if (item.children.length > 0) {
                     return (
                         <li key={index}>
-                            <Link to={`/categorys/${item.id}`} onClick={(e) => this.handleSubThreeMenu(e)} >
+                            <Link to={`/categories/${item.id}`} onClick={(e) => this.handleSubThreeMenu(e)} >
                                 {item.name}
                                 <span className="sub-arrow"></span>
                             </Link>
@@ -186,7 +186,7 @@ class SideBar extends Component {
                 } else {
                     return (
                         <li key={index}>
-                            <Link to={`/categorys/${item.id}`}  >
+                            <Link to={`/categories/${item.id}`}  >
                                 {item.name}
                             </Link>
                         </li>

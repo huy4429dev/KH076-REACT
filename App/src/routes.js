@@ -11,7 +11,7 @@ import Contact from './pages/frontEnd/contact';
 import About from './pages/frontEnd/about';
 import DetailBlog from './pages/frontEnd/detailBlog';
 import Profile from './pages/frontEnd/profile';
-import Categorys from './pages/frontEnd/categorys';
+import Categories from './pages/frontEnd/categories';
 
 
 
@@ -78,9 +78,9 @@ const routes = [
         main: ({ history, match }) => <Profile history={history} match={match} />
     },
     {
-        path: '/categorys/:id',
+        path: '/categories/:id',
         exact: true,
-        main: ({ history, match }) => <Categorys history={history} match={match} />
+        main: ({ history, match }) => <Categories history={history} match={match} />
     },
 ];
 

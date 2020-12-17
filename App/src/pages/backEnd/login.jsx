@@ -48,20 +48,20 @@ export class Login extends Component {
                                         <Slider className="single-item" {...settings}>
                                             <div>
                                                 <div>
-                                                    <h3>Welcome to Multikart</h3>
-                                                    <p>Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy.</p>
+                                                    <h3>Chào mừng đến với MultiKart</h3>
+                                                    <p>Bạn sẽ có những trải nghiệm tuyệt vời tại đây!</p>
                                                 </div>
                                             </div>
                                             <div>
                                                 <div>
-                                                    <h3>Welcome to Multikart</h3>
-                                                    <p>Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy.</p>
+                                                    <h3>Chào mừng đến với MultiKart</h3>
+                                                    <p>Bạn sẽ có những trải nghiệm tuyệt vời tại đây!</p>
                                                 </div>
                                             </div>
                                             <div>
                                                 <div>
-                                                    <h3>Welcome to Multikart</h3>
-                                                    <p>Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy.</p>
+                                                    <h3>Chào mừng đến với MultiKart</h3>
+                                                    <p>Bạn sẽ có những trải nghiệm tuyệt vời tại đây!</p>
                                                 </div>
                                             </div>
                                         </Slider >
@@ -77,7 +77,7 @@ export class Login extends Component {
                                     </div>
                                 </div>
                             </div>
-                            <a href="https://react.pixelstrap.com/multikart" target="_blank" className="btn btn-primary back-btn"><ArrowLeft />back</a>
+                            <a href="/" target="_blank" className="btn btn-primary back-btn"><ArrowLeft />Trở lại</a>
                         </div>
                     </div>
                 </div>
