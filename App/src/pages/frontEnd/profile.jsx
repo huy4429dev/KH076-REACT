@@ -18,7 +18,12 @@ export class Profile extends Component {
         this.refUpload = React.createRef();
     }
     componentDidMount() {
-        const { login, user } = this.props.login;
+        const { login, user, token } = this.props.login;
+        const tokenL = localStorage.getItem('access_token');
+        if (!login || !user || !token || !tokenL) {
+            this.props.history.push('/');
+            return;
+        }
         this.setState({ loading: true })
         this.props.actions.account(user.id)
             .then(data => {

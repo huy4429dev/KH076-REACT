@@ -9,6 +9,7 @@ use App\Models\Role;
 use App\Models\Product;
 use App\Models\Profile;
 use App\Models\User;
+use App\Models\ShopUser;
 use Validator;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Auth;
@@ -267,23 +268,24 @@ class ShopController extends BaseController
           );
     }
 
-    // public function index(Request $request){
+    public function all(Request $request){
 
-    //     $page = $request->query('page') ?? 1;
-    //     $pageShop = $request->query('pageShop') ?? 25;
+        $page = $request->query('page') ?  $request->query('page') : 1 ;
+        $pageShop = $request->query('pageShop') ? $request->query('pageShop') :25 ;
 
-    //     $Shops = Shop::ShopBy('id','desc')
-    //     ->skip( ($page - 1) * $pageShop )
-    //     ->take($pageShop)
-    //     ->get();
+        $Shops = Shop::orderBy('id','desc')
+        ->with('users')
+        ->skip( ($page - 1) * $pageShop )
+        ->take($pageShop)
+        ->get();
 
-    //     return $this->sendResponse(
-    //         $data = [
-    //                  'items' => $Shops ,
-    //                  'total' => $Shops->count()
-    //                 ]
-    //       );
-    // }
+        return $this->sendResponse(
+            $data = [
+                     'items' => $Shops ,
+                     'total' => $Shops->count()
+                    ]
+          );
+    }
 
     public function show($id){
         $found = Product::where('id', $id)
@@ -355,7 +357,10 @@ class ShopController extends BaseController
 
         $validator = Validator::make($request->all(), [
 
-            'name' => 'required'
+            'name' => 'required',
+            'avatar' => 'required',
+            'disception' => 'required',
+            'user_id' => 'required',
         ]);
 
         if($validator->fails()){
@@ -367,12 +372,13 @@ class ShopController extends BaseController
         if($Shop != null){
 
             $Shop->name = $request->name;
-            $Shop->Shop = $request->Shop;
-            $Shop->user_id = $request->user()->id;
+            $Shop->description = $request->disception;
+            $Shop->avatar = $request->avatar;
             $Shop->save();
 
+            $newShop = Shop::where('id',$Shop->id)->with('users')->first();
             return $this->sendResponse(
-                $data = $Shop,
+                $newShop,
                 'Update Shop successfully.'
             );
         }
@@ -384,27 +390,42 @@ class ShopController extends BaseController
 
         $validator = Validator::make($request->all(), [
 
-            'name' => 'required|unique:Shops'
+            'name' => 'required|unique:Shops',
+            'avatar' => 'required',
+            'disception' => 'required',
+            'user_id' => 'required',
         ]);
 
         if($validator->fails()){
             return $this->sendError('Validation Error.', $validator->errors());
         }
 
+
         $Shop = new Shop();
 
         $Shop->name = $request->name;
-        $Shop->user_id = $request->user()->id;
+        $Shop->avatar = $request->avatar;
+        $Shop->description = $request->disception;
         $Shop->save();
+        $ShopUser = new ShopUser();
+        $ShopUser->user_id = $request->user_id;
+        $ShopUser->shop_id = $Shop->id;
+        $ShopUser->save();
 
+        $newShop = Shop::where('id',$Shop->id)->with('users')->get();
         return $this->sendResponse(
-            $data = $Shop,
+            $data = $newShop,
             'Create Shop successfully.'
         );
 
     }
 
-    public function delete($id,Request $request){
+    public function delete($id ,$userId,Request $request){
+        $shopUser = ShopUser::where('user_id',$userId)->where('shop_id',$id)->first();
+        if($shopUser == null){
+            return $this->sendError('Shop Errors.',['error' => 'Shop not found !']);
+        }
+        $shopUser->delete();
 
         $found = Shop::find($id);
 

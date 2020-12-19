@@ -52,7 +52,6 @@ class Filter extends Component {
         this.props.changePrice(value);
     }
     render() {
-        console.log(this.state);
         // const filteredBrands = this.props.filters.brand;
         const filteredBrands = "xxx";
         const brands = [];

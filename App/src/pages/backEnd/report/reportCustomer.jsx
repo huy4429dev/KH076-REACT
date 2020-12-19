@@ -77,7 +77,13 @@ class ReportCustomer extends Component {
         };
 
 
-        this.validator = new SimpleReactValidator({ autoForceUpdate: this });
+        this.validator = new SimpleReactValidator({
+            autoForceUpdate: this,
+            messages: {
+                required: 'Dữ liệu không hợp lệ',
+                email: 'Email không hợp lệ'
+            }
+        });
     }
 
     componentDidMount = () => {
@@ -241,7 +247,7 @@ class ReportCustomer extends Component {
         lastDayOfMonth = moment(lastDayOfMonth).format('YYYY-MM-DD[T]HH:mm:ss.SSS');
         const filter = `fromDate=${firstDayOfMonth}&toDate=${lastDayOfMonth}`;
 
-        
+
 
         this.setState({
             loading: true,
@@ -282,7 +288,7 @@ class ReportCustomer extends Component {
             });
     }
 
-startDate
+    startDate
     render() {
         const { open, chartOptions, dataStatictis, startDate } = this.state;
         return (
@@ -300,7 +306,7 @@ startDate
                                             onChange={date => this.setStartDate(date)}
                                             dateFormat="MM/yyyy"
                                             showMonthYearPicker
-                                            selected={startDate} 
+                                            selected={startDate}
                                         />
                                         <button
                                             type="button"
@@ -349,7 +355,7 @@ startDate
                                                             {
                                                                 dataStatictis.length > 0 &&
                                                                 dataStatictis.map(item => (
-                                                                    <tr className={startDate.getDay() == item.day ? 'tr-active' : '' }>
+                                                                    <tr className={startDate.getDay() == item.day ? 'tr-active' : ''}>
                                                                         <td>{item.day}/{startDate.getMonth() + 1}</td>
                                                                         <td>{item.totalOrder}</td>
                                                                         <td>{item.totalOrderSuccess}</td>

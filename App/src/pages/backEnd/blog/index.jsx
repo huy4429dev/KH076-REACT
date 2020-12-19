@@ -32,7 +32,13 @@ class Blog extends Component {
                 pageSize: 25
             }
         };
-        this.validator = new SimpleReactValidator({ autoForceUpdate: this });
+        this.validator = new SimpleReactValidator({
+            autoForceUpdate: this,
+            messages: {
+                required: 'Dữ liệu không hợp lệ',
+                email: 'Email không hợp lệ'
+            }
+        });
     }
 
     componentDidMount = () => {

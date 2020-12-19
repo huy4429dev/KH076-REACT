@@ -8,7 +8,7 @@ const styles = {
     td: {
         minWidth: "150px"
     },
-    tdcus :{
+    tdcus: {
         minWidth: "220px"
     }
 }
@@ -107,9 +107,9 @@ class Cart extends Component {
                                                                 <div className="col-xs-3">
                                                                     {
                                                                         item.product.discount ?
-                                                                            <h2 className="td-color">{item.product.price - (item.product.price * item.product.discount / 100)}</h2>
+                                                                            <h2 className="td-color">{(item.product.price - (item.product.price * item.product.discount / 100)).toLocaleString()}</h2>
                                                                             :
-                                                                            <h2 className="td-color">{item.product.price}</h2>
+                                                                            <h2 className="td-color">{(item.product.price).toLocaleString()}</h2>
                                                                     }
                                                                 </div>
                                                                 <div className="col-xs-3">
@@ -124,9 +124,9 @@ class Cart extends Component {
                                                         <td style={styles.td}>
                                                             {
                                                                 item.product.discount ?
-                                                                    <h2>{item.product.price - (item.product.price * item.product.discount / 100)}đ</h2>
+                                                                    <h2>{(item.product.price - (item.product.price * item.product.discount / 100)).toLocaleString()}đ</h2>
                                                                     :
-                                                                    <h2>{item.product.price} đ</h2>
+                                                                    <h2>{(item.product.price).toLocaleString()} đ</h2>
                                                             }
 
                                                         </td>
@@ -156,11 +156,11 @@ class Cart extends Component {
                                                             {
                                                                 item.product.discount ?
                                                                     <h2 className="td-color">
-                                                                        {item.quantity * (item.product.price - (item.product.price * item.product.discount / 100))}đ
+                                                                        {(item.quantity * (item.product.price - (item.product.price * item.product.discount / 100))).toLocaleString()}đ
                                                                     </h2>
                                                                     :
                                                                     <h2 className="td-color">
-                                                                        {item.quantity * item.product.price}
+                                                                        {(item.quantity * item.product.price).toLocaleString()}
                                                                     </h2>
                                                             }
 

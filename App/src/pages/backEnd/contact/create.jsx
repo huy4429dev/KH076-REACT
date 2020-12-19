@@ -19,7 +19,13 @@ class Create extends Component {
             content: '',
             loading: false
         }
-        this.validator = new SimpleReactValidator({ autoForceUpdate: this });
+        this.validator = new SimpleReactValidator({
+            autoForceUpdate: this,
+            messages: {
+                required: 'Dữ liệu không hợp lệ',
+                email: 'Email không hợp lệ'
+            }
+        });
     }
 
     getUploadParams = ({ meta }) => {
@@ -32,7 +38,6 @@ class Create extends Component {
     handleChangeStatus = ({ meta, file, xhr }, status) => {
         if (status === 'done') {
             let response = JSON.parse(xhr.response);
-            console.log(response.data);
             this.setState({ image: ep.enpoint + response.data.url })
         }
 

@@ -57,12 +57,12 @@ class NewProduct extends Component {
                                     <Link to={`/product/${product.id}`}><h6>{product.name}</h6></Link>
                                     {
                                         product.discount ?
-                                            <h4>{product.price - (product.price * product.discount / 100)}đ
+                                            <h4>{(product.price - (product.price * product.discount / 100)).toLocaleString()}đ
                                                 <del><span className="money">{product.price}đ</span></del>
                                             </h4>
                                             :
                                             <h4>
-                                                <span className="money">{product.price}đ</span>
+                                                <span className="money">{(product.price).toLocaleString()}đ</span>
                                             </h4>
                                     }
 

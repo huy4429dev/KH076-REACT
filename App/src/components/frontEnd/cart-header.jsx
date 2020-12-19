@@ -26,11 +26,11 @@ class CartHeader extends Component {
                                 {
                                     item.product.discount ?
                                         <React.Fragment>
-                                            {item.quantity} x {item.product.price - (item.product.price * item.product.discount / 100)}
+                                            {item.quantity} x {(item.product.price - (item.product.price * item.product.discount / 100)).toLocaleString()}
                                         </React.Fragment>
                                         :
                                         <React.Fragment>
-                                            {item.quantity} x {(item.product.price)}
+                                            {item.quantity} x {(item.product.price).toLocaleString()}
                                         </React.Fragment>
                                 }
                             </span>

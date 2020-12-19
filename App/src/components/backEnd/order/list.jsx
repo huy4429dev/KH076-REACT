@@ -174,8 +174,6 @@ class List extends Component {
         getCategories(page)
             .then(() => {
                 this.setState({ loading: false, page: page }, () => { console.log(this.state) });
-                console.log("runnn");
-
             })
             .catch(err => {
                 this.setState({ loading: false });
@@ -221,13 +219,13 @@ class List extends Component {
                                         </tr>
                                     )
                                 })
-                            
+
                             }
 
-                        </table>                    
+                        </table>
                 }
                 {
-                        myData?.length == 0 &&  <div className="alert alert-warning text-center">Chưa có đơn hàng </div>
+                    myData?.length == 0 && <div className="alert alert-warning text-center">Chưa có đơn hàng </div>
                 }
 
                 <div className='d-flex justify-content-end'>

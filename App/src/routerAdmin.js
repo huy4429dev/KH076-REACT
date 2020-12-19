@@ -16,10 +16,16 @@ import SizeProduct from './pages/backEnd/products/sizeProduct';
 import Order from './pages/backEnd/order/order';
 import Revenue from './pages/backEnd/report/reportRevenue';
 import ReportCustomer from './pages/backEnd/report/reportCustomer';
-
+import Shop from './pages/backEnd/shop';
+import Home from './pages/frontEnd/home';
 
 
 const routesAdmin = [
+    {
+        path: '/',
+        exact: true,
+        main: () => <Home />
+    },
     {
         path: '/admin/dashboard',
         exact: true,
@@ -99,6 +105,11 @@ const routesAdmin = [
         path: '/admin/report/customer',
         exact: true,
         main: () => <ReportCustomer />
+    },
+    {
+        path: '/admin/shops',
+        exact: true,
+        main: ({ history, match }) => <Shop history={history} match={match} />
     },
 ];
 

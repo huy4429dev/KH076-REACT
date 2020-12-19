@@ -4,7 +4,7 @@ import Datatable from '../../../components/backEnd/products/listCategory';
 import 'react-responsive-modal/styles.css';
 import connect from './../../../lib/connect';
 import SimpleReactValidator from 'simple-react-validator';
-import * as actions from './../../../actions/backEnd/contact';
+import * as actions from './../../../actions/backEnd/shop';
 import Loading from './../../../components/loadding2';
 import Create from './create';
 import queryString from 'query-string';
@@ -98,7 +98,7 @@ class Contact extends Component {
                 })
                 .then((data) => {
                     this.setState({ loading: false });
-                    window.notify("Thêm mới danh mục thành công");
+                    window.notify("Thêm mới shop thành công");
                 })
                 .catch((err) => {
                     this.setState({ loading: false });
@@ -127,8 +127,8 @@ class Contact extends Component {
             open: false,
         });
     };
-    handleDelete = (id) => {
-        this.props.actions.remove(id).
+    handleDelete = (id, userId) => {
+        this.props.actions.remove(id, userId).
             then(data => {
                 this.setState({ loading: false })
                 if (data.success) {
@@ -161,7 +161,8 @@ class Contact extends Component {
         const { open, category, filter } = this.state;
         const { categories } = this.props;
         const { contacts } = this.props.contact;
-        console.log(contacts, "dmm");
+        const { shops } = this.props.shop;
+        console.log(shops, "dmm");
 
         return (
             <Fragment>
@@ -172,17 +173,16 @@ class Contact extends Component {
                         <div className="col-sm-12">
                             <div className="card">
                                 <div className="card-header">
-                                    <h5>Danh sách liên hệ</h5>
-                                </div>
-                                <div className="card-body">
-                                    {/* <div className="btn-popup pull-right">
+                                    <h5>Danh sách shop</h5>
+                                    <div className="btn-popup pull-right">
                                         <Create open={this.state.openCreate}
                                             onCloseModal={() => this.setState({ openCreate: false })}
                                         />
                                         <button type="button" className="btn btn-secondary"
                                             onClick={() => this.setState({ openCreate: true })} data-toggle="modal" data-original-title="test" data-target="#exampleModal">Thêm mới</button>
-
-                                    </div> */}
+                                    </div>
+                                </div>
+                                <div className="card-body">
                                     <div className="clearfix"></div>
                                     <div id="basicScenario" className="product-physical">
                                         {
@@ -191,24 +191,28 @@ class Contact extends Component {
                                                 <table className="table">
                                                     <tr>
                                                         <th style={{ width: '5%' }}>#</th>
-                                                        <th style={{ width: '20%' }}>Nội dung</th>
-                                                        <th style={{ width: '20%' }}>Người gửi</th>
+                                                        <th style={{ width: '20%' }}>Tên cửa hàng</th>
+                                                        <th style={{ width: '20%' }}>Avatar</th>
+                                                        <th style={{ width: '20%' }}>Tài khoản</th>
+                                                        <th style={{ width: '20%' }}>Mô tả</th>
                                                         <th style={{ width: '15%' }}>Ngày tạo</th>
                                                         <th style={{ width: '10%' }} className='text-center' colSpan='2'>Action</th>
                                                     </tr>
                                                     {
-                                                        contacts && (
-                                                            contacts.items.map((item, index) => {
+                                                        shops && (
+                                                            shops.items.map((item, index) => {
                                                                 return (
                                                                     <tr >
                                                                         <td>{++index}</td>
-                                                                        <td>{item.message}</td>
-                                                                        <td>{item.user.username}</td>
+                                                                        <td>{item.name}</td>
+                                                                        <td><img style={{ width: "50px", height: "50px" }} src={item.avatar} /></td>
+                                                                        <td>{item.users[0].username}</td>
+                                                                        <td>{item.description}</td>
                                                                         <td>{moment(item.created_at).format("DD/MM/YYYY")}</td>
                                                                         <td>
                                                                             <div className="d-flex">
-                                                                                {/* <button style={{ padding: '5px 10px' }} type='button' className='btn btn-warning btn-sm mr-1' onClick={() => this.handleEdit(item)}>Sửa</button> */}
-                                                                                <button style={{ padding: '5px 10px' }} type='button' className='btn btn-primary btn-sm' onClick={() => this.handleDelete(item.id)}>Xóa</button>
+                                                                                <button style={{ padding: '5px 10px' }} type='button' className='btn btn-primary btn-sm' onClick={() => this.handleDelete(item.id, item.users[0].id)}>Xóa</button>
+                                                                                <button style={{ padding: '5px 10px' }} type='button' className='ml-1 btn btn-primary btn-sm' onClick={() => this.handleEdit(item)}>Sửa</button>
                                                                             </div>
 
                                                                         </td>
@@ -220,15 +224,15 @@ class Contact extends Component {
                                                     }
                                                 </table>
                                                 {
-                                                    contacts?.items.length == 0 &&
+                                                    shops?.items.length == 0 &&
                                                     <p className="text-center alert alert-warning">Chưa có danh mục</p>
                                                 }
                                                 {
-                                                    contacts?.items.length > 0 && (
+                                                    shops?.items.length > 0 && (
                                                         <div className="mt-5">
                                                             <Pagination
                                                                 threeDots
-                                                                totalPages={contacts ? Math.ceil(contacts.total / filter.pageSize) : 0}
+                                                                totalPages={shops ? Math.ceil(shops.total / filter.pageSize) : 0}
                                                                 currentPage={filter.page}
                                                                 showMax={7}
                                                                 prevNext
@@ -261,6 +265,7 @@ class Contact extends Component {
 export default connect(Contact, state => (
     {
         categories: state.category,
-        contact: state.contact
+        contact: state.contact,
+        shop: state.shop
     }
 ), actions);

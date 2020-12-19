@@ -13,6 +13,7 @@ import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import { Redirect } from 'react-router-dom'
 import Login from './../login';
+import $ from 'jquery';
 
 class App extends Component {
     constructor(props) {
@@ -24,6 +25,7 @@ class App extends Component {
         }
     }
     componentDidMount() {
+        $('.page-link').on('click', (e) => e.preventDefault());
         const { login, user, token } = this.props.login;
         if (login && user && token && this.state.token) {
             this.props.actions.account(user.id)

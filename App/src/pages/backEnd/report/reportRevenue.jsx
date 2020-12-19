@@ -60,7 +60,13 @@ class Revenue extends Component {
         };
 
 
-        this.validator = new SimpleReactValidator({ autoForceUpdate: this });
+        this.validator = new SimpleReactValidator({
+            autoForceUpdate: this,
+            messages: {
+                required: 'Dữ liệu không hợp lệ',
+                email: 'Email không hợp lệ'
+            }
+        });
     }
 
     componentDidMount = () => {
@@ -93,7 +99,7 @@ class Revenue extends Component {
     }
 
 
-    
+
 
     handlelRefresh = () => {
 
@@ -174,7 +180,7 @@ class Revenue extends Component {
     }
 
     render() {
-        const {chartOptions, dataStatictis, startDate } = this.state;
+        const { chartOptions, dataStatictis, startDate } = this.state;
 
         return (
             <Fragment>
@@ -237,7 +243,7 @@ class Revenue extends Component {
                                                             {
                                                                 dataStatictis.length > 0 &&
                                                                 dataStatictis.map(item => (
-                                                                    
+
                                                                     <tr className={startDate.getDay() == item.day ? 'tr-active' : ''}>
                                                                         <td>{item.day}/{startDate.getMonth() + 1}</td>
                                                                         <td>{item.totalOrder}</td>

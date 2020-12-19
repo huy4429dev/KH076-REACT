@@ -27,12 +27,13 @@ class Shop extends Component {
         }
     }
     componentDidMount() {
+        console.log("doicom");
         window.scrollTo(0, 0);
-        this.getData();
+        const { id } = this.props.match.params;
+        this.getData(id);
         $('.page-link').on('click', (e) => e.preventDefault());
     }
-    getData = () => {
-        const { id } = this.props.match.params;
+    getData = (id) => {
         this.setState({ loading: true })
         this.props.actions.getProductCategory(id, queryString.stringify(this.state.filter))
             .then(() => {
@@ -46,7 +47,20 @@ class Shop extends Component {
             layoutColumns: colums
         })
     }
+    UNSAFE_componentWillReceiveProps(nextProps) {
+        if (nextProps.match && this.props.match.params.id != nextProps.match.params.id) {
+            this.getData(nextProps.match.params.id);
+        }
+    }
+    // componentDidUpdate(prevProps, prevState) {
+    //     if (prevProps == undefined) {
+    //         return false
+    //     }
+    //     if (this.props.match.params.id != prevProps.match.params.id) {
+    //         this.getData(nextProps.match.params.id);
+    //     }
 
+    // }
     openFilter = () => {
         document.querySelector(".collection-filter").style = "left: -15px";
     }

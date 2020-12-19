@@ -82,7 +82,7 @@ class Blog extends Component {
                                             {
                                                 recent.length > 0 && recent.map((item, index) => {
                                                     return (
-                                                        <Link to={`/blog/${item.id}`} >
+                                                        <Link to={`/blog/${item.id}`} key={index}>
                                                             <li key={index}>
                                                                 <div className="media">
                                                                     <img className="img-fluid" src={item.image} alt="Generic placeholder image" />

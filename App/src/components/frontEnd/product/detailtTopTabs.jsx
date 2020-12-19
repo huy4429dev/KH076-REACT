@@ -16,7 +16,13 @@ class DetailsTopTabs extends Component {
             content: "",
             loading: false
         }
-        this.validator = new SimpleReactValidator({ autoForceUpdate: this });
+        this.validator = new SimpleReactValidator({
+            autoForceUpdate: this,
+            messages: {
+                required: 'Dữ liệu không hợp lệ',
+                email: 'Email không hợp lệ'
+            }
+        });
     }
     componentDidMount() {
         const { user, login } = this.props.login;
@@ -139,7 +145,7 @@ class DetailsTopTabs extends Component {
                             <TabPanel>
                                 <form className="theme-form mt-4">
                                     <div className="form-row">
-                                        <div className="col-md-12 ">
+                                        {/* <div className="col-md-12 ">
                                             <div className="media m-0">
                                                 <label>Đánh giá</label>
                                                 <div className="media-body ml-3">
@@ -152,7 +158,7 @@ class DetailsTopTabs extends Component {
                                                     </div>
                                                 </div>
                                             </div>
-                                        </div>
+                                        </div> */}
                                         <div className="col-md-6">
                                             <label htmlFor="name">Tên</label>
                                             <input type="text" className="form-control" id="name" placeholder="Tên"

@@ -8,6 +8,7 @@ use App\Models\User;
 use App\Models\Role;
 use App\Models\Profile;
 use Validator;
+use Hash;
 use Illuminate\Support\Facades\Auth;
 
 
@@ -385,12 +386,19 @@ class UserController extends BaseController
 
             $user = User::where('id',$id)->with('profile')->first();
             $profile = Profile::where('user_id',$id)->first();
+
             if($profile  != null){
                 $profile->name = $request->username;
                 $profile->birthday = date("Y-m-d H:i:s", strtotime(request('birthday')));
                 $profile->gender = $request->gender;
                 $profile->address = $request->address;
                 $profile->phone = $request->phone;
+                $profile->province = $request->province;
+                $profile->district = $request->district;
+                $profile->ward = $request->ward;
+                $profile->province_id = $request->province_id;
+                $profile->district_id = $request->district_id;
+                $profile->ward_id = $request->ward_id;
                 $profile->save();
             }
             if($user != null ){
@@ -398,14 +406,27 @@ class UserController extends BaseController
                 $user->username = $request->username;
                 $user->email = $request->email;
                 $user->phone = $request->phone;
+                if($request->password != null){
+                    // if(Hash::check($user->password,bcrypt($request->password))){
+                        $user->password = bcrypt($request->newPassword);
+                    // }else{
+                    //   return $this->sendError('Password Errors.',['error' => 'Password Errors !']);
+                    // }
+                }
                 $user->save();
-
             }
+            
             else
             {
                 return $this->sendError('Account Errors.',['error' => 'User not found !']);
             }
             $newUser = User::where('id',$id)->with('profile')->first();
             return $this->sendResponse($newUser , 'Update user successfully.');
+    }
+    public function all(Request $request){
+        $user = User::orderBy('id','desc')->get();
+        return $this->sendResponse(
+            $user,"get user success"
+        );
     }
 }

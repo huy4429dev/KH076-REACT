@@ -71,7 +71,7 @@ class Dashboard extends Component {
         let dataLineData = [];
 
         if (data?.totalAmount != null) {
-            labelLineData = data.totalAmount.map(item => item.day + '/12' );
+            labelLineData = data.totalAmount.map(item => item.day + '/12');
             dataLineData = data.totalAmount.map(item => item.total);
         }
 
@@ -99,7 +99,7 @@ class Dashboard extends Component {
         return (
 
             <Fragment>
-                <Breadcrumb title="Tổng quan" parent="Tổng Quan"  />
+                <Breadcrumb title="Tổng quan" parent="Tổng Quan" />
                 <div className="container-fluid">
                     <div className="row">
                         <div className="col-xl-3 col-md-6 xl-50">
@@ -183,15 +183,15 @@ class Dashboard extends Component {
                                 <div className="card-header">
                                     <h5>Sản phẩm bán chạy</h5>
                                 </div>
-                                <div className="card-body" style={{paddingBottom: 38}}>
+                                <div className="card-body" style={{ paddingBottom: 38 }}>
                                     <div className="user-status table-responsive products-table">
                                         <table className="table table-bordernone mb-0">
                                             <thead>
                                                 <tr>
-                                                    <th style={{fontSize: '13.4px'}} scope="col">Sản phẩm</th>
-                                                    <th style={{fontSize: '13.4px'}} scope="col">Số lượng</th>
-                                                    <th style={{fontSize: '13.4px'}} scope="col">Lượt bán</th>
-                                                    <th style={{fontSize: '13.4px'}} scope="col">Đơn giá</th>
+                                                    <th style={{ fontSize: '13.4px' }} scope="col">Sản phẩm</th>
+                                                    <th style={{ fontSize: '13.4px' }} scope="col">Số lượng</th>
+                                                    <th style={{ fontSize: '13.4px' }} scope="col">Lượt bán</th>
+                                                    <th style={{ fontSize: '13.4px' }} scope="col">Đơn giá</th>
                                                 </tr>
                                             </thead>
                                             {
@@ -204,7 +204,7 @@ class Dashboard extends Component {
                                                                     <td>{item.name}</td>
                                                                     <td className="digits">{item.quantity}</td>
                                                                     <td className="font-primary">{item.bought}</td>
-                                                                    <td className="digits">{item.price}</td>
+                                                                    <td className="digits">{(item.price).toLocaleString()}</td>
                                                                 </tr>
                                                             )
 

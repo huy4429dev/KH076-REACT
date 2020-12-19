@@ -15,6 +15,7 @@ use App\Http\Controllers\Contact\ContactController as ContactController;
 use App\Http\Controllers\Customer\CustomerController as CustomerController;
 use App\Http\Controllers\Report\ReportController as ReportController;
 use App\Http\Controllers\Blog\BlogController as BlogController;
+use App\Http\Controllers\Address\AddressController as AddressController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -63,12 +64,12 @@ Route::prefix('shops')->group(function(){
 
     Route::middleware(['auth:api', 'role'])->group(function() {
          
-        Route::middleware(['scope:admin,shop,user'])->get('/', [ShopController::class,'index'] );
+        Route::middleware(['scope:admin,shop,user'])->get('/', [ShopController::class,'all'] );
         Route::middleware(['scope:admin,shop,user'])->get('/search', [ShopController::class,'search'] );
         Route::middleware(['scope:admin,shop,user'])->get('/{id}', [ShopController::class,'show'] );
         Route::middleware(['scope:admin,shop,user'])->post('/', [ShopController::class,'create'] );
         Route::middleware(['scope:admin,shop,user'])->put('/{id}', [ShopController::class,'update'] );
-        Route::middleware(['scope:admin,shop,user'])->delete('/{id}', [ShopController::class,'delete'] );
+        Route::middleware(['scope:admin,shop,user'])->delete('/{id}/{userId}', [ShopController::class,'delete'] );
     });
 
 });
@@ -83,6 +84,7 @@ Route::prefix('users')->group(function(){
     Route::get('/test',function(){
        return 'testtttttt'; 
     });
+    Route::get('/all', [UserController::class,'all'] );
     Route::post('/register', [UserController::class,'register'] );
     Route::put('/profile/{id}', [UserController::class,'profile'] );
     Route::post('/login', [UserController::class,'login'] );
@@ -350,6 +352,19 @@ Route::prefix('blogs')->group(function(){
     });
 
 });
+//=================
+//=================
+
+//================================== address 
+
+
+Route::prefix('address')->group(function(){
+     Route::get('/province', [AddressController::class,'province'] );
+     Route::get('/district/{id}', [AddressController::class,'district'] );
+     Route::get('/ward/{id}', [AddressController::class,'ward'] );
+ 
+});
+
 //=================
 
 Route::get('/test',function(){

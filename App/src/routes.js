@@ -35,7 +35,7 @@ const routes = [
     {
         path: '/checkout',
         exact: true,
-        main: () => <Checkout />
+        main: ({ history }) => <Checkout history={history} />
     },
     {
         path: '/cart',
