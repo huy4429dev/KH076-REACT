@@ -36,9 +36,7 @@ class Detail extends Component {
     componentDidMount() {
 
         const { id } = this.props.match.params;
-        console.log(id, 'PRODUCT ID');
         const { getProduct } = this.props.actions;
-        console.log(this.props, 'PROPS');
         this.setState({
             loading: true,
             id
@@ -221,9 +219,9 @@ class Detail extends Component {
                                         <ul>
                                             {
                                                 product?.size != null &&
-                                                product.sizes.length > 0 && 
+                                                product.sizes.length > 0 &&
                                                 product.sizes.map(item => (
-                                                    <li className="active" style={{lineHeight:'30px', fontSize: '18px'}}>s</li>
+                                                    <li className="active" style={{ lineHeight: '30px', fontSize: '18px' }}>s</li>
                                                 ))
 
                                             }
@@ -231,9 +229,9 @@ class Detail extends Component {
                                     </div>
                                     <div className="add-product-form">
                                         <h6 className="product-title mt-2">Số lượng tồn</h6>
-                                         <span>
+                                        <span>
                                             {product?.quantity}
-                                         </span>
+                                        </span>
                                     </div>
                                     <hr />
                                     {/* <h6 className="product-title">Time Reminder</h6>

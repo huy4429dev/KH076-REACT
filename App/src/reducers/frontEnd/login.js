@@ -5,7 +5,8 @@ const initState = {
     login: false,
     user: null,
     token: null,
-    profile: null
+    profile: null,
+    role: null
 }
 
 export default (state = initState, action) => {
@@ -16,7 +17,7 @@ export default (state = initState, action) => {
             state.token = action.data.token;
             state.user = action.data.user;
             state.role = action.data.role;
-            
+
             localStorage.setItem('access_token', action.data.token);
             return {
                 ...state,

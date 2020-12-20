@@ -16,7 +16,13 @@ class Contact extends Component {
             message: '',
             loading: false
         }
-        this.validator = new SimpleReactValidator({ autoForceUpdate: this });
+        this.validator = new SimpleReactValidator({
+            autoForceUpdate: this,
+            messages: {
+                required: 'Dữ liệu không hợp lệ',
+                email: 'Email không hợp lệ'
+            }
+        });
     }
     componentDidMount() {
         window.scrollTo(0, 0);

@@ -191,8 +191,6 @@ class List extends Component {
         getCategories(page)
             .then(() => {
                 this.setState({ loading: false, page: page }, () => { console.log(this.state) });
-                console.log("runnn");
-
             })
             .catch(err => {
                 this.setState({ loading: false });

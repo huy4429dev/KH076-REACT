@@ -18,7 +18,13 @@ class Customer extends Component {
             name: '',
             description: '',
         };
-        this.validator = new SimpleReactValidator({ autoForceUpdate: this });
+        this.validator = new SimpleReactValidator({
+            autoForceUpdate: this,
+            messages: {
+                required: 'Dữ liệu không hợp lệ',
+                email: 'Email không hợp lệ'
+            }
+        });
     }
 
     componentDidMount = () => {
@@ -112,11 +118,11 @@ class Customer extends Component {
         const { customers } = this.props;
         const items = customers.items ? customers.items : [];
 
-        console.log(customers,'CUSTOMERS');
+        console.log(customers, 'CUSTOMERS');
 
         return (
             <Fragment>
-                <Breadcrumb title="Danh sách khách hàng" parent="Khách hàng"  />
+                <Breadcrumb title="Danh sách khách hàng" parent="Khách hàng" />
 
                 {/* <!-- Container-fluid starts--> */}
                 <div className="container-fluid">

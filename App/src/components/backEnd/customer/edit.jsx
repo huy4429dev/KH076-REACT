@@ -9,7 +9,14 @@ export default class EditCategory extends Component {
             name: null,
             description: null
         }
-        this.validator = new SimpleReactValidator({ autoForceUpdate: this });
+        // this.handleChange = this.handleChange.bind(this);
+        this.validator = new SimpleReactValidator({
+            autoForceUpdate: this,
+            messages: {
+                required: 'Dữ liệu không hợp lệ',
+                email: 'Email không hợp lệ'
+            }
+        });
     }
 
     UNSAFE_componentWillReceiveProps(nextProps) {
@@ -28,7 +35,7 @@ export default class EditCategory extends Component {
         }
     }
 
-    handleSubmit = () => { 
+    handleSubmit = () => {
 
         const { id, name, description } = this.state;
         this.props.onHandleEditItem({
@@ -44,7 +51,7 @@ export default class EditCategory extends Component {
         const target = event.target;
         const value = target.value;
         const tagName = target.name;
-        
+
         this.setState({
             [tagName]: value
         });

@@ -24,7 +24,13 @@ class LoginTabset extends Component {
             Loading: false
         }
         this.handleChange = this.handleChange.bind(this);
-        this.validator = new SimpleReactValidator({ autoForceUpdate: this });
+        this.validator = new SimpleReactValidator({
+            autoForceUpdate: this,
+            messages: {
+                required: 'Dữ liệu không hợp lệ',
+                email: 'Email không hợp lệ'
+            }
+        });
     }
     clickActive = (event) => {
         this.setState({

@@ -442,10 +442,34 @@ class ProductController extends BaseController
             $comment->user_id = $user->id;
         }
         $comment->save();
+        $newComment =  Comment::where('id',$comment->id)
+        ->with('user')
+        ->first();
         return $this->sendResponse(
-            $data = $comment,
+            $data = $newComment,
             'Create contact successfully.'
         );
 
+    }
+     public function getComment($id,Request $request){
+
+        $user = $request->user();
+        $page = $request->query('page') ? $request->query('page') :  1;
+        $pageSize = $request->query('pageSize') ?  $request->query('pageSize') : 25;
+
+        $comment = Comment::where('product_id',$id)
+            ->orderBy('id','desc')
+            ->with('user')
+            ->skip( ($page - 1) * $pageSize )
+            ->take($pageSize)
+            ->get();
+
+
+        return $this->sendResponse(
+            $data = [
+                     'items' => $comment , 
+                     'total' => Comment::where('product_id',$id)->count()
+                    ]
+          );
     }
 }

@@ -69,13 +69,13 @@ class DetailsWithPrice extends Component {
                         item.discount ?
                             <React.Fragment>
                                 <h4>
-                                    <del>{item.price}</del>
+                                    <del>{(item.price).toLocaleString()}</del>
                                     <span>{item.discount}% off</span></h4>
-                                <h3>{item.price - (item.price * item.discount / 100)} đ</h3>
+                                <h3>{(item.price - (item.price * item.discount / 100)).toLocaleString()} đ</h3>
                             </React.Fragment>
                             :
                             <React.Fragment>
-                                <h3>{item.price} đ</h3>
+                                <h3>{(item.price).toLocaleString()} đ</h3>
                             </React.Fragment>
                     }
                     {item.colors ?

@@ -116,12 +116,12 @@ class ProductListItem extends Component {
                         </Link>
                         {
                             product.discount ?
-                                <h4>{product.price - (product.price * product.discount / 100)}
+                                <h4>{(product.price - (product.price * product.discount / 100)).toLocaleString()}
                                     <del><span className="money">{product.price}đ</span></del>
                                 </h4>
                                 :
-                                <h4>{product.price}
-                                    <del><span className="money">{product.price}đ</span></del>
+                                <h4>{(product.price).toLocaleString()}
+                                    <del><span className="money">{(product.price).toLocaleString()}đ</span></del>
                                 </h4>
                         }
 
@@ -160,12 +160,12 @@ class ProductListItem extends Component {
                                             <h2> {product.name} </h2>
                                             {
                                                 product.discount ?
-                                                    <h3>{product.price - (product.price * product.discount / 100)}
-                                                        <del><span className="money">{product.price}</span></del>
+                                                    <h3>{(product.price - (product.price * product.discount / 100)).toLocaleString()}
+                                                        <del><span className="money">{(product.price).toLocaleString()}</span></del>
                                                     </h3>
                                                     :
                                                     <h3>{product.price}
-                                                        <del><span className="money">{product.price}</span></del>
+                                                        <del><span className="money">{(product.price).toLocaleString()}</span></del>
                                                     </h3>
                                             }
                                             {/* {product.variants ?

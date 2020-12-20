@@ -79,7 +79,7 @@ export const MENUITEMS = [
     type: "link",
     path: "/admin/customers",
     active: false,
-    role: ['admin','shop']
+    role: ['admin', 'shop']
   },
   // {
   //     title: 'Sales', icon: DollarSign, type: 'sub', active: false, children: [
@@ -168,7 +168,7 @@ export const MENUITEMS = [
     icon: Settings,
     type: "sub",
     children: [{ path: "/admin/profile", title: "Hồ sơ", type: "link" }],
-    role: ['admin','shop']
+    role: ['admin', 'shop']
   },
   // {
   //     title: 'Invoice', path: '/invoice', icon: Archive, type: 'link', active: false

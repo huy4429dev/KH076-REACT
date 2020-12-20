@@ -30,11 +30,22 @@ class CheckOut extends Component {
             dataOrder: null,
             showOrder: false
         }
-        this.validator = new SimpleReactValidator();
+        this.validator = new SimpleReactValidator({
+            autoForceUpdate: this,
+            messages: {
+                required: 'Dữ liệu không hợp lệ',
+                email: 'Email không hợp lệ'
+            }
+        });
     }
     componentDidMount() {
         window.scrollTo(0, 0);
-        const { user, login } = this.props.login;
+        const { user, login, token } = this.props.login;
+        const tokenL = localStorage.getItem("access_token");
+        if (!user || !login || !token || !tokenL) {
+            window.notify("Bạn cần đăng nhập để tiến hành thanh toán", "warning");
+            this.props.history.push("/login");
+        }
         const { items } = this.props.cart;
         if (user && login) {
             this.setState({
@@ -83,7 +94,6 @@ class CheckOut extends Component {
                 locale: 'auto',
                 // token: (token: any) => {
                 token: (token) => {
-                    console.log(token)
                     this.props.history.push({
                         pathname: '/order-success',
                         state: { payment: token, items: this.props.cartItems, orderTotal: this.props.total, symbol: this.props.symbol }
@@ -102,7 +112,6 @@ class CheckOut extends Component {
         }
     }
     totalPrice = (items) => {
-        console.log(items);
         if (items.length > 0) {
             return (
                 items.reduce((a, c) => {
@@ -264,16 +273,16 @@ class CheckOut extends Component {
                                                     <ul className="qty">
                                                         {items.map((item, index) => {
                                                             if (item.product.discount) {
-                                                                return <li key={index}>{item.product.name} {item.product.price - (item.product.price * item.product.discount / 100)} × {item.quantity} <span> {item.quantity * (item.product.price - (item.product.price * item.product.discount / 100))} đ</span></li>
+                                                                return <li key={index}>{item.product.name} {(item.product.price - (item.product.price * item.product.discount / 100)).toLocaleString()} × {item.quantity} <span> {(item.quantity * (item.product.price - (item.product.price * item.product.discount / 100))).toLocaleString()} đ</span></li>
                                                             } else {
-                                                                return <li key={index}>{item.product.name} {item.product.price} × {item.quantity} <span> {item.quantity * item.product.price} đ</span></li>
+                                                                return <li key={index}>{item.product.name} {(item.product.price).toLocaleString()} × {item.quantity} <span> {(item.quantity * item.product.price).toLocaleString()} đ</span></li>
                                                             }
 
                                                         })
                                                         }
                                                     </ul>
                                                     <ul className="sub-total">
-                                                        <li>Tổng <span className="count">{this.totalPrice(items)}đ</span></li>
+                                                        <li>Tổng <span className="count">{(this.totalPrice(items)).toLocaleString()}đ</span></li>
                                                         <li>Vận chuyển <div className="shipping">
                                                             <div className="shopping-option">
                                                                 <input type="checkbox" name="free-shipping" id="free-shipping" />
@@ -288,7 +297,7 @@ class CheckOut extends Component {
                                                     </ul>
 
                                                     <ul className="total">
-                                                        <li>Tổng tiền: <span className="count">{this.totalPrice(items)}đ</span></li>
+                                                        <li>Tổng tiền: <span className="count">{(this.totalPrice(items)).toLocaleString()}đ</span></li>
                                                     </ul>
                                                 </div>
 

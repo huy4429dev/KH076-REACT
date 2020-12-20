@@ -6,6 +6,29 @@ import connect from './../../../lib/connect';
 import * as actions from './../../../actions/frontEnd/product';
 import Loading from './../../loadding2';
 import SimpleReactValidator from 'simple-react-validator';
+import moment from 'moment';
+const styles = {
+    boxImg: {
+        width: "50px",
+        height: "50px",
+        overflow: "hidden"
+    },
+    image: {
+        objectFit: "cover",
+        width: "100%",
+        height: "100%"
+    },
+    avatarName: {
+        width: "100%",
+        height: "100%",
+        fontSize: "20px",
+        display: "flex",
+        justifyContent: "center",
+        alignItems: "center",
+        color: "#333",
+        textTransform: "uppercase"
+    }
+}
 class DetailsTopTabs extends Component {
     constructor(props) {
         super(props);
@@ -16,16 +39,26 @@ class DetailsTopTabs extends Component {
             content: "",
             loading: false
         }
-        this.validator = new SimpleReactValidator({ autoForceUpdate: this });
+        this.validator = new SimpleReactValidator({
+            autoForceUpdate: this,
+            messages: {
+                required: 'Dữ liệu không hợp lệ',
+                email: 'Email không hợp lệ'
+            }
+        });
     }
     componentDidMount() {
-        const { user, login } = this.props.login;
-        if (user && login) {
+        window.scrollTo(0, 0);
+        const { user, login, token } = this.props.login;
+        const tokenL = localStorage.getItem("access_token");
+        const { id } = this.props;
+        if (user && login && token && tokenL) {
             this.setState({
                 username: user.username,
                 email: user.email,
             })
         }
+        this.props.actions.getComment(id);
     }
     sendComment = (e) => {
         e.stopPropagation();
@@ -62,6 +95,7 @@ class DetailsTopTabs extends Component {
     }
     render() {
         const { user } = this.props.login;
+        const { comment } = this.props.product;
         return (
             <section className="tab-product m-0">
                 <Loading show={this.state.loading} type="full" />
@@ -139,7 +173,7 @@ class DetailsTopTabs extends Component {
                             <TabPanel>
                                 <form className="theme-form mt-4">
                                     <div className="form-row">
-                                        <div className="col-md-12 ">
+                                        {/* <div className="col-md-12 ">
                                             <div className="media m-0">
                                                 <label>Đánh giá</label>
                                                 <div className="media-body ml-3">
@@ -152,7 +186,7 @@ class DetailsTopTabs extends Component {
                                                     </div>
                                                 </div>
                                             </div>
-                                        </div>
+                                        </div> */}
                                         <div className="col-md-6">
                                             <label htmlFor="name">Tên</label>
                                             <input type="text" className="form-control" id="name" placeholder="Tên"
@@ -203,6 +237,43 @@ class DetailsTopTabs extends Component {
                                         </div>
                                     </div>
                                 </form>
+                                <div className="mt-2">
+                                    Tất cả bình luận
+                                </div>
+                                <div className="card">
+                                    <div className="bg-light">
+                                        {
+                                            (comment && comment.items.length > 0) ?
+                                                (
+                                                    comment.items.map((item, index) => {
+                                                        return (
+                                                            <div className="card p-4 mb-1" key={index}>
+                                                                <div>
+                                                                    <div className="d-flex justify-content-start align-items-center">
+                                                                        <div className="rounded-circle" style={styles.boxImg}>
+                                                                            {/* <img style={styles.image} src="https://react.pixelstrap.com/assets/images/fashion/product/59.jpg" className="rounded-circle" alt="..." /> */}
+                                                                            <div className="bg-light" style={styles.avatarName}>{item.user.username.charAt(0)}</div>
+                                                                        </div>
+                                                                        <p className="font-weight-bold ml-2">{item.user.username}</p>
+                                                                    </div>
+                                                                    <div className="pl-5 mt-2 d-flex justify-content-between align-items-center">
+                                                                        <p>{item.content}</p>
+                                                                        <p>Ngày tạo: {moment(item.created_at).format("DD/MM/YYYY")}</p>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        )
+                                                    })
+                                                )
+                                                :
+                                                (
+                                                    <p>Không có bình luận nào</p>
+                                                )
+                                        }
+                                    </div>
+                                </div>
+                                <div>
+                                </div>
                             </TabPanel>
                         </Tabs>
                     </div>
@@ -213,5 +284,6 @@ class DetailsTopTabs extends Component {
 }
 
 export default connect(DetailsTopTabs, state => ({
-    login: state.login
+    login: state.login,
+    product: state.productHome
 }), actions);

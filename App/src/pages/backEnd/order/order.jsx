@@ -19,7 +19,13 @@ class Order extends Component {
             name: '',
             description: '',
         };
-        this.validator = new SimpleReactValidator({ autoForceUpdate: this });
+        this.validator = new SimpleReactValidator({
+            autoForceUpdate: this,
+            messages: {
+                required: 'Dữ liệu không hợp lệ',
+                email: 'Email không hợp lệ'
+            }
+        });
     }
 
     componentDidMount = () => {
@@ -111,7 +117,7 @@ class Order extends Component {
     };
 
     handlelRefresh = () => {
-        
+
         this.setState({
             loading: true
         })
@@ -132,7 +138,6 @@ class Order extends Component {
         const { orders } = this.props;
         const items = orders.items ? orders.items : [];
         const total = orders.total ?? 0;
-        console.log(items, 'DATA');
         return (
             <Fragment>
                 <Breadcrumb title="ĐƠN HÀNG" parent="ĐƠN HÀNG" />

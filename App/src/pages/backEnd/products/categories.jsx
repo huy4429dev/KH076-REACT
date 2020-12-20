@@ -18,7 +18,13 @@ class Categories extends Component {
             name: '',
             description: '',
         };
-        this.validator = new SimpleReactValidator({ autoForceUpdate: this });
+        this.validator = new SimpleReactValidator({
+            autoForceUpdate: this,
+            messages: {
+                required: 'Dữ liệu không hợp lệ',
+                email: 'Email không hợp lệ'
+            }
+        });
     }
 
     componentDidMount = () => {
@@ -37,7 +43,7 @@ class Categories extends Component {
             .catch((err) => {
                 this.setState({ loading: false });
                 $.notify({ message: 'Tải xuống danh mục sản phẩm không thành công' }, { type: 'danger' });
-            }); 
+            });
 
     }
 
@@ -49,7 +55,7 @@ class Categories extends Component {
         const tagName = target.name;
         this.setState({
             [tagName]: value
-        } ,  () => console.log(this.state, 'NEW STATE'));
+        }, () => console.log(this.state, 'NEW STATE'));
 
     }
 
@@ -69,7 +75,7 @@ class Categories extends Component {
 
             createCategory({
                 name: name,
-                description: description 
+                description: description
             })
                 .then((data) => {
                     if (data.success) {
@@ -115,7 +121,7 @@ class Categories extends Component {
 
         const { open, category } = this.state;
         const { categories } = this.props;
-        const items = categories.items ? categories.items : []; 
+        const items = categories.items ? categories.items : [];
         const total = categories.total ?? 0;
         return (
             <Fragment>

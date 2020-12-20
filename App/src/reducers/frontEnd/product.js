@@ -11,7 +11,8 @@ const initState = {
     topProduct: [],
     saleMen: [],
     saleWomen: [],
-    productCategory: null
+    productCategory: null,
+    comment: null
 }
 
 export default (state = initState, action) => {
@@ -59,6 +60,16 @@ export default (state = initState, action) => {
             }
         case types.GET_PRODUCTS_CATEGORY_SUCCESS:
             state.productCategory = action.data.data;
+            return {
+                ...state
+            }
+        case types.GET_COMMENT_SUCCESS:
+            state.comment = action.data.data;
+            return {
+                ...state
+            }
+        case types.COMMENT_SUCCESS:
+            state.comment.items = [action.data.data, ...state.comment.items];
             return {
                 ...state
             }

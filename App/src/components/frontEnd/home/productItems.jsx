@@ -115,12 +115,12 @@ class ProductItem extends Component {
                         {
                             product.discount ?
                                 <h4>
-                                    {product.price - (product.price * product.discount / 100)}đ
-                                    <del><span className="money">{product.price} đ</span></del>
+                                    {(product.price - (product.price * product.discount / 100)).toLocaleString()}đ
+                                    <del><span className="money">{(product.price).toLocaleString()} đ</span></del>
                                 </h4>
                                 :
                                 <h4>
-                                    <span className="money">{product.price}</span>
+                                    <span className="money">{(product.price).toLocaleString()}</span>
                                 </h4>
                         }
 
@@ -152,7 +152,7 @@ class ProductItem extends Component {
                                     <div className="col-lg-6 rtl-text">
                                         <div className="product-right">
                                             <h2> {product.name} </h2>
-                                            <h3>{product.price}đ</h3>
+                                            <h3>{(product.price).toLocaleString()}đ</h3>
                                             {/* {product.variants ?
                                                 <ul className="color-variant">
                                                     {product.variants.map((vari, i) =>

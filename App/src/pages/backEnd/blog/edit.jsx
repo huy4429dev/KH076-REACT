@@ -19,7 +19,13 @@ class Create extends Component {
             content: '',
             loading: false
         }
-        this.validator = new SimpleReactValidator({ autoForceUpdate: this });
+        this.validator = new SimpleReactValidator({
+            autoForceUpdate: this,
+            messages: {
+                required: 'Dữ liệu không hợp lệ',
+                email: 'Email không hợp lệ'
+            }
+        });
     }
     UNSAFE_componentWillReceiveProps(props) {
         if (props.dataEdit && props.dataEdit != this.props.dataEdit) {

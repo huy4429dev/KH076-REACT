@@ -18,7 +18,13 @@ class ColorProduct extends Component {
             color: '#2980b9',
             showPickColor: false
         };
-        this.validator = new SimpleReactValidator({ autoForceUpdate: this });
+        this.validator = new SimpleReactValidator({
+            autoForceUpdate: this,
+            messages: {
+                required: 'Dữ liệu không hợp lệ',
+                email: 'Email không hợp lệ'
+            }
+        });
     }
 
     componentDidMount = () => {
@@ -63,7 +69,7 @@ class ColorProduct extends Component {
                 loading: true
             });
 
-            const { name,color } = this.state;
+            const { name, color } = this.state;
             const { createColor } = this.props.actions;
             if (name === '' || name === null) return;
             createColor({
@@ -120,7 +126,7 @@ class ColorProduct extends Component {
     }
 
     handlelRefresh = () => {
-        
+
         this.setState({
             loading: true
         })
@@ -199,7 +205,7 @@ class ColorProduct extends Component {
                                                                             <div key={item.id} className="template-color-item d-flex justify-content-between"
                                                                                 style={{
                                                                                     border: '1px solid #c5c5c5',
-                                                                                    paddingLeft:' 8px',
+                                                                                    paddingLeft: ' 8px',
                                                                                     cursor: 'pointer',
                                                                                     borderRadius: '4px',
                                                                                     marginBottom: '4px',
