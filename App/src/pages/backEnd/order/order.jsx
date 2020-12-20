@@ -145,7 +145,7 @@ class Order extends Component {
                                 <div className="card-header d-flex justify-content-between">
                                     <h5>DANH SÁCH ĐƠN HÀNG</h5>
                                     <div>
-                                        <button
+                                        {/* <button
                                             type="button"
                                             className="btn btn-secondary mr-1"
                                             style={customButton}
@@ -155,7 +155,7 @@ class Order extends Component {
                                             data-target="#exampleModal"
                                         >
                                             <i className="fa fa-plus"></i>
-                                        </button>
+                                        </button> */}
                                         <button
                                             type="button"
                                             className="btn btn-primary mr-1"

@@ -38,6 +38,7 @@ class OrderController extends BaseController
             $Orders = Order::whereIn('creator_id',$userIdsOfShop)
             ->orderBy('id','desc')
             ->with('user')
+            ->with('orderItems')
             ->skip( ($page - 1) * $pageOrder )
             ->take($pageOrder)
             ->get();
@@ -102,25 +103,15 @@ class OrderController extends BaseController
 
     public function update($id,Request $request){
 
-        $validator = Validator::make($request->all(), [
 
-            'name' => 'required'
-        ]);
-
-        if($validator->fails()){
-            return $this->sendError('Validation Error.', $validator->errors());
-        }
-
-        $Order = Order::where('id',$id)->first();
-
+        $Order = Order::where('id',$id)
+                ->with('user')
+                ->with('orderItems')
+                ->first();
         if($Order != null){
-
             $Order->status = $request->status;
-            $Order->ship_address = $request->ship_address;
-            $Order->total = $request->total;
-            $Order->user_id = $request->user()->id;
+            
             $Order->save();
-
             return $this->sendResponse(
                 $data = $Order,
                 'Update Order successfully.'
