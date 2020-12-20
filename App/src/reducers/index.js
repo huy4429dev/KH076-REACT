@@ -42,7 +42,7 @@ const rootReducer = combineReducers({
     productSize,
     product,
     customer,
-    contact
+    contact,
 });
 
 export default persistReducer(config, rootReducer);

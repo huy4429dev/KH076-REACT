@@ -8,6 +8,7 @@ use App\Models\Shop;
 use App\Models\Role;
 use App\Models\Product;
 use App\Models\Profile;
+use App\Models\Comment;
 use App\Models\User;
 use App\Models\ShopUser;
 use Validator;

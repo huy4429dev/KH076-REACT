@@ -66,6 +66,7 @@ class Product extends Component {
             focusOnSelect: true
         };
         const { detailt } = this.props.productHome;
+        const { id } = this.props.match.params;
         return (
             <div>
                 <Loading show={this.state.loading} type="full" />
@@ -101,7 +102,7 @@ class Product extends Component {
                                                         <DetailsWithPrice symbol={symbol} item={detailt} navOne={this.state.nav1} addToCartClicked={addToCart} BuynowClicked={addToCartUnsafe} addToWishlistClicked={addToWishlist} />
                                                     </div>
                                                 </div>
-                                                <DetailsTopTabs item={detailt} />
+                                                <DetailsTopTabs item={detailt} id={id} />
                                             </div>
                                             <div className="col-sm-3 collection-filter">
 
@@ -121,8 +122,6 @@ class Product extends Component {
         )
     }
 }
-
-
 
 export default connect(Product, state => ({
     productHome: state.productHome

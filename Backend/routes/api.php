@@ -173,7 +173,7 @@ Route::prefix('products')->group(function(){
         Route::middleware(['scope:admin,shop,user'])->put('/{id}', [ProductController::class,'update'] );
         Route::middleware(['scope:admin,shop,user'])->delete('/{id}', [ProductController::class,'delete'] );
     });
-   
+    Route::get('/comment/{id}', [ProductController::class,'getComment'] );
     Route::get('/sale-men', [ShopController::class,'saleMen'] );
     Route::get('/sale-women', [ShopController::class,'saleWomen'] );
     Route::get('/search', [ProductController::class,'search'] );
@@ -183,7 +183,7 @@ Route::prefix('products')->group(function(){
     Route::get('/women-products', [ShopController::class,'womanProducts'] );
     Route::get('/shops', [ShopController::class,'index'] );
     Route::get('/top-product', [ShopController::class,'topProduct'] );
-    Route::post('/comment', [ShopController::class,'comment'] );
+    Route::post('/comment', [ProductController::class,'comment'] );
     Route::get('/{id}', [ShopController::class,'show'] );
     Route::get('/search', [ProductController::class,'search'] );
     Route::get('/products-category/{categoryId}', [ShopController::class,'productsCategory'] );
