@@ -12,7 +12,7 @@ class SideBar extends Component {
     }
     componentDidMount() {
         this.props.actions.getList()
-            .then(data => this.setState({ items: this.listToTree(data.data.items) }));
+            .then(data => this.setState({ items: this.listToTree(data?.data?.items) }));
     }
 
     closeNav() {
@@ -85,6 +85,8 @@ class SideBar extends Component {
         }
     }
     listToTree = (data) => {
+        if(!data?.length)  return [];
+
         const newData = data.map(item => ({ ...item, ['children']: null }));
         var ID_KEY = 'id';
         var PARENT_KEY = 'parent_id';
@@ -113,6 +115,7 @@ class SideBar extends Component {
         };
         return tree;
     }
+
     renderMenu = (items) => {
         if (items.length > 0) {
             return (

@@ -199,6 +199,7 @@ Route::prefix('products')->group(function(){
 
 Route::prefix('orders')->group(function(){
     Route::post('/', [OrderController::class,'create'] );
+    Route::get('/export/{userId}', [OrderController::class,'export'] );
     Route::middleware(['auth:api', 'role'])->group(function() {
         
         Route::middleware(['scope:admin,shop,user'])->get('/', [OrderController::class,'index'] );

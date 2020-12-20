@@ -18,6 +18,7 @@ class ProductController extends BaseController
     public function index(Request $request){
 
         $user = $request->user();
+        return $user;
         $page = $request->query('page') ?? 1;
         $pageSize = $request->query('pageSize') ?? 25;
 

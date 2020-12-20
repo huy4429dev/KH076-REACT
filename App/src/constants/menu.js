@@ -73,14 +73,14 @@ export const MENUITEMS = [
     children: [{ path: "/admin/orders", title: "Danh sách", type: "link" }],
     role: ['shop']
   },
-  {
-    title: "Khách hàng",
-    icon: UserPlus,
-    type: "link",
-    path: "/admin/customers",
-    active: false,
-    role: ['admin', 'shop']
-  },
+  // {
+  //   title: "Khách hàng",
+  //   icon: UserPlus,
+  //   type: "link",
+  //   path: "/admin/customers",
+  //   active: false,
+  //   role: ['admin', 'shop']
+  // },
   // {
   //     title: 'Sales', icon: DollarSign, type: 'sub', active: false, children: [
   //         { path: '/sales/orders', title: 'Orders', type: 'link' },
@@ -128,7 +128,7 @@ export const MENUITEMS = [
     children: [
       { path: "/admin/report/revenue", title: "Doanh thu", type: "link" },
       { path: "/admin/report/customer", title: "Khách hàng", type: "link" },
-      { path: "/admin/report/employee", title: "Nhân viên", type: "link" }
+      // { path: "/admin/report/employee", title: "Nhân viên", type: "link" }
     ],
   },
   {

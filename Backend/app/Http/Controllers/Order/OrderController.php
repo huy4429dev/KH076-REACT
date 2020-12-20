@@ -12,6 +12,8 @@ use App\Models\User;
 use App\Models\Shop;
 use Validator;
 use Illuminate\Support\Facades\Auth;
+use Maatwebsite\Excel\Facades\Excel;
+use App\Exports\OrderExport;
 
 class OrderController extends BaseController
 {
@@ -207,6 +209,12 @@ class OrderController extends BaseController
             $found,
             'Delete Order successfully'
           );
+    }
+
+    public function export($userId,Request $request){
+        // $user = $request->user();
+        return Excel::download(new OrderExport($userId), 'orders.xlsx');
+
     }
 
 }

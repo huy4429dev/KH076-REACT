@@ -65,10 +65,10 @@ class ReportCustomer extends Component {
                 series: [{
                     data: [{
                         name: 'Khách hàng cũ',
-                        y: 5,
+                        y: 0,
                     }, {
                         name: 'Khách hàng mới',
-                        y: 10
+                        y: 0
                     }
                     ]
                 }]
