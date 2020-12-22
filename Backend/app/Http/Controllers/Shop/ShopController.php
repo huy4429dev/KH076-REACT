@@ -237,18 +237,17 @@ class ShopController extends BaseController
            $min = $request->query('min');
            $max = $request->query('max');
            $color = $request->query('color');
-           $barnd = $request->query('barnd');
+           $brand = $request->query('brand');
 
             if($min != null){
                 $query = $query->whereBetween('price',[$min, $max]);
             }
-            // if($color != null){
-            //     $query = $query->whereHas('colors', function($color){
-            //                     $color->where('name', '=', 'user');
-            //                 });
-            // }
-
-
+            if($color){
+                $query = $query->whereHas('colors', function ($q)  use ($color) {
+                    $q->where('color_id', $color);
+                });
+            }
+            $total =  $query->get();
             $Products = $query
             ->orderBy('id','desc')
             ->with('user')
@@ -260,7 +259,6 @@ class ShopController extends BaseController
             ->take($pageSize)
             ->get();
         
-        $total = Product::get();
         return $this->sendResponse(
             $data = [
                      'items' => $Products , 

@@ -80,7 +80,8 @@ export class Profile extends Component {
                                                             </div>
                                                         </div>
                                                 }
-                                                <input type="file" ref={this.refUpload} onChange={(e) => this.onFileChange(e)} style={{ visibility: "hidden" }} />
+                                                <input type="file" ref={this.refUpload} 
+                                                onChange={(e) => this.onFileChange(e)} style={{ visibility: "hidden" }} />
                                                 <h5 className="f-w-600 f-16 mb-0">{user.username}</h5>
                                                 <span>{user.email}</span>
                                                 <div className="social">

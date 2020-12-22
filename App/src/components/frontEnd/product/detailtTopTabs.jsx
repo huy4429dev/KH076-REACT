@@ -37,7 +37,8 @@ class DetailsTopTabs extends Component {
             email: "",
             title: "",
             content: "",
-            loading: false
+            loading: false,
+            showComment: false
         }
         this.validator = new SimpleReactValidator({
             autoForceUpdate: this,
@@ -57,6 +58,12 @@ class DetailsTopTabs extends Component {
                 username: user.username,
                 email: user.email,
             })
+            this.props.actions.checkOrder(id, user.id)
+                .then(data => {
+                    if (data.success) {
+                        this.setState({ showComment: data.data.check })
+                    }
+                });
         }
         this.props.actions.getComment(id);
     }
@@ -96,6 +103,8 @@ class DetailsTopTabs extends Component {
     render() {
         const { user } = this.props.login;
         const { comment } = this.props.product;
+        const { showComment } = this.state;
+        console.log(showComment, "xxx");
         return (
             <section className="tab-product m-0">
                 <Loading show={this.state.loading} type="full" />
@@ -171,9 +180,11 @@ class DetailsTopTabs extends Component {
                                 </div>
                             </TabPanel>
                             <TabPanel>
-                                <form className="theme-form mt-4">
-                                    <div className="form-row">
-                                        {/* <div className="col-md-12 ">
+                                {
+                                    showComment && (
+                                        <form className="theme-form mt-4">
+                                            <div className="form-row">
+                                                {/* <div className="col-md-12 ">
                                             <div className="media m-0">
                                                 <label>Đánh giá</label>
                                                 <div className="media-body ml-3">
@@ -187,56 +198,58 @@ class DetailsTopTabs extends Component {
                                                 </div>
                                             </div>
                                         </div> */}
-                                        <div className="col-md-6">
-                                            <label htmlFor="name">Tên</label>
-                                            <input type="text" className="form-control" id="name" placeholder="Tên"
-                                                required
-                                                name="username"
-                                                value={this.state.username}
-                                                onChange={(e) => this.setState({ [e.target.name]: e.target.value })}
-                                                onBlur={() => this.validator.showMessageFor('username')}
-                                            />
-                                            {this.validator.message('username', this.state.username, 'required', { className: 'text-danger' })}
-                                        </div>
-                                        <div className="col-md-6">
-                                            <label htmlFor="email">Email</label>
-                                            <input type="text" className="form-control" id="email" placeholder="Email"
-                                                required
-                                                name="email"
-                                                value={this.state.email}
-                                                onChange={(e) => this.setState({ [e.target.name]: e.target.value })}
-                                                onBlur={() => this.validator.showMessageFor('email')}
-                                            />
-                                            {this.validator.message('email', this.state.email, 'required|email', { className: 'text-danger' })}
-                                        </div>
-                                        <div className="col-md-12">
-                                            <label htmlFor="review">Tiêu đề</label>
-                                            <input type="text" className="form-control" id="review"
-                                                placeholder="Chủ đề đánh giá" required
-                                                name="title"
-                                                value={this.state.title}
-                                                onChange={(e) => this.setState({ [e.target.name]: e.target.value })}
-                                                onBlur={() => this.validator.showMessageFor('title')}
-                                            />
-                                            {this.validator.message('title', this.state.title, 'required', { className: 'text-danger' })}
-                                        </div>
-                                        <div className="col-md-12">
-                                            <label htmlFor="review">Nội dung</label>
-                                            <textarea className="form-control" placeholder="Đánh giá"
-                                                id="exampleFormControlTextarea1" rows="6"
-                                                placeholder="Chủ đề đánh giá" required
-                                                name="content"
-                                                value={this.state.content}
-                                                onChange={(e) => this.setState({ [e.target.name]: e.target.value })}
-                                                onBlur={() => this.validator.showMessageFor('content')}
-                                            ></textarea>
-                                            {this.validator.message('content', this.state.content, 'required', { className: 'text-danger' })}
-                                        </div>
-                                        <div className="col-md-12">
-                                            <button className="btn btn-solid" onClick={(e) => this.sendComment(e)}>Gửi</button>
-                                        </div>
-                                    </div>
-                                </form>
+                                                <div className="col-md-6">
+                                                    <label htmlFor="name">Tên</label>
+                                                    <input type="text" className="form-control" id="name" placeholder="Tên"
+                                                        required
+                                                        name="username"
+                                                        value={this.state.username}
+                                                        onChange={(e) => this.setState({ [e.target.name]: e.target.value })}
+                                                        onBlur={() => this.validator.showMessageFor('username')}
+                                                    />
+                                                    {this.validator.message('username', this.state.username, 'required', { className: 'text-danger' })}
+                                                </div>
+                                                <div className="col-md-6">
+                                                    <label htmlFor="email">Email</label>
+                                                    <input type="text" className="form-control" id="email" placeholder="Email"
+                                                        required
+                                                        name="email"
+                                                        value={this.state.email}
+                                                        onChange={(e) => this.setState({ [e.target.name]: e.target.value })}
+                                                        onBlur={() => this.validator.showMessageFor('email')}
+                                                    />
+                                                    {this.validator.message('email', this.state.email, 'required|email', { className: 'text-danger' })}
+                                                </div>
+                                                <div className="col-md-12">
+                                                    <label htmlFor="review">Tiêu đề</label>
+                                                    <input type="text" className="form-control" id="review"
+                                                        placeholder="Chủ đề đánh giá" required
+                                                        name="title"
+                                                        value={this.state.title}
+                                                        onChange={(e) => this.setState({ [e.target.name]: e.target.value })}
+                                                        onBlur={() => this.validator.showMessageFor('title')}
+                                                    />
+                                                    {this.validator.message('title', this.state.title, 'required', { className: 'text-danger' })}
+                                                </div>
+                                                <div className="col-md-12">
+                                                    <label htmlFor="review">Nội dung</label>
+                                                    <textarea className="form-control" placeholder="Đánh giá"
+                                                        id="exampleFormControlTextarea1" rows="6"
+                                                        placeholder="Chủ đề đánh giá" required
+                                                        name="content"
+                                                        value={this.state.content}
+                                                        onChange={(e) => this.setState({ [e.target.name]: e.target.value })}
+                                                        onBlur={() => this.validator.showMessageFor('content')}
+                                                    ></textarea>
+                                                    {this.validator.message('content', this.state.content, 'required', { className: 'text-danger' })}
+                                                </div>
+                                                <div className="col-md-12">
+                                                    <button className="btn btn-solid" onClick={(e) => this.sendComment(e)}>Gửi</button>
+                                                </div>
+                                            </div>
+                                        </form>
+                                    )
+                                }
                                 <div className="mt-2">
                                     Tất cả bình luận
                                 </div>

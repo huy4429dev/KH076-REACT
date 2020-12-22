@@ -10,6 +10,8 @@ use App\Models\Profile;
 use App\Models\Comment;
 use App\Models\User;
 use App\Models\Shop;
+use App\Models\OrderItem;
+use App\Models\Order;
 use Validator;
 use Illuminate\Support\Facades\Auth;
 
@@ -425,7 +427,7 @@ class ProductController extends BaseController
         );
 
     }
-     public function getComment($id,Request $request){
+    public function getComment($id,Request $request){
 
         $user = $request->user();
         $page = $request->query('page') ? $request->query('page') :  1;
@@ -443,6 +445,18 @@ class ProductController extends BaseController
             $data = [
                      'items' => $comment , 
                      'total' => Comment::where('product_id',$id)->count()
+                    ]
+          );
+    }
+    public function checkOrder($id , $userId,Request $request){
+        
+        $orders = Order::where('user_id',$userId)->whereHas('orderItems', function ($q)  use ($id) {
+            $q->where('product_id', $id);
+        })->get();
+        $check = $orders->count() > 0 ? true : false ;
+        return $this->sendResponse(
+            $data = [
+                     'check' => $check , 
                     ]
           );
     }

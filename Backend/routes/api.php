@@ -173,6 +173,7 @@ Route::prefix('products')->group(function(){
         Route::middleware(['scope:admin,shop,user'])->put('/{id}', [ProductController::class,'update'] );
         Route::middleware(['scope:admin,shop,user'])->delete('/{id}', [ProductController::class,'delete'] );
     });
+    Route::get('/check/{id}/{userId}', [ProductController::class,'checkOrder'] );
     Route::get('/comment/{id}', [ProductController::class,'getComment'] );
     Route::get('/sale-men', [ShopController::class,'saleMen'] );
     Route::get('/sale-women', [ShopController::class,'saleWomen'] );
@@ -207,6 +208,7 @@ Route::prefix('orders')->group(function(){
         // Route::middleware(['scope:admin,shop,user'])->post('/', [OrderController::class,'create'] );
         Route::middleware(['scope:admin,shop,user'])->put('/{id}', [OrderController::class,'update'] );
         Route::middleware(['scope:admin,shop,user'])->delete('/{id}', [OrderController::class,'delete'] );
+        Route::middleware(['scope:admin,shop,user'])->put('/status/{id}/{status}', [OrderController::class,'updateStatus'] );
     });
 
 });
@@ -238,9 +240,8 @@ Route::prefix('order-items')->group(function(){
 
 Route::prefix('colors')->group(function(){
     
-    
+    Route::get('/all', [ColorController::class,'getAll'] );
     Route::middleware(['auth:api', 'role'])->group(function() {
-        
         Route::get('/', [ColorController::class,'index'] );
         Route::get('/search', [ColorController::class,'search'] );
         Route::get('/{id}', [ColorController::class,'show'] );

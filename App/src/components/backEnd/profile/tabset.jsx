@@ -190,10 +190,11 @@ class Tabset_profile extends Component {
                                                         required=""
                                                         name="username"
                                                         value={this.state.username}
-                                                        onChange={(e) => this.setState({ [e.target.name]: e.target.value })}
-                                                        onBlur={() => this.validator.showMessageFor('username')}
+                                                        // onChange={(e) => this.setState({ [e.target.name]: e.target.value })}
+                                                        // onBlur={() => this.validator.showMessageFor('username')}
+                                                        disabled
                                                     />
-                                                    {this.validator.message('username', this.state.username, 'required', { className: 'text-danger' })}
+                                                    {/* {this.validator.message('username', this.state.username, 'required', { className: 'text-danger' })} */}
                                                 </div>
                                             </div>
                                         </div>
@@ -205,10 +206,11 @@ class Tabset_profile extends Component {
                                                         required=""
                                                         name="email"
                                                         value={this.state.email}
-                                                        onChange={(e) => this.setState({ [e.target.name]: e.target.value })}
-                                                        onBlur={() => this.validator.showMessageFor('email')}
+                                                        disabled
+                                                    // onChange={(e) => this.setState({ [e.target.name]: e.target.value })}
+                                                    // onBlur={() => this.validator.showMessageFor('email')}
                                                     />
-                                                    {this.validator.message('email', this.state.email, 'required|email', { className: 'text-danger' })}
+                                                    {/* {this.validator.message('email', this.state.email, 'required|email', { className: 'text-danger' })} */}
                                                 </div>
                                             </div>
                                         </div>

@@ -201,21 +201,43 @@ class OrderController extends BaseController
 
     public function delete($id,Request $request){
 
-        $user = $request->user();
+        // $user = $request->user();
 
-        $found = Order::where('creator_id',$user->id)->where('id', $request->id)->first();
-
+        $found = Order::where('id', $id)->first();
+        $orderItems = OrderItem::where('order_id',$id)->get();
+        if($orderItems == null){
+            foreach ($orderItems as $it) {
+                $id->delete();
+            }
+        }
         if($found == null){
-
             return $this->sendError('Order Errors.',['error' => 'Order not found !']);
         }
-
         $found->delete();
 
         return $this->sendResponse(
             $found,
             'Delete Order successfully'
           );
+    }
+      public function updateStatus($id,$status,Request $request){
+
+ 
+
+        $Order = Order::where('id',$id)->first();
+
+        if($Order != null){
+
+            $Order->status = $status;
+            $Order->save();
+
+            return $this->sendResponse(
+                $data = $Order,
+                'Update Order successfully.'
+            );
+        }
+
+        return $this->sendError('Order Errors.',['error' => 'Order not found !']);
     }
 
 }

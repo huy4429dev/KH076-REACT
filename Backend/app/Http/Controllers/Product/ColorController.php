@@ -168,5 +168,15 @@ class ColorController extends BaseController
             'Delete Color successfully'
           );
     }
+    public function getAll(Request $request){
+        $colors = Color::orderBy('id','desc')
+        ->take(10)->get();
+        return $this->sendResponse(
+            $data = [
+                     'items' => $colors , 
+                     'total' => $colors->count()
+                    ]
+          );
+    }
   
 }

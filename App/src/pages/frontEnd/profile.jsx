@@ -57,7 +57,7 @@ export class Profile extends Component {
         return (
             <Fragment>
                 <Loading show={this.state.loading} />
-                <div className="container-fluid">
+                <div className="container">
                     <div className="row mt-3">
                         <div className="col-xl-4">
                             <div className="card">

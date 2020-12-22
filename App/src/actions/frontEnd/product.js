@@ -23,7 +23,11 @@ export const types = {
     GET_PRODUCTS_CATEGORY_SUCCESS: "GET_PRODUCTS_CATEGORY_SUCCESS",
     GET_PRODUCTS_CATEGORY_ERROR: "GET_PRODUCTS_CATEGORY_ERROR",
     GET_COMMENT_SUCCESS: "GET_COMMENT_SUCCESS",
-    GET_COMMENT_ERROR: "GET_COMMENT_ERROR"
+    GET_COMMENT_ERROR: "GET_COMMENT_ERROR",
+    CHECK_ORDER_SUCCESS: "CHECK_ORDER_SUCCESS",
+    CHECK_ORDER_ERROR: "CHECK_ORDER_ERROR",
+    GET_COLOR_SUCCESS: "GET_COLOR_SUCCESS",
+    GET_COLOR_ERROR: "GET_COLOR_ERROR"
 }
 
 export const getListProducts = (param) => {
@@ -121,5 +125,21 @@ export const getComment = (id) => {
         method: 'get',
         onSuccess: types.GET_COMMENT_SUCCESS,
         onError: types.GET_COMMENT_ERROR,
+    };
+};
+export const checkOrder = (id, userId) => {
+    return {
+        url: `${ep.enpoint}/api/products/check/${id}/${userId}`,
+        method: 'get',
+        onSuccess: types.CHECK_ORDER_SUCCESS,
+        onError: types.CHECK_ORDER_ERROR,
+    };
+};
+export const getColor = () => {
+    return {
+        url: `${ep.enpoint}/api/colors/all`,
+        method: 'get',
+        onSuccess: types.GET_COLOR_SUCCESS,
+        onError: types.GET_COLOR_ERROR,
     };
 };

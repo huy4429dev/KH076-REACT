@@ -32,11 +32,17 @@ export default (state = initState, action) => {
       };
 
     case types.DELETE_ORDER_SUCCESS:
-      index = items.findIndex((item) => item.id === action.data.data.id);
-      items.splice(index, 1);
+      state.items = state.items.filter(item => item.id != action.data.data.id);
       return {
         ...state,
-        items,
+      };
+    case types.PUT_STATUS_ORDER_SUCCESS:
+      index = state.items.findIndex(item => item.id == action.data.data.id);
+      if (index != -1) {
+        state.items[index].status = action.data.data.status;
+      }
+      return {
+        ...state,
       };
 
     default:

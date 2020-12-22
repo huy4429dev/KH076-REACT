@@ -23,6 +23,7 @@ class Shop extends Component {
             filter: {
                 page: 1,
                 pageSize: 20,
+                color: ''
             }
         }
     }
@@ -75,10 +76,17 @@ class Shop extends Component {
             }
         }, () => this.getData())
     }
+    changeColor = (value) => {
+        this.setState({
+            filter: {
+                ...this.state.filter,
+                color: value
+            }
+        }, () => this.getData())
+    }
     render() {
         const { listProduct } = this.props.productHome;
         const { filterBy, price, filter } = this.state;
-        console.log(this.state);
         return (
             <div>
                 <Loadding show={this.state.loading} type="full" />
@@ -156,7 +164,9 @@ class Shop extends Component {
 
                                     <StickyBox offsetTop={20} offsetBottom={20}>
                                         <div>
-                                            <Filter changePrice={(value) => this.changePrice(value)} />
+                                            <Filter
+                                                changeColor={(value) => this.changeColor(value)}
+                                                changePrice={(value) => this.changePrice(value)} />
                                             <NewProduct />
                                             <div className="collection-sidebar-banner">
                                                 <a href="#">

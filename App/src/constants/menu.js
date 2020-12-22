@@ -63,7 +63,7 @@ export const MENUITEMS = [
       //     ]
       // },
     ],
-    role: ['shop']
+    role: ['shop', 'admin']
   },
   {
     title: "Đơn hàng",

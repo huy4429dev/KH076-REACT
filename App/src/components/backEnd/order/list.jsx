@@ -8,7 +8,39 @@ import $ from 'jquery';
 import * as actions from '../../../actions/backEnd/order';
 import ModalDelete from './../../../components/backEnd/modalDelete';
 import Pagination from "react-bootstrap-4-pagination";
-
+import ModalEdit from './edit';
+const status = [
+    { 1: "Chờ lấy hàng" },
+    { 2: "Đang lấy hàng" },
+    { 3: "Không lấy được hàng" },
+    { 4: "Đã nhận hàng" },
+    { 5: "Đang chuyển" },
+    { 6: "Đã giao hàng" },
+    { 7: "Delay giao hàng" },
+    { 8: "Không giao được hàng" },
+    { 9: "Đang đối soát" },
+    { 10: "Đã đối soát" },
+    { 11: "Chờ hoàn trả" },
+    { 12: "Đã hoàn trả" },
+    { 13: "Bị thất lạc" },
+    { 14: "Đã hủy đơn" },
+    { 15: "Chưa gửi" },
+    { 16: "Mới" },
+    { 17: "Chờ xác nhận" },
+    { 18: "Đang xác nhận" },
+    { 19: "Đã xác nhận" },
+    { 20: "Đang sản xuất" },
+    { 21: "Hết hàng" },
+    { 22: "Đổi kho hàng" },
+    { 23: "Đang đóng gói" },
+    { 24: "Đã lấy hàng" },
+    { 25: "Đang chuyển hoàn" },
+    { 26: "Thất bại" },
+    { 27: "Khách hủy" },
+    { 28: "Người bán hủy" },
+    { 29: "Hãng v.chuyển hủy" },
+    { 30: "Đã đối soát" }
+]
 class List extends Component {
     constructor(props) {
         super(props)
@@ -34,7 +66,11 @@ class List extends Component {
         this.setState({ loading: false });
         $('.page-link').on('click', (e) => e.preventDefault());
     }
-
+    UNSAFE_componentWillReceiveProps(nextProps) {
+        if (nextProps.myData && nextProps.myData != this.props.myData) {
+            this.setState({ myData: nextProps.myData })
+        }
+    }
     onOpenModalEdit = () => {
         this.setState({
             openModalEdit: true
@@ -61,10 +97,14 @@ class List extends Component {
 
 
     handleDelete = (id) => {
-        this.setState({
-            openModalDelete: true,
-            itemId: id
-        })
+        let ok = window.confirm("Bạn có muốn xóa")
+        if (ok) {
+            this.props.actions.deleteOrder(id);
+        }
+        // this.setState({
+        //     openModalDelete: true,
+        //     itemId: id
+        // })
     }
 
     handleEdit = (item) => {
@@ -84,32 +124,30 @@ class List extends Component {
             loading: true
         });
 
-        updateOrder({
-            ...item
-        }).then((data) => {
+        // updateOrder({
+        //     ...item
+        // }).then((data) => {
 
-            if (data.success) {
-                return data;
-            } else {
-                throw new Error('Something went wrong');
-            }
+        //     if (data.success) {
+        //         return data;
+        //     } else {
+        //         throw new Error('Something went wrong');
+        //     }
 
-        })
-            .then((data) => {
-                this.setState({
-                    myData: this.props.myData,
-                    showEdit: false,
-                    itemEdit: null,
-                    loading: false
-                });
-
-                window.notify("Chỉnh sửa danh mục thành công");
-
-            })
-            .catch((err) => {
-                this.setState({ loading: false });
-                window.notify("Lỗi: " + err.message, "danger");
-            });
+        // })
+        //     .then((data) => {
+        //         this.setState({
+        //             myData: this.props.myData,
+        //             showEdit: false,
+        //             itemEdit: null,
+        //             loading: false
+        //         });
+        //         window.notify("Chỉnh sửa danh mục thành công");
+        //     })
+        //     .catch((err) => {
+        //         this.setState({ loading: false });
+        //         window.notify("Lỗi: " + err.message, "danger");
+        //     });
 
 
     }
@@ -180,6 +218,10 @@ class List extends Component {
                 window.notify('Lỗi: ', err.message)
             })
     }
+    showStatus = (stt) => {
+        const item = status.filter(item => Object.keys(item) == stt).map(item => { return Object.values(item) });
+        return item[0];
+    }
 
     render() {
 
@@ -193,7 +235,7 @@ class List extends Component {
                             <tr>
                                 <th style={{ width: '5%' }}>#</th>
                                 <th style={{ width: '15%' }}>Khách hàng</th>
-                                <th style={{ width: '15%' }}>Địa chỉ</th>
+                                <th style={{ width: '15%' }}>Hãng vận chuyển</th>
                                 <th style={{ width: '10%' }}>Tổng tiền</th>
                                 <th style={{ width: '5%' }}>Trạng thái</th>
                                 <th style={{ width: '15%' }}>Ngày tạo</th>
@@ -209,12 +251,22 @@ class List extends Component {
                                             <td>{item.user.username}</td>
                                             <td>{item.ship_address}</td>
                                             <td>{item.total.toLocaleString()} đ</td>
-                                            <td>{item.status ? <span class="badge badge-secondary text-center" style={{ width: '100px' }}>Thành công</span> : <span class="badge badge-danger text-center" style={{ width: '100px' }}>Chờ xác nhận</span>}</td>
+                                            <td>{item.status ?
+                                                <span className="badge badge-secondary text-center" style={{ width: '100px' }}>
+                                                    {this.showStatus(item.status)}
+                                                </span>
+                                                :
+                                                <span class="badge badge-danger text-center" style={{ width: '100px' }}>Chờ xác nhận</span>}
+                                            </td>
                                             <td>{moment(item.created_at).format("DD/MM/YYYY")}</td>
                                             <td>{moment(item.updated_at).format("DD/MM/YYYY")}</td>
                                             <td className='text-center'>
-                                                <button style={{ padding: '5px 10px' }} type='button' className='btn btn-warning btn-sm mr-1' onClick={() => this.handleEdit(item)}>Sửa</button>
-                                                <button style={{ padding: '5px 10px' }} type='button' className='btn btn-primary btn-sm' onClick={() => this.handleDelete(item.id)}>Xóa</button>
+                                                <button style={{ padding: '5px 10px' }} type='button'
+                                                    className='btn btn-warning btn-sm mr-1'
+                                                    onClick={() => this.handleEdit(item)}>Sửa</button>
+                                                <button style={{ padding: '5px 10px' }}
+                                                    type='button' className='btn btn-primary btn-sm'
+                                                    onClick={() => this.handleDelete(item.id)}>Xóa</button>
                                             </td>
                                         </tr>
                                     )
@@ -227,32 +279,33 @@ class List extends Component {
                 {
                     myData?.length == 0 && <div className="alert alert-warning text-center">Chưa có đơn hàng </div>
                 }
-
-                <div className='d-flex justify-content-end'>
-                    <Pagination
-                        totalPages={total / pageSize + 1}
-                        currentPage={page}
-                        showMax={total > pageSize ? total / pageSize + 1 : 0}
-                        size={"md"}
-                        prevNext={true}
-                        onClick={this.handlePageChange}
-                    />
-                </div>
-
-                {/* <ModalEdit
+                {
+                    total > pageSize &&
+                    <div className='d-flex justify-content-end'>
+                        <Pagination
+                            totalPages={total / pageSize + 1}
+                            currentPage={page}
+                            showMax={total > pageSize ? total / pageSize + 1 : 0}
+                            size={"md"}
+                            prevNext={true}
+                            onClick={this.handlePageChange}
+                        />
+                    </div>
+                }
+                <ModalEdit
                     open={this.state.showEdit}
                     data={this.state.itemEdit}
                     onHandleEditItem={(item) => this.handleEditItem(item)}
                     onCloseModal={() => this.setState({ showEdit: false })}
-                /> */}
+                />
 
-                <ModalDelete
+                {/* <ModalDelete
                     open={openModalDelete}
                     data={this.state.itemId}
                     title={'Xóa đơn hàng'}
                     onHandleDelete={(id) => this.handleDeleteItem(id)}
                     onCloseModal={(id) => this.onCloseModalDelete(id)}
-                />
+                /> */}
 
 
 
