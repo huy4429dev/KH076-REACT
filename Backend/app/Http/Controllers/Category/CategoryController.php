@@ -201,5 +201,17 @@ class CategoryController extends BaseController
             'Delete category successfully'
           );
     }
+    public function home(){
+
+        $found = Category::orderBy('id','desc')->get();
+
+        return $this->sendResponse(
+             $data = [
+                     'items' => $found , 
+                    ]
+        );
+
+    }
+
   
 }
