@@ -204,14 +204,10 @@ class CategoryController extends BaseController
     public function home(){
 
         $found = Category::orderBy('id','desc')->get();
-
         return $this->sendResponse(
              $data = [
                      'items' => $found , 
                     ]
         );
-
     }
-
-  
 }

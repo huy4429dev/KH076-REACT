@@ -5,10 +5,11 @@ import PaypalExpressBtn from 'react-paypal-express-checkout';
 import SimpleReactValidator from 'simple-react-validator';
 import connect from './../../lib/connect';
 import * as actions from './../../actions/frontEnd/cart';
+import * as actionsAddress from './../../actions/address';
 import Breadcrumb from "./../../components/frontEnd/home/breadcrumb";
 import Loading from './../../components/loadding2';
 import Modal from './order';
-
+import Select from 'react-select';
 class CheckOut extends Component {
 
     constructor(props) {
@@ -28,13 +29,20 @@ class CheckOut extends Component {
             create_account: '',
             loading: false,
             dataOrder: null,
-            showOrder: false
+            showOrder: false,
+            optionsProvince: [],
+            optionsDistrict: [],
+            optionsWard: [],
+            province: { value: "", label: "" },
+            district: { value: "", label: "" },
+            ward: { value: "", label: "" }
         }
         this.validator = new SimpleReactValidator({
             autoForceUpdate: this,
             messages: {
                 required: 'Dữ liệu không hợp lệ',
-                email: 'Email không hợp lệ'
+                email: 'Email không hợp lệ',
+                phone: "Số điện thoại không hợp lệ"
             }
         });
     }
@@ -58,8 +66,46 @@ class CheckOut extends Component {
         if (items.length == 0) {
             window.notify('Bạn chưa thêm sản phẩm nào vào giỏ hàng', 'warning');
         }
+        this.props.actions.getProvince()
+            .then(data => {
+                if (data.success) {
+                    const newData = data.data.map(item => { return { value: item.id, label: item.name } });
+                    this.setState({ optionsProvince: newData })
+                }
+            });
     }
-
+    getDistrict = (id) => {
+        const newId = `0${id}`.slice(-2);
+        this.props.actions.getDistrict(newId)
+            .then(data => {
+                if (data.success) {
+                    const newData = data.data.map(item => { return { value: item.id, label: item.name } });
+                    this.setState({ optionsDistrict: newData })
+                }
+            });
+    }
+    handleChangeDistrict = (v) => {
+        this.setState({
+            district: v
+        }, () => {
+            this.getWard(v.value);
+        })
+    }
+    getWard = (id) => {
+        const newId = `00${id}`.slice(-3);
+        this.props.actions.getWard(newId)
+            .then(data => {
+                if (data.success) {
+                    const newData = data.data.map(item => { return { value: item.id, label: item.name } });
+                    this.setState({ optionsWard: newData })
+                }
+            });
+    }
+    handleChangeWard = (v) => {
+        this.setState({
+            ward: v
+        })
+    }
 
     setStateFromInput = (event) => {
         var obj = {};
@@ -130,7 +176,11 @@ class CheckOut extends Component {
         e.stopPropagation();
         e.preventDefault();
         const { items } = this.props.cart;
-        const { username, title, email, address, phone } = this.state;
+        const { username, title, email, address, phone, district, province, ward } = this.state;
+        if (!district.value || !province.value || !ward.value) {
+            window.notify("Bạn cần điền đầy đủ thông tin địa chỉ", "warning");
+            return;
+        }
         if (this.validator.allValid()) {
             this.setState({
                 loading: true
@@ -139,7 +189,7 @@ class CheckOut extends Component {
                 username: username,
                 email: email,
                 phone: phone,
-                address: address,
+                address: `${province.label}, ${district.label}, ${ward.label}`,
                 user_id: this.props.login ? this.props.login.user.id : null,
                 detailt: items,
                 total: this.totalPrice(items),
@@ -167,6 +217,13 @@ class CheckOut extends Component {
             this.validator.showMessages();
             window.notify('Vui lòng điền đầy đủ các trường', 'danger');
         }
+    }
+    handleChangeProvince = (v) => {
+        this.setState({
+            province: v
+        }, () => {
+            this.getDistrict(v.value);
+        })
     }
     render() {
         const { symbol } = this.props;
@@ -196,6 +253,7 @@ class CheckOut extends Component {
             production: 'AZ4S98zFa01vym7NVeo_qthZyOnBhtNvQDsjhaZSMH-2_Y9IAJFbSD3HPueErYqN8Sa8WYRbjP7wWtd_',
         }
         const { items } = this.props.cart;
+        const { optionsProvince, optionsDistrict, optionsWard } = this.state;
         return (
             <div>
                 {/*SEO Support*/}
@@ -253,7 +311,7 @@ class CheckOut extends Component {
                                                     />
                                                     {this.validator.message('email', this.state.email, 'required|email')}
                                                 </div>
-                                                <div className="form-group col-md-12 col-sm-12 col-xs-12">
+                                                {/* <div className="form-group col-md-12 col-sm-12 col-xs-12">
                                                     <div className="field-label">Địa chỉ</div>
                                                     <input type="text" name="address" value={this.state.address}
                                                         value={this.state.address}
@@ -261,7 +319,39 @@ class CheckOut extends Component {
                                                         onBlur={() => this.validator.showMessageFor('address')}
                                                         placeholder="Địa chỉ..." />
                                                     {this.validator.message('address', this.state.address, 'required')}
+                                                </div> */}
+                                                <div className="col-md-12">
+                                                    <p>Tỉnh:</p>
+                                                    <Select
+                                                        value={this.state.province}
+                                                        defaultValue={this.state.province}
+                                                        onChange={(v) => this.handleChangeProvince(v)}
+                                                        options={optionsProvince}
+                                                        isSearchable="true"
+                                                        placeholder="Tỉnh"
+                                                        className="mb-2"
+                                                    />
+                                                    <p>Huyện:</p>
+                                                    <Select
+                                                        value={this.state.district}
+                                                        defaultValue={this.state.district}
+                                                        onChange={this.handleChangeDistrict}
+                                                        options={optionsDistrict}
+                                                        isSearchable="true"
+                                                        placeholder="Huyện"
+                                                        className="mb-2"
+                                                    />
+                                                    <p>Xã:</p>
+                                                    <Select
+                                                        value={this.state.ward}
+                                                        defaultValue={this.state.ward}
+                                                        onChange={this.handleChangeWard}
+                                                        options={optionsWard}
+                                                        isSearchable="true"
+                                                        placeholder="Xã"
+                                                    />
                                                 </div>
+
                                             </div>
                                         </div>
                                         <div className="col-lg-6 col-sm-12 col-xs-12">
@@ -389,4 +479,4 @@ class CheckOut extends Component {
 export default connect(CheckOut, state => ({
     login: state.login,
     cart: state.cart
-}), actions);
+}), { ...actions, ...actionsAddress });
