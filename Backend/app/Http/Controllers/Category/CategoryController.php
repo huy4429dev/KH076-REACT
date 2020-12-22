@@ -27,6 +27,8 @@ class CategoryController extends BaseController
             ->skip( ($page - 1) * $pageSize )
             ->take($pageSize)
             ->get();
+
+            $total = Category::has('children')->count();
            
         }
 
@@ -43,23 +45,26 @@ class CategoryController extends BaseController
                 ->skip( ($page - 1) * $pageSize )
                 ->take($pageSize)
                 ->get();
+
+                $total = Category::whereIn('user_id',$userIdsOfShop)->has('children')->count();
             } 
             else{
 
                 $categories = Category::whereIn('user_id',$userIdsOfShop)
-                ->with('children')
+                ->has('children')
                 ->orderBy('id','desc')
                 ->skip( ($page - 1) * $pageSize )
                 ->take($pageSize)
                 ->get();
 
+                $total = Category::whereIn('user_id',$userIdsOfShop)->has('children')->count();
             }
            
         }
         return $this->sendResponse(
             $data = [
                      'items' => $categories , 
-                     'total' => Category::has('children')->count()
+                     'total' => $total
                     ]
           );
     }
@@ -74,6 +79,7 @@ class CategoryController extends BaseController
         $query = Category::query();
 
         $searchKey = $request->query('q');
+        $price = $request->query('price');
 
         if($searchKey != null){
             
@@ -81,6 +87,11 @@ class CategoryController extends BaseController
                            ->orWhere('name','like','%'.$searchKey.'%')
                            ->orWhere('description','like','%'.$searchKey.'%');
                            
+        }
+
+        if($price != null)
+        {
+            $query = $query->Where('price' , '>' , $price);
         }
 
         $categories = $query
@@ -191,15 +202,4 @@ class CategoryController extends BaseController
           );
     }
   
-      public function home(Request $request){
-        
-                $categories = Category::orderBy('id','desc')
-                ->get();
-
-        return $this->sendResponse(
-            $data = [
-                     'items' => $categories , 
-                    ]
-          );
-    }
 }

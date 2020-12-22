@@ -4,9 +4,10 @@ import Modal from 'react-responsive-modal';
 import 'react-responsive-modal/styles.css';
 import connect from '../../../lib/connect';
 import SimpleReactValidator from 'simple-react-validator';
-import * as actions from '../../../actions/backEnd/order';
+import * as actionOrder from '../../../actions/backEnd/order';
 import Loading from '../../../components/backEnd/loading';
 import ListOrder from '../../../components/backEnd/order/list';
+import * as actionLogin from './../../../actions/frontEnd/login';
 
 const customButton = { borderRadius: 0, paddingTop: '6px', paddingBottom: '6px', paddingLeft: '10px', paddingRight: '10px' };
 
@@ -133,11 +134,24 @@ class Order extends Component {
 
     }
 
+    handleExport = () => {
+        
+        const { exportOrder } = this.props.actions;
+        exportOrder()
+        .then(data => {
+
+        })
+        .catch(err => console.log(err))
+        
+    }
+
     render() {
         const { open, order } = this.state;
         const { orders } = this.props;
         const items = orders.items ? orders.items : [];
         const total = orders.total ?? 0;
+        const {user} = this.props.login;
+        console.log(user,'USER');
         return (
             <Fragment>
                 <Breadcrumb title="ĐƠN HÀNG" parent="ĐƠN HÀNG" />
@@ -150,7 +164,7 @@ class Order extends Component {
                                 <div className="card-header d-flex justify-content-between">
                                     <h5>DANH SÁCH ĐƠN HÀNG</h5>
                                     <div>
-                                        <button
+                                        {/* <button
                                             type="button"
                                             className="btn btn-secondary mr-1"
                                             style={customButton}
@@ -160,7 +174,7 @@ class Order extends Component {
                                             data-target="#exampleModal"
                                         >
                                             <i className="fa fa-plus"></i>
-                                        </button>
+                                        </button> */}
                                         <button
                                             type="button"
                                             className="btn btn-primary mr-1"
@@ -169,13 +183,16 @@ class Order extends Component {
                                         >
                                             <i className="fa fa-refresh" aria-hidden="true"></i>
                                         </button>
-                                        <button
+                                        <a
                                             type="button"
                                             className="btn btn-success"
                                             style={customButton}
+                                            // onClick={this.handleExport}
+                                            href={`http://127.0.0.1:8000/api/orders/export/${user.id}`}
+
                                         >
                                             <i className="fas fa-print"></i>
-                                        </button>
+                                        </a>
                                     </div>
                                 </div>
                                 <div className="card-body">
@@ -250,6 +267,7 @@ class Order extends Component {
 
 export default connect(Order, state => (
     {
-        orders: state.order
+        orders: state.order,
+        login: state.login
     }
-), actions);
+), {...actionOrder,...actionOrder});

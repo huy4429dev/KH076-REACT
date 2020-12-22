@@ -33,7 +33,7 @@ class Revenue extends Component {
                     text: ''
                 },
                 xAxis: {
-                    categories: ['1/11', '1/12', '1/13'],
+                    categories: [],
                 },
                 yAxis: {
                     lineWidth: 1,
@@ -44,7 +44,7 @@ class Revenue extends Component {
                     }
                 },
                 series: [
-                    { data: [1, 2, 3] }
+                    { data: [] , name: 'Doanh thu'}
                 ],
                 plotOptions: {
                     series: {

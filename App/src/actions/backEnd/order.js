@@ -13,7 +13,9 @@ export const types = {
   CREATE_ORDER_CHILDREN_SUCCESS: "CREATE_ORDER_CHILDREN_SUCCESS",
   CREATE_ORDER_CHILDREN_ERROR: "CREATE_ORDER_CHILDREN_ERROR",
   PUT_STATUS_ORDER_SUCCESS: "PUT_STATUS_ORDER_SUCCESS",
-  PUT_STATUS_ORDER_ERROR: "PUT_STATUS_ORDER_ERROR"
+  PUT_STATUS_ORDER_ERROR: "PUT_STATUS_ORDER_ERROR",
+  EXPORT_ORDER_SUCCESS: "EXPORT_ORDER_SUCCESS",
+  EXPORT_ORDER_ERROR: "EXPORT_ORDER_ERROR",
 };
 
 export const getOrders = (page = 1) => {
@@ -69,5 +71,14 @@ export const handleChangeOrder = (id, status) => {
     method: "put",
     onSuccess: types.PUT_STATUS_ORDER_SUCCESS,
     onError: types.PUT_STATUS_ORDER_ERROR,
+  };
+};
+
+export const exportOrder = () => {
+  return {
+    url: `${ep.enpoint}/api/orders/export`,
+    method: "get",
+    onSuccess: types.EXPORT_ORDER_ERROR,
+    onError: types.EXPORT_ORDER_ERROR,
   };
 };

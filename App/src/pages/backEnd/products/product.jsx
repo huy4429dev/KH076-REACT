@@ -80,6 +80,8 @@ class Product extends Component {
 
     }
 
+
+
     handleOnSearch = (event) => {
 
         const { searchProducts } = this.props.actions;
@@ -124,7 +126,8 @@ class Product extends Component {
         const tagName = target.name;
         this.setState({
             [tagName]: value
-        });
+        }, () => console.log(this.state.sizes,'SIZESSS'));
+
 
     }
 
@@ -313,8 +316,6 @@ class Product extends Component {
 
     handleEdit = (item) => {
 
-        let { itemEdit } = this.state;
-
         this.setState({
             itemEdit: item,
             showEdit: true
@@ -326,14 +327,14 @@ class Product extends Component {
 
     handlePageChange = (page) => {
 
-        
+
         this.setState({
             loading: true
         })
         const { searchProducts } = this.props.actions;
-        const {q} = this.state;
+        const { q } = this.state;
         let filter = `&q=${q}`;
-        searchProducts(page,filter)
+        searchProducts(page, filter)
             .then(() => {
                 this.setState({ loading: false, page: page });
             })
@@ -419,7 +420,7 @@ class Product extends Component {
     }
 
     render() {
-        const { open, colors, loading, openModalEdit, openModalDelete, page, pageSize, filter, showEdit, q } = this.state;
+        const { open, colors, loading, openModalEdit, openModalDelete, page, pageSize, filter, showEdit, q,itemEdit } = this.state;
         let { products, categories, productColors, productSizes } = this.props;
         categories = categories ?? null;
         productColors = productColors ?? null;
@@ -600,7 +601,7 @@ class Product extends Component {
                                                             </div>
                                                         </div>
                                                     </div>
-                                                </div>
+                                                </div>  
                                                 <div className="col-xl-6">
                                                     <div className="card">
                                                         <div className="card-header">
@@ -635,6 +636,7 @@ class Product extends Component {
                                                     </div>
                                                 </div>
                                             </div>
+                                                            
                                         </Modal>
                                     </div>
                                     <div className="clearfix"></div>
@@ -667,7 +669,18 @@ class Product extends Component {
                                                                 return (
                                                                     <tr>
                                                                         <td>{index++}</td>
-                                                                        <td><img style={{ width: '50px' }} src={item.images[0]?.url} alt="" /></td>
+                                                                        <td>
+                                                                            {
+                                                                                item.images?.length > 0 ?
+                                                                                    <img style={{ width: '50px' }} src={item.images[0]?.url} alt="" />
+                                                                                    :
+                                                                                    <div
+                                                                                        className="rounded-circle bg-light text-dark text-center d-flex justify-content-center align-items-center"
+                                                                                        style={{ width: 50, height: 50}}>
+                                                                                        {item.name.charAt(0)}
+                                                                                    </div>
+                                                                            }
+                                                                        </td>
                                                                         <td><Link to={`/admin/products/detail/${item.id}`} >   {item.name} </Link></td>
                                                                         <td>{item.category.name}</td>
                                                                         <td>{item.price.toLocaleString()} đ</td>
@@ -704,7 +717,7 @@ class Product extends Component {
                     <Pagination
                         totalPages={total / pageSize + 1}
                         currentPage={page}
-                        showMax={total > pageSize ? total / pageSize + 1 : 0}
+                        showMax={total > pageSize ? Math.floor(total / pageSize) + 1 : 0}
                         size={"md"}
                         prevNext={true}
                         onClick={this.handlePageChange}
@@ -733,23 +746,23 @@ class Product extends Component {
                                     <div className="digital-add needs-validation">
                                         <div className="form-group">
                                             <label className="col-form-label pt-0"><span>*</span>Tên sản phẩm</label>
-                                            <input onChange={this.handleInputOnchange} name="name" className="form-control" id="validationCustom01" type="text" required="" />
+                                            <input onChange={this.handleInputOnchange} value={itemEdit?.name} name="name" className="form-control" id="validationCustom01" type="text" required="" />
                                             {this.validator.message('name', this.state.name, 'required', { className: 'text-danger mt-1' })}
                                         </div>
                                         <div className="form-group">
                                             <label className="col-form-label pt-0"><span>*</span> Số lượng</label>
-                                            <input onChange={this.handleInputOnchange} name='quantity' className="form-control" id="validationCustom02" type="text" required="" />
+                                            <input onChange={this.handleInputOnchange}  value={itemEdit?.quantity} name='quantity' className="form-control" id="validationCustom02" type="text" required="" />
                                             {this.validator.message('quantity', this.state.name, 'required|number', { className: 'text-danger mt-1' })}
                                         </div>
                                         <div className="form-group">
                                             <label className="col-form-label"><span>*</span> Danh mục</label>
-                                            <select name='categoryId' onChange={this.handleInputOnchange} className="custom-select" required="">
+                                            <select name='categoryId' value={itemEdit?.category?.id} onChange={this.handleInputOnchange} className="custom-select" required="">
                                                 <option value="">Danh mục</option>
                                                 {
                                                     categories != null && categories.items.map((item, index) => {
 
                                                         if (item.children?.length && item.children?.length == 0) {
-                                                            return <option value={item.id} style={{ color: 'blue' }} >{item.name}</option>
+                                                            return <option value={item.id} style={{ color: 'blue' }}>{item.name}</option>
                                                         }
                                                         else {
                                                             let optionParent = <option value={item.id} style={{ color: 'blue', fontWeight: 'bold' }}>{item.name}</option>;
@@ -771,11 +784,11 @@ class Product extends Component {
                                         </div>
                                         <div className="form-group">
                                             <label className="col-form-label"><span>*</span> Giá bán</label>
-                                            <input name='price' onChange={this.handleInputOnchange} className="form-control" id="validationCustom02" type="text" required="" />
+                                            <input name='price' value={itemEdit?.price} onChange={this.handleInputOnchange} className="form-control" id="validationCustom02" type="text" required="" />
                                         </div>
                                         <div className="form-group">
                                             <label className="col-form-label">Giảm giá (%)</label>
-                                            <input name='discount' onChange={this.handleInputOnchange} className="form-control" id="validationCustom02" type="text" required="" />
+                                            <input name='discount' value={itemEdit?.discount} onChange={this.handleInputOnchange} className="form-control" id="validationCustom02" type="text" required="" />
                                         </div>
                                         <div className="form-group">
                                             <label className="col-form-label"><span>*</span> Trạng thái</label>
@@ -801,17 +814,18 @@ class Product extends Component {
                                                     {
                                                         productColors != null &&
                                                             productColors.items.length > 0 ?
-
-                                                            productColors.items.map(item => (
+                                                            productColors.items.map(item => {
+                                                                item.active = itemEdit?.colors?.find(c => c.id == item.id) != undefined && true;
+                                                                return (
                                                                 <span
                                                                     onClick={() => this.handlePickColor(item.id)}
                                                                     data-tip={item.name}
                                                                     className='d-block mr-1'
                                                                     style={{ width: '20px', height: '20px', background: item.color, opacity: item.active ? 1 : 0.5 }}>
                                                                 </span>
-                                                            ))
+                                                                )
+                                                            })
                                                             : <span>Chưa có mẫu màu</span>
-
 
                                                     }
 
@@ -823,16 +837,21 @@ class Product extends Component {
                                         <div className="form-group">
                                             <label className="col-form-label">Mẫu size</label>
                                             <div className="m-checkbox-inline mb-0 custom-radio-ml d-flex radio-animated">
+
                                                 {
                                                     productSizes != null &&
                                                         productSizes.items.length > 0 ?
 
                                                         productSizes.items.map(item => (
+                                                            
                                                             <label className="d-block mr-2">
+                                                            
                                                                 <input onChange={() => this.handlePickSize(item.id)}
-                                                                    type="checkbox"
+                                                                    type="checkbox" 
                                                                     name="size"
                                                                     className="mr-2"
+                                                                    checked={itemEdit?.sizes?.find(s => s.id == item.id) != undefined  && true}
+            
                                                                 />
                                                                 <span style={{ color: 'green' }}>{item.name}</span>
                                                             </label>
@@ -858,7 +877,7 @@ class Product extends Component {
                                             <div className="description-sm">
                                                 <CKEditors
                                                     activeclassName="p10"
-                                                    content={this.state.description}
+                                                    content={itemEdit?.description}
                                                     events={{
                                                         "change": this.handleCkEditorOnchange
                                                     }}

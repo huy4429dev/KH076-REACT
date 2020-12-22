@@ -255,7 +255,7 @@ class List extends Component {
                     <Pagination
                         totalPages={total / pageSize + 1}
                         currentPage={page}
-                        showMax={total > pageSize ? total / pageSize + 1 : 0}
+                        showMax={total > pageSize ? Math.floor(total / pageSize) + 1 : 0}
                         size={"md"}
                         prevNext={true}
                         onClick={this.handlePageChange}

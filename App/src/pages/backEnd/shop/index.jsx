@@ -205,8 +205,21 @@ class Contact extends Component {
                                                                     <tr >
                                                                         <td>{++index}</td>
                                                                         <td>{item.name}</td>
-                                                                        <td><img style={{ width: "50px", height: "50px" }} src={item.avatar} /></td>
-                                                                        <td>{item.users[0].username}</td>
+                                                                        <td>
+                                                                            {
+                                                                                item.avatar ?
+                                                                                <img style={{ width: "50px", height: "50px" }} src={item.avatar} />
+                                                                                :
+                                                                                <div
+                                                                                    className="rounded-circle bg-light text-dark text-center d-flex justify-content-center align-items-center"
+                                                                                    style={{ width: 50, height: 50}}>
+                                                                                    {item.name.charAt(0).toUpperCase()}
+                                                                                </div>
+                                                                            }
+                                                                            
+                                                                            
+                                                                        </td>
+                                                                        <td>{item?.users[0]?.username}</td>
                                                                         <td>{item.description}</td>
                                                                         <td>{moment(item.created_at).format("DD/MM/YYYY")}</td>
                                                                         <td>

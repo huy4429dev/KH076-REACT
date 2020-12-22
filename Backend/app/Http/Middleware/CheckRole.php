@@ -14,6 +14,7 @@ class CheckRole
      */
     public function handle($request, Closure $next)
     {
+        return $request->user();
         $userRole = $request->user()->roles()->orderBy('role_id','desc')->first();
         if ($userRole) {
 

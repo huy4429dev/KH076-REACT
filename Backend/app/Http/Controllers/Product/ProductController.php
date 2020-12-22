@@ -20,6 +20,7 @@ class ProductController extends BaseController
     public function index(Request $request){
 
         $user = $request->user();
+        return $user;
         $page = $request->query('page') ?? 1;
         $pageSize = $request->query('pageSize') ?? 25;
 
@@ -34,6 +35,8 @@ class ProductController extends BaseController
             ->skip( ($page - 1) * $pageSize )
             ->take($pageSize)
             ->get();
+
+            $total = Product::count();
 
         }
 
@@ -52,12 +55,14 @@ class ProductController extends BaseController
             ->take($pageSize)
             ->get();
 
+            $total = Product::whereIn('user_id',$userIdsOfShop)->count();
+
         }
 
         return $this->sendResponse(
             $data = [
                      'items' => $Products , 
-                     'total' => $Products->count()
+                     'total' => $total
                     ]
           );
     }
@@ -122,6 +127,10 @@ class ProductController extends BaseController
             ->take($pageSize)
             ->get();
 
+
+
+            $total = Product::where('name','like','%'.$searchKey.'%')->count();
+
         }
 
         else if($user->roles->contains('name', 'shop')){
@@ -140,12 +149,17 @@ class ProductController extends BaseController
             ->take($pageSize)
             ->get();
 
+
+            $total = Product::where('name','like','%'.$searchKey.'%')
+                            ->whereIn('user_id',$userIdsOfShop)
+                            ->count();
+
         }
 
         return $this->sendResponse(
             $data = [
                      'items' => $Products , 
-                     'total' => $Products->count()
+                     'total' => $total
                     ]
           );
     }
@@ -245,14 +259,19 @@ class ProductController extends BaseController
         $colors = [];
         foreach($request->colors as $item)
         {
-            $colors['color_id'] = $item['id'];
+            $colors[] = [               
+                 'color_id' => $item['id']
+            ];
         }
 
         $sizes = [];
         foreach($request->sizes as $item)
         {
-            $sizes['color_id'] = $item['id'];
+            $sizes[] = [
+                'size_id' => $item['id']
+            ];
         }
+        
 
         $Product = new Product();
         $Product->name = $request->name;
@@ -268,6 +287,14 @@ class ProductController extends BaseController
         $Product->images()->createMany($request->images);
         $Product->colors()->attach($colors);
         $Product->sizes()->attach($sizes);
+
+        $Product = Product::where('id',$Product->id)
+                        ->with('user')
+                        ->with('images')
+                        ->with('colors')
+                        ->with('sizes')
+                        ->with('category')
+                        ->first();
 
         return $this->sendResponse(
             $data = $Product,

@@ -48,7 +48,7 @@ class Create extends Component {
                 name: props.dataEdit.name,
                 disception: props.dataEdit.description,
                 avatar: props.dataEdit.avatar,
-                user: { value: props.dataEdit.users[0].id, label: props.dataEdit.users[0].username },
+                user: { value: props.dataEdit?.users[0]?.id, label: props.dataEdit?.users[0]?.username },
             })
         }
     }
